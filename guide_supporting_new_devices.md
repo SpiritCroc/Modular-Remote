@@ -3,7 +3,7 @@
 ## 1. Find a reference sheet
 In order to support new devices, you have to know the specific TCP commands.
 Some companies provide a reference sheet so you can look up all possible commands.
-All known reference sheets can be found here: \[todo link\].
+All known reference sheets can be found [here](https://github.com/SpiritCroc/Modular-Remote/blob/master/known_reference_sheets.md).
 If your device is not present there, just use the [search engine of your choice](http://www.duckduckgo.com) and try to find a reference sheet, or you won't be able to operate your device using this app.
 
 ## 2. Test your commands
@@ -112,7 +112,7 @@ Following this scheme, all three arrays should have the same amount of items.
 
 ## 6. Providing translateable strings
 In the previously described arrays, we forbid to translate the strings by using translateable="false".
-If you want to be able to provide translations, translateable strings can be found in strings_tcp_commands_general.xml \[todo link\].
+If you want to be able to provide translations, translateable strings can be found in [strings_tcp_commands_general.xml](https://github.com/SpiritCroc/Modular-Remote/blob/master/app/src/main/res/values/strings_tcp_commands_general.xml).
 You can reuse present strings or add your own. You can then reference them like this:
 
 ```xml
@@ -218,7 +218,7 @@ Some menus can get customized by code and/or by the users.
 \[device\]_tcp_customizable_submenu_names contains the user friendly names of the submenus, \[device\]_tcp_customizable_submenu_numbers the numbers of the customizable submenus, and \[device\]_tcp_customizable_submenu_values the kind of customization (containing either @integer/customizable_submenu_hide_items, @integer/customizable_submenu_receive_names, or @integer/customizable_submenu_hide_items_receive_names). If an arrays item names can be changed, you will have to do that from code.
 
 ## 9. Compare your XML with already included XMLs
-If you feel unsure about how your XML should look, just take a look on already included files \[todo link\]!
+If you feel unsure about how your XML should look, just take a look on [already included files](https://github.com/SpiritCroc/Modular-Remote/blob/master/app/src/main/res/values/strings_tcp_commands_pioneer.xml)!
 
 ## 10. Share your work
 You don't need to have finished with your work when showing it. You can send an email at spiritcroc@gmail.com in order to receive feedback from me on your work (or maybe even an .apk with your work included, so you can test it).

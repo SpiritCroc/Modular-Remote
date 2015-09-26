@@ -8,8 +8,8 @@ Currently supported remotely control-able devices:
 - Any device that supplies a browser-based user-interface
 - Any device control-able with widgets supplied by an external app
 
-Modular Remote is free, and open source. Visit the project on GitHub: [todo link]
-If you want to help to natively support more devices, you can find out how to do so here: [todo link]
+Modular Remote is free, and open source. Visit the project on GitHub: https://github.com/SpiritCroc/Modular-Remote
+If you want to help to natively support more devices, you can find out how to do so here: https://github.com/SpiritCroc/Modular-Remote/blob/master/guide_supporting_new_devices.md
 
 Available modules:
 - Button
