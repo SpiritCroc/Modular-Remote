@@ -1,0 +1,28 @@
+This app is still in its alpha state! This means that you should not expect a finished fully-working app, as it's still in development!
+
+The aim of this app is to provide the user a possibility to fully create their own remote out of several modules.
+
+Currently supported remotely control-able devices:
+- Pioneer receivers (via network) (not all commands & responses supported yet)
+- Basically any device controllable via TCP, you just have to look up the commands when you set up your remote
+- Any device that supplies a browser-based user-interface
+- Any device control-able with widgets supplied by an external app
+
+Modular Remote is free, and open source. Visit the project on GitHub: [todo link]
+If you want to help to natively support more devices, you can find out how to do so here: [todo link]
+
+Available modules:
+- Button
+- Toggle button
+- Dropdown list
+- Display
+- WebView
+- Widget
+- Vertical and Horizontal Containers, in order to get your desired layout (you can even put containers into containers!) and enable scrolling of your modules
+
+You can also configure multiple pages to best suit your needs depending on different occasions.
+If your launcher supports creating shortcuts (like e.g. NovaLauncher), you can create home screen shortcuts to your pages.
+
+Required Permissions:
+android.permission.INTERNET: Required to access devices via TCP
+android.permission.ACCESS_NETWORK_STATE: Required to automatically connect unconnected connections on network state changed

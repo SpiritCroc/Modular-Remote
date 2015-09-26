@@ -1,0 +1,1424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!--has_submenu:
+    0: none
+    -1: enter own value
+    n > 0: submenu n
+    if it has submenu: replace "…" or "·" with result from submenu
+        ("…" char count doesn't matter, "·" one char per "·")
+-->
+
+<resources>
+    <string-array name="pioneer_tcp_commands" translatable="false">
+        <item>@string/command_power</item>
+        <item>@string/command_volume</item>
+        <item>@string/command_volume_set</item>
+        <item>@string/command_mute</item>
+        <item>@string/command_input_change</item>
+        <item>@string/command_input_select</item>
+        <item>@string/command_listening_mode_select</item>
+        <item>@string/command_tone_on_bypass</item>
+        <item>@string/command_bass</item>
+        <item>@string/command_treble</item>
+        <item>@string/command_mcacc_memory_set</item>
+        <item>@string/command_phase_control</item>
+        <item>@string/command_virtual_sb</item>
+        <item>@string/command_virtual_height</item>
+        <item>@string/command_ch_select</item>
+        <item>@string/command_ch_level_up</item>
+        <item>@string/command_ch_level_down</item>
+        <item>@string/command_speakers</item>
+        <item>@string/command_hdmi_output_select</item>
+        <item>@string/command_hdmi_audio</item>
+        <item>@string/command_pqls</item>
+
+        <item>@string/command_cursor</item>
+        <item>@string/command_audio_parameter</item>
+        <item>@string/command_video_parameter</item>
+        <item>@string/command_home_menu</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_values" translatable="false">
+        <item>P·</item>
+        <item>V·</item>
+        <item>···VL</item>
+        <item>M·</item>
+        <item>F·</item>
+        <item>··FN</item>
+        <item>····SR</item>
+        <item>TO·</item>
+        <item>B·</item>
+        <item>T·</item>
+        <item>·MC</item>
+        <item>·IS</item>
+        <item>·VSB</item>
+        <item>·VHT</item>
+        <item>CLC</item>
+        <item>CLU</item>
+        <item>CLD</item>
+        <item>·SPK</item>
+        <item>·HO</item>
+        <item>·HA</item>
+        <item>·PQ</item>
+
+        <item>C··</item>
+        <item>APA</item>
+        <item>VPA</item>
+        <item>HM</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_has_submenu" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>7</item>
+        <item>14</item>
+        <item>14</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>10</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>11</item>
+        <item>12</item>
+        <item>16</item>
+        <item>17</item>
+
+        <item>15</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_1" translatable="false">
+        <item>@string/command_on</item>
+        <item>@string/command_off</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_1_values" translatable="false">
+        <item>O</item>
+        <item>F</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_1_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_2" translatable="false">
+        <item>@string/command_up</item>
+        <item>@string/command_down</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_2_values" translatable="false">
+        <item>U</item>
+        <item>D</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_2_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_3" translatable="false"><!--INPUT-->
+        <item>@string/command_input_dvd</item>
+        <item>@string/command_input_bd</item>
+        <item>@string/command_input_tv_sat</item>
+        <item>@string/command_input_dvr_bdr</item>
+        <item>@string/command_input_video_1</item>
+        <item>@string/command_input_video_2</item>
+        <item>@string/command_input_hdmi_1</item>
+        <item>@string/command_input_hdmi_2</item>
+        <item>@string/command_input_hdmi_3</item>
+        <item>@string/command_input_hdmi_4</item>
+        <item>@string/command_input_hdmi_5</item>
+        <item>@string/command_input_hmg</item>
+        <item>@string/command_input_ipod_usb</item>
+        <item>@string/command_input_xm_radio</item>
+        <item>@string/command_input_cd</item>
+        <item>@string/command_input_cd_r_tape</item>
+        <item>@string/command_input_tuner</item>
+        <item>@string/command_input_phono</item>
+        <item>@string/command_input_multi_ch_in</item>
+        <item>@string/command_input_adapter_port</item>
+        <item>@string/command_input_sirius</item>
+        <item>@string/command_input_hdmi_cyclic</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_3_values" translatable="false">
+        <item>04</item>
+        <item>25</item>
+        <item>05</item>
+        <item>15</item>
+        <item>10</item>
+        <item>14</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>26</item>
+        <item>17</item>
+        <item>18</item>
+        <item>01</item>
+        <item>03</item>
+        <item>02</item>
+        <item>00</item>
+        <item>12</item>
+        <item>33</item>
+        <item>27</item>
+        <item>31</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_3_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_4" translatable="false"><!--LISTENING MODE SET--><!--testMe-->
+        <item>STEREO (cyclic)</item>
+        <item>STEREO (direct set)</item>
+        <item>Auto Level Control (A.L.C.)</item>
+        <item>Front Stage Surround Advance Focus</item>
+        <item>Front Stage Surround Advance Wide</item>
+        <item>RETRIEVER AIR</item>
+        <item>STANDARD</item>
+        <item>(2ch source)</item>
+        <item>PRO LOGIC2 MOVIE</item>
+        <item>PRO LOGIC2x MOVIE</item>
+        <item>PRO LOGIC2 MUSIC</item>
+        <item>PRO LOGIC2x MUSIC</item>
+        <item>PRO LOGIC2 GAME</item>
+        <item>PRO LOGIC2x GAME</item>
+        <item>PRO LOGIC2z Height</item>
+        <item>WIDE SURROUND MOVIE</item>
+        <item>WIDE SURROUND MUSIC</item>
+        <item>PRO LOGIC</item>
+        <item>Neo:6 CINEMA</item>
+        <item>Neo:6 MUSIC</item>
+        <item>XM HD SURROUND</item>
+        <item>NEURAL SURROUND</item>
+        <item>(Multi ch source)</item>
+        <item>(Multi ch source)+DOLBY EX</item>
+        <item>(Multi ch source)+PRO LOGIC2x MOVIE</item>
+        <item>(Multi ch source)+PRO LOGIC2x MUSIC</item>
+        <item>(Multi-ch Source)+PRO LOGIC2z HEIGHT</item>
+        <item>(Multi-ch Source)+WIDE SURROUND MOVIE</item>
+        <item>(Multi-ch Source)+WIDE SURROUND MUSIC</item>
+        <item>DTS-ES Neo:6</item>
+        <item>DTS-ES matrix</item>
+        <item>DTS-ES discrete</item>
+        <item>DTS-ES 8ch discrete</item>
+        <item>ADVANCED SURROUND (cyclic)</item>
+        <item>ACTION</item>
+        <item>DRAMA</item>
+        <item>SCI-FI</item>
+        <item>MONO FILM</item>
+        <item>ENTERTAINMENT SHOW</item>
+        <item>EXPANDED THEATER</item>
+        <item>TV SURROUND</item>
+        <item>ADVANCED GAME</item>
+        <item>SPORTS</item>
+        <item>CLASSICAL</item>
+        <item>ROCK/POP</item>
+        <item>UNPLUGGED</item>
+        <item>EXTENDED STEREO</item>
+        <item>PHONES SURROUND</item>
+        <item>THX (cyclic)</item>
+        <item>PROLOGIC + THX CINEMA</item>
+        <item>PL2 MOVIE + THX CINEMA</item>
+        <item>Neo:6 CINEMA + THX CINEMA</item>
+        <item>PL2x MOVIE + THX CINEMA</item>
+        <item>PL2z HEIGHT + THX CINEMA</item>
+        <item>THX SELECT2 GAMES</item>
+        <item>THX CINEMA (for 2ch)</item>
+        <item>THX MUSIC (for 2ch）</item>
+        <item>THX GAMES (for 2ch）</item>
+        <item>PL2 MUSIC + THX MUSIC</item>
+        <item>PL2x MUSIC + THX MUSIC</item>
+        <item>PL2z HEIGHT + THX MUSIC</item>
+        <item>Neo:6 MUSIC + THX MUSIC</item>
+        <item>PL2 GAME + THX GAMES</item>
+        <item>PL2x GAME + THX GAMES</item>
+        <item>PL2z HEIGHT + THX GAMES</item>
+        <item>THX ULTRA2 GAMES</item>
+        <item>PROLOGIC + THX MUSIC</item>
+        <item>PROLOGIC + THX GAMES</item>
+        <item>THX CINEMA (for multi ch）</item>
+        <item>THX SURROUND EX (for multi ch)</item>
+        <item>PL2x MOVIE + THX CINEMA (for multi ch)</item>
+        <item>PL2z HEIGHT + THX CINEMA (for multi ch）</item>
+        <item>ES Neo:6 + THX CINEMA (for multi ch)</item>
+        <item>ES MATRIX + THX CINEMA (for multi ch)</item>
+        <item>ES DISCRETE + THX CINEMA (for multi ch)</item>
+        <item>ES 8ch DISCRETE + THX CINEMA (for multi ch)</item>
+        <item>THX SELECT2 CINEMA (for multi ch)</item>
+        <item>THX SELECT2 MUSIC (for multi ch)</item>
+        <item>THX SELECT2 GAMES (for multi ch)</item>
+        <item>THX ULTRA2 CINEMA (for multi ch)</item>
+        <item>THX ULTRA2 MUSIC (for multi ch)</item>
+        <item>THX ULTRA2 GAMES (for multi ch)</item>
+        <item>THX MUSIC (for multi ch）</item>
+        <item>THX GAMES (for multi ch）</item>
+        <item>PL2x MUSIC + THX MUSIC (for multi ch)</item>
+        <item>PL2z HEIGHT + THX MUSIC (for multi ch）</item>
+        <item>EX + THX GAMES (for multi ch)</item>
+        <item>PL2z HEIGHT + THX GAMES (for multi ch)</item>
+        <item>Neo:6 + THX MUSIC (for multi ch)</item>
+        <item>Neo:6 + THX GAMES (for multi ch)</item>
+        <item>ES MATRIX + THX MUSIC (for multi ch)</item>
+        <item>ES MATRIX + THX GAMES (for multi ch)</item>
+        <item>ES DISCRETE + THX MUSIC (for multi ch)</item>
+        <item>ES DISCRETE + THX GAMES (for multi ch)</item>
+        <item>ES 8CH DISCRETE + THX MUSIC (for multi ch)</item>
+        <item>ES 8CH DISCRETE + THX GAMES (for multi ch)</item>
+        <item>AUTO SURR/STREAM DIRECT (cyclic)</item>
+        <item>AUTO SURROUND</item>
+        <item>OPTIMUM SURROUND</item>
+        <item>Auto Level Control (A.L.C.)</item>
+        <item>DIRECT</item>
+        <item>PURE DIRECT</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_4_values" translatable="false">
+        <item>0001</item>
+        <item>0009</item>
+        <item>0151</item>
+        <item>0003</item>
+        <item>0004</item>
+        <item>0153</item>
+        <item>0010</item>
+        <item>0011</item>
+        <item>0013</item>
+        <item>0018</item>
+        <item>0014</item>
+        <item>0019</item>
+        <item>0015</item>
+        <item>0020</item>
+        <item>0031</item>
+        <item>0032</item>
+        <item>0033</item>
+        <item>0012</item>
+        <item>0016</item>
+        <item>0017</item>
+        <item>0028</item>
+        <item>0029</item>
+        <item>0021</item>
+        <item>0022</item>
+        <item>0023</item>
+        <item>0024</item>
+        <item>0034</item>
+        <item>0035</item>
+        <item>0036</item>
+        <item>0025</item>
+        <item>0026</item>
+        <item>0027</item>
+        <item>0030</item>
+        <item>0100</item>
+        <item>0101</item>
+        <item>0103</item>
+        <item>0102</item>
+        <item>0105</item>
+        <item>0104</item>
+        <item>0106</item>
+        <item>0116</item>
+        <item>0118</item>
+        <item>0117</item>
+        <item>0107</item>
+        <item>0110</item>
+        <item>0109</item>
+        <item>0112</item>
+        <item>0113</item>
+        <item>0050</item>
+        <item>0051</item>
+        <item>0052</item>
+        <item>0053</item>
+        <item>0054</item>
+        <item>0092</item>
+        <item>0055</item>
+        <item>0068</item>
+        <item>0069</item>
+        <item>0070</item>
+        <item>0071</item>
+        <item>0072</item>
+        <item>0093</item>
+        <item>0073</item>
+        <item>0074</item>
+        <item>0075</item>
+        <item>0094</item>
+        <item>0076</item>
+        <item>0077</item>
+        <item>0078</item>
+        <item>0056</item>
+        <item>0057</item>
+        <item>0058</item>
+        <item>0095</item>
+        <item>0059</item>
+        <item>0060</item>
+        <item>0061</item>
+        <item>0067</item>
+        <item>0062</item>
+        <item>0063</item>
+        <item>0064</item>
+        <item>0065</item>
+        <item>0066</item>
+        <item>0079</item>
+        <item>0080</item>
+        <item>0081</item>
+        <item>0082</item>
+        <item>0096</item>
+        <item>0083</item>
+        <item>0097</item>
+        <item>0084</item>
+        <item>0085</item>
+        <item>0086</item>
+        <item>0087</item>
+        <item>0088</item>
+        <item>0089</item>
+        <item>0090</item>
+        <item>0091</item>
+        <item>0005</item>
+        <item>0006</item>
+        <item>0152</item>
+        <item>0151</item>
+        <item>0007</item>
+        <item>0008</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_4_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_5" translatable="false"><!--LISTENING MODE GET--><!--testMe-->
+        <item>STEREO</item>
+        <item>F.S.SURR FOCUS</item>
+        <item>F.S.SURR WIDE</item>
+        <item>RETRIEVER AIR</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>[)(]PLII MOVIE</item>
+        <item>[)(]PLIIx MUSIC</item>
+        <item>[)(]PLII MUSIC</item>
+        <item>[)(]PLIIx GAME</item>
+        <item>[)(]PLII GAME</item>
+        <item>[)(]PROLOGIC</item>
+        <item>Neo:6 CINEMA</item>
+        <item>Neo:6 MUSIC</item>
+        <item>XM HD Surround</item>
+        <item>NEURAL SURR</item>
+        <item>2ch Straight Decode</item>
+        <item>[)(]PLIIz HEIGHT</item>
+        <item>WIDE SURR MOVIE</item>
+        <item>WIDE SURR MUSIC</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>[)(]PLIIx MUSIC</item>
+        <item>[)(]DIGITAL EX</item>
+        <item>DTS +Neo:6 / DTS-HD +Neo:6</item>
+        <item>ES MATRIX</item>
+        <item>ES DISCRETE</item>
+        <item>DTS-ES 7.1</item>
+        <item>multi ch Straight Decode</item>
+        <item>[)(]PLIIz HEIGHT</item>
+        <item>WIDE SURR MOVIE</item>
+        <item>WIDE SURR MUSIC</item>
+        <item>ACTION</item>
+        <item>DRAMA</item>
+        <item>SCI-FI</item>
+        <item>MONOFILM</item>
+        <item>ENT.SHOW</item>
+        <item>EXPANDED</item>
+        <item>TV SURROUND</item>
+        <item>ADVANCEDGAME</item>
+        <item>SPORTS</item>
+        <item>CLASSICAL</item>
+        <item>ROCK/POP</item>
+        <item>UNPLUGGED</item>
+        <item>EXT.STEREO</item>
+        <item>PHONES SURR.</item>
+        <item>[)(]PLIIx　MOVIE　+THX</item>
+        <item>[)(]PLII　MOVIE +THX</item>
+        <item>[)(]PL　+THX　CINEMA</item>
+        <item>Neo:6 CINEMA　+THX</item>
+        <item>THX CINEMA</item>
+        <item>[)(]PLIIx MUSIC　+THX</item>
+        <item>[)(]PLII MUSIC　+THX</item>
+        <item>[)(]PL　+THX MUSIC</item>
+        <item>Neo:6 MUSIC　+THX</item>
+        <item>THX MUSIC</item>
+        <item>[)(]PLIIx GAME　+THX</item>
+        <item>[)(]PLII GAME　+THX</item>
+        <item>[)(]PL　+THX　GAMES</item>
+        <item>THX ULTRA2 GAMES</item>
+        <item>THX SELECT2 GAMES</item>
+        <item>THX GAMES</item>
+        <item>[)(]PLIIz　+THX CINEMA</item>
+        <item>[)(]PLIIz　+THX MUSIC</item>
+        <item>[)(]PLIIz　+THX GAMES</item>
+        <item>THX Surr EX</item>
+        <item>Neo:6　+THX CINEMA</item>
+        <item>ES MTRX　+THX CINEMA</item>
+        <item>ES DISC　+THX CINEMA</item>
+        <item>ES7.1　+THX CINEMA</item>
+        <item>[)(]PLIIx　MOVIE　+THX</item>
+        <item>THX ULTRA2 CINEMA</item>
+        <item>THX SELECT2 CINEMA</item>
+        <item>THX CINEMA</item>
+        <item>Neo:6　+THX　MUSIC</item>
+        <item>ES MTRX　+THX MUSIC</item>
+        <item>ES DISC　+THX MUSIC</item>
+        <item>ES7.1　+THX MUSIC</item>
+        <item>[)(]PLIIx　MUSIC　+THX</item>
+        <item>THX ULTRA2 MUSIC</item>
+        <item>THX SELECT2 MUSIC</item>
+        <item>THX MUSIC</item>
+        <item>Neo:6 +THX GAMES</item>
+        <item>ES MTRX　+THX GAMES</item>
+        <item>ES DISC　+THX GAMES</item>
+        <item>ES7.1　+THX GAMES</item>
+        <item>[)(]EX　+THX　GAMES</item>
+        <item>THX ULTRA2 GAMES</item>
+        <item>THX SELECT2 GAMES</item>
+        <item>THX GAMES</item>
+        <item>[)(]PLIIz +THX CINEMA</item>
+        <item>[)(]PLIIz +THX MUSIC</item>
+        <item>[)(]PLIIz +THX GAMES</item>
+        <item>STEREO</item>
+        <item>[)(]PLII MOVIE</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>Neo:6 CINEMA</item>
+        <item>AUTO SURROUND Straight Decode</item>
+        <item>[)(]DIGITAL EX</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>DTS +Neo:6</item>
+        <item>ES MATRIX</item>
+        <item>ES DISCRETE</item>
+        <item>DTS-ES 7.1</item>
+        <item>XM HD Surround</item>
+        <item>NEURALSURR</item>
+        <item>RETRIEVER AIR</item>
+        <item>STEREO</item>
+        <item>[)(]PLII MOVIE</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>Neo:6 CINEMA</item>
+        <item>ALC Straight Decode</item>
+        <item>[)(]DIGITAL EX</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>DTS +Neo:6</item>
+        <item>ES MATRIX</item>
+        <item>ES DISCRETE</item>
+        <item>DTS-ES 7.1</item>
+        <item>XM HD Surround</item>
+        <item>NEURAL SURR</item>
+        <item>RETRIEVER AIR</item>
+        <item>STEREO</item>
+        <item>[)(]PLII MOVIE</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>Neo:6 CINEMA</item>
+        <item>STREAM DIRECT NORMAL Straight Decode</item>
+        <item>[)(]DIGITAL EX</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>(nothing)</item>
+        <item>ES MATRIX</item>
+        <item>ES DISCRETE</item>
+        <item>DTS-ES 7.1</item>
+        <item>STREAM DIRECT PURE 2ch</item>
+        <item>[)(]PLII MOVIE</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>Neo:6 CINEMA</item>
+        <item>STREAM DIRECT PURE Straight Decode</item>
+        <item>[)(]DIGITAL EX</item>
+        <item>[)(]PLIIx MOVIE</item>
+        <item>(nothing)</item>
+        <item>ES MATRIX</item>
+        <item>ES DISCRETE</item>
+        <item>DTS-ES 7.1</item>
+        <item>OPTIMUM</item>
+        <item>HDMI THROUGH</item>
+        <item>MULTI CH IN</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_5_values" translatable="false">
+        <item>0001</item>
+        <item>0002</item>
+        <item>0003</item>
+        <item>0004</item>
+        <item>0101</item>
+        <item>0102</item>
+        <item>0103</item>
+        <item>0104</item>
+        <item>0105</item>
+        <item>0106</item>
+        <item>0107</item>
+        <item>0108</item>
+        <item>0109</item>
+        <item>010a</item>
+        <item>010b</item>
+        <item>010c</item>
+        <item>010d</item>
+        <item>010e</item>
+        <item>010f</item>
+        <item>1101</item>
+        <item>1102</item>
+        <item>1103</item>
+        <item>1104</item>
+        <item>1105</item>
+        <item>1106</item>
+        <item>1107</item>
+        <item>1108</item>
+        <item>1109</item>
+        <item>110a</item>
+        <item>110b</item>
+        <item>0201</item>
+        <item>0202</item>
+        <item>0203</item>
+        <item>0204</item>
+        <item>0205</item>
+        <item>0206</item>
+        <item>0207</item>
+        <item>0208</item>
+        <item>0209</item>
+        <item>020a</item>
+        <item>020b</item>
+        <item>020c</item>
+        <item>020d</item>
+        <item>020e</item>
+        <item>0301</item>
+        <item>0302</item>
+        <item>0303</item>
+        <item>0304</item>
+        <item>0305</item>
+        <item>0306</item>
+        <item>0307</item>
+        <item>0308</item>
+        <item>0309</item>
+        <item>030a</item>
+        <item>030b</item>
+        <item>030c</item>
+        <item>030d</item>
+        <item>030e</item>
+        <item>030f</item>
+        <item>0310</item>
+        <item>0311</item>
+        <item>0312</item>
+        <item>0313</item>
+        <item>1301</item>
+        <item>1302</item>
+        <item>1303</item>
+        <item>1304</item>
+        <item>1305</item>
+        <item>1306</item>
+        <item>1307</item>
+        <item>1308</item>
+        <item>1309</item>
+        <item>130a</item>
+        <item>130b</item>
+        <item>130c</item>
+        <item>130d</item>
+        <item>130e</item>
+        <item>130f</item>
+        <item>1310</item>
+        <item>1311</item>
+        <item>1312</item>
+        <item>1313</item>
+        <item>1314</item>
+        <item>1315</item>
+        <item>1316</item>
+        <item>1317</item>
+        <item>1318</item>
+        <item>1319</item>
+        <item>131a</item>
+        <item>131b</item>
+        <item>131c</item>
+        <item>0401</item>
+        <item>0402</item>
+        <item>0403</item>
+        <item>0404</item>
+        <item>0405</item>
+        <item>0406</item>
+        <item>0407</item>
+        <item>0408</item>
+        <item>0409</item>
+        <item>040a</item>
+        <item>040b</item>
+        <item>040c</item>
+        <item>040d</item>
+        <item>040e</item>
+        <item>0501</item>
+        <item>0502</item>
+        <item>0503</item>
+        <item>0504</item>
+        <item>0505</item>
+        <item>0506</item>
+        <item>0507</item>
+        <item>0508</item>
+        <item>0509</item>
+        <item>050a</item>
+        <item>050b</item>
+        <item>050c</item>
+        <item>050d</item>
+        <item>050e</item>
+        <item>0601</item>
+        <item>0602</item>
+        <item>0603</item>
+        <item>0604</item>
+        <item>0605</item>
+        <item>0606</item>
+        <item>0607</item>
+        <item>0608</item>
+        <item>0609</item>
+        <item>060a</item>
+        <item>060b</item>
+        <item>0701</item>
+        <item>0702</item>
+        <item>0703</item>
+        <item>0704</item>
+        <item>0705</item>
+        <item>0706</item>
+        <item>0707</item>
+        <item>0708</item>
+        <item>0709</item>
+        <item>070a</item>
+        <item>070b</item>
+        <item>0881</item>
+        <item>0e01</item>
+        <item>0f01</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_5_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_6" translatable="false"><!--difference to submenu_3: no cyclic input → better for spinners-->
+        <item>@string/command_input_dvd</item>
+        <item>@string/command_input_bd</item>
+        <item>@string/command_input_tv_sat</item>
+        <item>@string/command_input_dvr_bdr</item>
+        <item>@string/command_input_video_1</item>
+        <item>@string/command_input_video_2</item>
+        <item>@string/command_input_hdmi_1</item>
+        <item>@string/command_input_hdmi_2</item>
+        <item>@string/command_input_hdmi_3</item>
+        <item>@string/command_input_hdmi_4</item>
+        <item>@string/command_input_hdmi_5</item>
+        <item>@string/command_input_hmg</item>
+        <item>@string/command_input_ipod_usb</item>
+        <item>@string/command_input_xm_radio</item>
+        <item>@string/command_input_cd</item>
+        <item>@string/command_input_cd_r_tape</item>
+        <item>@string/command_input_tuner</item>
+        <item>@string/command_input_phono</item>
+        <item>@string/command_input_multi_ch_in</item>
+        <item>@string/command_input_adapter_port</item>
+        <item>@string/command_input_sirius</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_6_values" translatable="false">
+        <item>04</item>
+        <item>25</item>
+        <item>05</item>
+        <item>15</item>
+        <item>10</item>
+        <item>14</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>26</item>
+        <item>17</item>
+        <item>18</item>
+        <item>01</item>
+        <item>03</item>
+        <item>02</item>
+        <item>00</item>
+        <item>12</item>
+        <item>33</item>
+        <item>27</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_6_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_7" translatable="false">
+        <item>@string/command_bypass</item>
+        <item>@string/command_on</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_7_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_7_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_8" translatable="false">
+        <item>MCACC MEMORY (cyclic)</item>
+        <item>MEMORY 1</item>
+        <item>MEMORY 2</item>
+        <item>MEMORY 3</item>
+        <item>MEMORY 4</item>
+        <item>MEMORY 5</item>
+        <item>MEMORY 6</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_8_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_8_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_9" translatable="false">
+        <item>@string/command_phase_control_off</item>
+        <item>@string/command_phase_control_on</item>
+        <item>@string/command_full_band_phase_control</item>
+        <item>@string/command_phase_control_on_off</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_9_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>9</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_9_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_10" translatable="false">
+        <item>@string/command_off</item>
+        <item>@string/command_on</item>
+        <item>@string/command_on_off</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_10_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>9</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_10_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_11" translatable="false">
+        <item>@string/command_speaker_off</item>
+        <item>@string/command_speaker_a_on</item>
+        <item>@string/command_speaker_b_on</item>
+        <item>@string/command_speaker_a_b_on</item>
+        <item>@string/command_speakers_cyclic</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_11_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>9</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_11_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_12" translatable="false">
+        <item>@string/command_hdmi_out_all</item>
+        <item>@string/command_hdmi_out_1</item>
+        <item>@string/command_hdmi_out_2</item>
+        <item>@string/command_hdmi_out_cyclic</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_12_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>9</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_12_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_13" translatable="false">
+        <item>@string/command_on</item>
+        <item>@string/command_off</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_13_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_13_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_14" translatable="false">
+        <item>@string/command_increment</item>
+        <item>@string/command_decrement</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_14_values" translatable="false">
+        <item>I</item>
+        <item>D</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_14_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_15" translatable="false">
+        <item>@string/command_up</item>
+        <item>@string/command_down</item>
+        <item>@string/command_left</item>
+        <item>@string/command_right</item>
+        <item>@string/command_enter</item>
+        <item>@string/command_return</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_15_values" translatable="false">
+        <item>UP</item>
+        <item>DN</item>
+        <item>LE</item>
+        <item>RI</item>
+        <item>EN</item>
+        <item>RT</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_15_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_16" translatable="false">
+        <item>@string/command_amp</item>
+        <item>@string/command_through</item>
+        <item>@string/command_amp_through</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_16_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>9</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_16_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_17" translatable="false">
+        <item>@string/command_off</item>
+        <item>@string/command_auto</item>
+        <item>@string/command_auto_off</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_17_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>9</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_17_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_18" translatable="false"><!--testMe-->
+        <item>@string/command_front_left</item>
+        <item>@string/command_front_right</item>
+        <item>@string/command_center</item>
+        <item>@string/command_surround_left</item>
+        <item>@string/command_surround_right</item>
+        <item>@string/command_surround_back_left</item>
+        <item>@string/command_surround_back_right</item>
+        <item>@string/command_subwoofer</item>
+        <item>@string/command_front_height_left</item>
+        <item>@string/command_front_height_right</item>
+        <item>@string/command_front_wide_left</item>
+        <item>@string/command_front_wide_right</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_18_values" translatable="false">
+        <item>L__</item>
+        <item>R__</item>
+        <item>C__</item>
+        <item>SL_</item>
+        <item>SR_</item>
+        <item>SBL</item>
+        <item>SBR</item>
+        <item>SW_</item>
+        <item>LH_</item>
+        <item>RH_</item>
+        <item>LW_</item>
+        <item>RW_</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_18_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+
+    <!--Responses use the same submenu system as commands-->
+    <!--has_submenu -1 means handle it from code-->
+    <string-array name="pioneer_tcp_responses" translatable="false">
+        <item>@string/command_power</item>
+        <item>@string/command_volume</item>
+        <item>@string/command_mute</item>
+        <item>@string/command_input</item>
+        <!--todo more, also include in clear-able displays-->
+        <item>@string/response_display</item>
+
+        <item>@string/response_input_name</item>
+    </string-array>
+    <string-array name="pioneer_tcp_responses_values" translatable="false">
+        <item>PWR·</item>
+        <item>VOL···</item>
+        <item>MUT·</item>
+        <item>FN··</item>
+
+        <item>FL…</item>
+
+        <item>RGB…</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_responses_has_submenu" translatable="false">
+        <item>13</item>
+        <item>-1</item>
+        <item>13</item>
+        <item>6</item>
+
+        <item>-1</item>
+
+        <item>-1</item>
+    </integer-array>
+
+    <!--Requests sent on start-->
+    <string-array name="pioneer_tcp_start_requests" translatable="false">
+        <item>"?P"</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_start_request_submenus" translatable="false">
+        <item>0</item>
+    </integer-array>
+
+    <!--Responses that should trigger to re-check the start requests, e.g. a power on response-->
+    <string-array name="pioneer_tcp_should_init_responses">
+        <item>PWR0</item>
+    </string-array>
+    <!--Requests sent on receive of a response specified in pioneer_tcp_should_init_response-->
+    <string-array name="pioneer_tcp_init_requests" translatable="false">
+        <item>"?V"</item>
+        <item>"?M"</item>
+        <item>"?F"</item>
+        <item>"?S"</item>
+        <item>"?L"</item>
+        <item>"?TO"</item>
+        <item>"?BA"</item>
+        <item>"?TR"</item>
+        <item>"?MC"</item>
+        <item>"?IS"</item>
+        <item>"?VSB"</item>
+        <item>"?VHT"</item>
+        <item>"?···CLV"</item>
+        <item>"?SPK"</item>
+        <item>"?HO"</item>
+        <item>"?HA"</item>
+        <item>"?PQ"</item>
+        <!--todo starting from KEY LOCK up to KEYBORD Operation-->
+        <item>"?FL"</item>
+        <item>"?AST"</item>
+        <item>"?VST"</item>
+        <item>"?RGB··"</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_init_request_submenus" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>18</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>6</item>
+    </integer-array>
+
+    <!--Responses that should clear displays, e.g. a power off response-->
+    <string-array name="pioneer_tcp_should_clear_display_responses">
+        <item>PWR1</item>
+    </string-array>
+    <!--Responses that should stop displays being cleared, e.g. a power on response-->
+    <string-array name="pioneer_tcp_should_stop_clear_display_responses">
+        <item>PWR0</item>
+    </string-array>
+    <!--ResponseClassifiers for displays that will get cleared if item of pioneer_tcp_should_clear_display received-->
+    <string-array name="pioneer_tcp_clearable_displays">
+        <item>VOL···</item>
+        <item>MUT·</item>
+        <item>FN··</item>
+
+        <item>FL…</item>
+
+        <item>RGB…</item>
+    </string-array>
+
+    <string-array name="pioneer_tcp_dropdown_menu_names" translatable="false"><!--commands + responses that have the same submenu; used for spinners-->
+        <item>@string/command_input</item>
+        <!--todo more-->
+    </string-array>
+    <string-array name="pioneer_tcp_dropdown_menu_command_values" translatable="false">
+        <item>··FN</item>
+    </string-array>
+    <string-array name="pioneer_tcp_dropdown_menu_response_values" translatable="false">
+        <item>FN··</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_dropdown_menu_submenus" translatable="false">
+        <item>6</item>
+    </integer-array>
+
+    <!--Customizable submenus with customizable_submenu_receive_names require specific code-->
+    <string-array name="pioneer_tcp_customizable_submenu_names" translatable="false">
+        <item>@string/command_input_select</item>
+        <!--item>@string/command_listening_mode_select</item todo allow hide listening mode items after enabling it for spinners-->
+        <item>@string/command_input</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_customizable_submenu_numbers" translatable="false">
+        <item>3</item>
+
+        <item>6</item>
+    </integer-array>
+    <integer-array name="pioneer_tcp_customizable_submenu_values" translatable="false">
+        <item>@integer/customizable_submenu_receive_names</item>
+
+        <item>@integer/customizable_submenu_hide_items_receive_names</item>
+    </integer-array>
+
+</resources>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="command_power">Power</string>
+    <string name="command_volume">Volume</string>
+    <string name="command_volume_set">Volume set</string>
+    <string name="command_mute">Mute</string>
+    <string name="command_input">Input</string>
+    <string name="command_input_change">Input change</string>
+    <string name="command_input_select">Input select</string>
+    <string name="command_listening_mode_select">Listening mode select</string>
+    <string name="command_tone_on_bypass">Tone on/bypass</string>
+    <string name="command_bass">Bass</string>
+    <string name="command_treble">Treble</string>
+    <string name="command_cursor">Cursor</string>
+    <string name="command_enter">Enter</string>
+    <string name="command_return">Return</string>
+    <string name="command_audio_parameter">Audio parameter</string>
+    <string name="command_video_parameter">Video parameter</string>
+    <string name="command_home_menu">Home menu</string>
+    <string name="command_mcacc_memory_set">MCACC memory set</string>
+    <string name="command_phase_control">Phase control</string>
+    <string name="command_phase_control_off">Phase control</string>
+    <string name="command_phase_control_on">Phase control</string>
+    <string name="command_full_band_phase_control">Full band phase control</string>
+    <string name="command_phase_control_on_off">Phase control on/off</string>
+    <string name="command_virtual_sb">Virtual SB</string>
+    <string name="command_virtual_height">Virtual height</string>
+    <string name="command_ch_select">Channel select</string>
+    <string name="command_ch_level_up">Channel level up</string>
+    <string name="command_ch_level_down">Channel level down</string>
+    <string name="command_speakers">Speakers</string>
+    <string name="command_speaker_off">Speakers</string>
+    <string name="command_speaker_a_on">Speaker A on</string>
+    <string name="command_speaker_b_on">Speaker B on</string>
+    <string name="command_speaker_a_b_on">Speaker A+B on</string>
+    <string name="command_speakers_cyclic">Speakers (cyclic)</string>
+    <string name="command_hdmi_output_select">HDMI output select</string>
+    <string name="command_hdmi_out_all">HDMI out all</string>
+    <string name="command_hdmi_out_1">HDMI out 1</string>
+    <string name="command_hdmi_out_2">HDMI out 2</string>
+    <string name="command_hdmi_out_cyclic">HDMI out (cyclic)</string>
+    <string name="command_hdmi_audio">HDMI audio</string>
+    <string name="command_amp">Amp</string>
+    <string name="command_through">Through</string>
+    <string name="command_amp_through">Amp/through (cyclic)</string>
+    <string name="command_pqls">PQLS</string>
+
+    <string name="command_on">On</string>
+    <string name="command_off">Off</string>
+    <string name="command_on_off">On/off</string>
+    <string name="command_auto">Auto</string>
+    <string name="command_auto_off">Auto/off (cyclic)</string>
+    <string name="command_up">Up</string>
+    <string name="command_down">Down</string>
+    <string name="command_left">Left</string>
+    <string name="command_right">Right</string>
+    <string name="command_bypass">Bypass</string>
+    <string name="command_increment">Increment</string>
+    <string name="command_decrement">Decrement</string>
+
+    <string name="command_input_dvd">DVD</string>
+    <string name="command_input_bd">BD</string>
+    <string name="command_input_tv_sat">TV/SAT</string>
+    <string name="command_input_dvr_bdr">DVR/BDR</string>
+    <string name="command_input_video_1">Video 1 (Video)</string>
+    <string name="command_input_video_2">Video 2</string>
+    <string name="command_input_hdmi_1">HDMI 1</string>
+    <string name="command_input_hdmi_2">HDMI 2</string>
+    <string name="command_input_hdmi_3">HDMI 3</string>
+    <string name="command_input_hdmi_4">HDMI 4</string>
+    <string name="command_input_hdmi_5">HDMI 5</string>
+    <string name="command_input_hmg">Home Media Gallery (Internet Radio)</string>
+    <string name="command_input_ipod_usb">iPod/USB</string>
+    <string name="command_input_xm_radio">XM Radio</string>
+    <string name="command_input_cd">CD</string>
+    <string name="command_input_cd_r_tape">CD-R/Tape</string>
+    <string name="command_input_tuner">Tuner</string>
+    <string name="command_input_phono">Phono</string>
+    <string name="command_input_multi_ch_in">Multi CH in</string>
+    <string name="command_input_adapter_port">Adapter Port</string>
+    <string name="command_input_sirius">Sirius</string>
+    <string name="command_input_hdmi_cyclic">HDMI (cyclic)</string>
+
+    <string name="command_front_left">Front left</string>
+    <string name="command_front_right">Front right</string>
+    <string name="command_center">Center</string>
+    <string name="command_surround_left">Surround Left</string>
+    <string name="command_surround_right">Surround Right</string>
+    <string name="command_surround_back_left">Surround Back Left</string>
+    <string name="command_surround_back_right">Surround Back Right</string>
+    <string name="command_subwoofer">Subwoofer</string>
+    <string name="command_front_height_left">Front Height Left</string>
+    <string name="command_front_height_right">Front Height Right</string>
+    <string name="command_front_wide_left">Front Wide Left</string>
+    <string name="command_front_wide_right">Front Wide Right</string>
+
+    <string name="response_raw">Raw</string>
+    <string name="response_connectivity">Connectivity</string>
+    <string name="response_connected">Connected</string>
+    <string name="response_not_connected">Not connected</string>
+    <string name="response_display">Display</string>
+
+    <string name="response_volume_db">" "dB</string>
+
+    <string name="response_input_name">Input name</string>
+
+    <integer name="customizable_submenu_hide_items">1</integer>
+    <integer name="customizable_submenu_receive_names">2</integer>
+    <integer name="customizable_submenu_hide_items_receive_names">3</integer>
+</resources>

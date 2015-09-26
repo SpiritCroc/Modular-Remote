@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!-- Strings related to Settings -->
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_app_behaviour">App behaviour</string>
+    <string name="pref_offscreen_page_limit">Offscreen page limit</string>
+    <plurals name="pref_offscreen_page_limit">
+        <item quantity="one">A page will get inactive when you are more than %d page away</item>
+        <item quantity="other">A page will get inactive when you are more than %d pages away</item>
+    </plurals>
+    <string name="pref_offscreen_page_limit_never">Pages will never get inactive</string>
+    <string name="pref_time_update_interval">Time update interval</string>
+    <plurals name="pref_time_update_interval">
+        <item quantity="one">Clock displays will update every millisecond. This low value might increase your CPU usage and decrease your battery life!</item>
+        <item quantity="other">Clock displays will update every %d milliseconds. Low values might increase your CPU usage and decrease your battery life!</item>
+    </plurals>
+    <string name="pref_app_appearance">Appearance</string>
+    <string name="pref_fullscreen">Fullscreen</string>
+    <string name="pref_hide_navigation_bar">Hide navigation bar</string>
+    <string name="pref_hide_action_bar">Hide action bar</string>
+    <string name="pref_more_space">Get more space (experimental)</string>
+    <string name="pref_more_space_summary">Hide some elements of the UI</string>
+    <string name="pref_hide_pager_tab_strip">Hide page tabs</string>
+    <string name="pref_system_ui_timeout">System UI timeout</string>
+    <plurals name="pref_system_ui_timeout">
+        <item quantity="one">Hide System UI elements after %d second</item>
+        <item quantity="other">Hide System UI elements after %d seconds</item>
+    </plurals>
+    <string name="pref_change_ringer_mode">Do not disturb</string>
+    <string-array name="pref_change_ringer_mode_array">
+        <item>@string/pref_ringer_mode_mute</item>
+        <item>@string/pref_ringer_mode_vibrate</item>
+        <item>@string/pref_ringer_mode_vibrate_if_not_muted</item>
+        <item>@string/pref_ringer_mode_keep</item>
+    </string-array>
+    <string-array name="pref_change_ringer_mode_array_values" translateable="false">
+        <item>@string/pref_ringer_mode_mute_value</item>
+        <item>@string/pref_ringer_mode_vibrate_value</item>
+        <item>@string/pref_ringer_mode_vibrate_if_not_muted_value</item>
+        <item>@string/pref_ringer_mode_keep_value</item>
+    </string-array>
+    <string-array name="pref_change_ringer_mode_array_summaries" translatable="false">
+        <item>@string/pref_ringer_mode_mute_summary</item>
+        <item>@string/pref_ringer_mode_vibrate_summary</item>
+        <item>@string/pref_ringer_mode_vibrate_if_not_muted_summary</item>
+        <item>@string/pref_ringer_mode_keep_summary</item>
+    </string-array>
+    <string name="pref_ringer_mode_mute">Mute</string>
+    <string name="pref_ringer_mode_vibrate">Vibrate</string>
+    <string name="pref_ringer_mode_vibrate_if_not_muted">Vibrate if not already muted</string>
+    <string name="pref_ringer_mode_keep">Keep</string>
+    <string name="pref_ringer_mode_mute_value" translateable="false">MUTE</string>
+    <string name="pref_ringer_mode_vibrate_value" translateable="false">VIBRATE</string>
+    <string name="pref_ringer_mode_vibrate_if_not_muted_value" translateable="false">VIBRATE_IF_NO_MUTE</string>
+    <string name="pref_ringer_mode_keep_value" translateable="false">KEEP</string>
+    <string name="pref_ringer_mode_mute_summary">Ringer mode while app is open: Mute</string>
+    <string name="pref_ringer_mode_vibrate_summary">Ringer mode while app is open: Vibrate</string>
+    <string name="pref_ringer_mode_vibrate_if_not_muted_summary">Ringer mode while app is open and not already muted: Vibrate</string>
+    <string name="pref_ringer_mode_keep_summary">Ringer mode will not be changed</string>
+    <string name="pref_block_size">Block size</string>
+    <plurals name="pref_block_size_summary">
+        <item quantity="one">The width of your screen will get divided into %d unit in order to set up the size for your fragments</item>
+        <item quantity="other">The width of your screen will get divided into %d units in order to set up the size for your fragments</item>
+    </plurals>
+    <string name="pref_use_block_size_height">Use block size height</string>
+    <string name="pref_use_block_size_height_summary">Use a different block size for the height than for the width. Makes your units fit your screen instead of having square units</string>
+    <string name="pref_block_size_height">Block size height</string>
+    <plurals name="pref_block_size_height_summary">
+        <item quantity="one">The height of your screen will get divided into %d unit</item>
+        <item quantity="other">The height of your screen will get divided into %d units</item>
+    </plurals>
+    <string name="pref_advanced_settings">Advanced settings</string>
+    <string name="pref_advanced_settings_summary">Settings for advanced users</string>
+
+    <string name="pref_volume_button_settings_shortcut">Settings shortcut</string>
+    <string name="pref_volume_button_settings_shortcut_summary">If you accidentally configured the settings above in a way that prevents you to reach the settings again, you can still reach them by pressing the following volume button combination: ↑ ↑ ↓ ↓ ↑ ↓ ↑ ↓ (You will have to restart once you press the wrong volume button or wait more than one second)</string>
+
+    <string name="pref_double_click_timeout">Double click timeout</string>
+    <plurals name="pref_double_click_timeout_summary">
+        <item quantity="one">Clicks after %d millisecond will be new clicks</item>
+        <item quantity="other">Clicks after %d milliseconds will be new clicks</item>
+    </plurals>
+
+    <string name="pref_check_connectivity_interval">Connectivity check interval</string>
+    <plurals name="pref_check_connectivity_interval_summary">
+        <item quantity="one">The app will check every %d millisecond whether the connected TCP devices are still available. This low value might increase your CPU usage and decrease your battery life!</item>
+        <item quantity="other">The app will check every %d milliseconds whether the connected TCP devices are still available. Low values might increase your CPU usage and decrease your battery life!</item>
+    </plurals>
+</resources>

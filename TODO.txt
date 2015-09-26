@@ -1,0 +1,96 @@
+Stuff that could or should be done.
+The more x, the more important
+
+WIP:
+x   - pioneer: complete strings_tcp_commands (when done: make app beta)
+
+Fixes/Improvements:
+    - no connection to ip "" (dummy connection to avoid null-pointers?)
+    - if trying to add fragment to page that is null (can happen with wrong recreationKey), make error message (instead of crash?)
+
+Upgrades / New stuff:
+
+no coding required:
+    - better featured image for play store (http://android-developers.blogspot.de/2011/10/android-market-featured-image.html)
+    - more screenshots
+    - feature video
+    - better icon
+    - support more devices [todo link]
+
+module upgrades:
+    - button: type general: home, optionsMenu, open device volume dialog, display off, fullscreen on/off, navbar on/off, pagetabs on/off (last three also as response for toggle?)
+    - button: possibility: image instead of written tag (built in, external source?)
+    - color options (general/per module)
+    - text size (general/per module)
+    - Spinner: possibility to change order
+x   - Page: Use toast as display: multi-selection-list to select displays (→toast can be used for several displays)
+        Example usage: use as error display
+        each display: possibility to chose between Toast.LENGTH_SHORT and Toast.LENGTH_LONG
+
+UI upgrades:
+    - dialogFragments: add to back stack (particularly when selecting commands / adding fragments)
+        @Override
+        public void show(@NonNull FragmentManager manager, String tag) {
+            super.show(manager, tag);
+            getFragmentManager().beginTransaction().addToBackStack(null).commit();//Issue: dialogs are never shown again despite being in back stack
+        }
+    - add landscape mode (configuration independent from portrait mode, pref in settings to only use one or both, solution for launcher shortcuts required)
+        on first change: dialog: you changed orientation …bla… empty …bla… /OK /Show again next time
+    - immersive mode:
+        when showing systemUI elements in immersive mode, hide elements again on click somewhere else
+        when showing systemUI elements in immersive mode, do not allow clicks on other UI elements (prevent sending commands by accident)
+        do not allow systemUI timeout < 2 or something
+        if hidden menuBar appears, make it transparent (also other stuff transparent?)
+        remove experimental: test on other devices
+        fix: if actionBar hidden: issues when swiping down from statusBar (swiping up from navBar works)
+        fix: possible not hiding actionBar after adding page
+        fix: viewPager sometimes not updating on systemUI visibility changed
+    - Locked mode: hide set-up-remote-buttons (no add/edit fragment)
+    - global padding settings, activity margin setting
+    - Possibility to sort pages via SortFragmentsDialog (Entry in OptionsMenu?) BEWARE THE REMOVAL!
+    - CustomHorizontalScrollView + CustomScrollView: make snap depending on children measured size (inspiration by ChameleonOS app sidebar)
+
+other upgrades:
+    - AddDisplayDialog: static text: add special char
+        more characters in button_label_spinner_chars
+        test on different APIs → don't show chars that are known to not show on certain APIs
+    - possibility to specify port (just add a :portNumber to ip, e.g. :23; → read, if not given: use default)
+    - first start:
+        explanation how remote works
+        set up block size values depending on screen size
+
+Code style improvements:
+-   move often used methods from ModuleFragments to Util
+
+New modules:
+    - ExpandableContainer:
+        option: onCreate:
+            always expanded
+            always collapsed
+            remember from last session
+            collapse if content has no connected connection + expand if reconnected
+    - multi-function-button (as toggleButton, but with more (n) states (and no response))
+    - Slider: e.g. for volume
+
+Functional upgrades:
+    - save modules directly after adding / modifying
+    - possibility to keep app on lockscreen (like locus map)
+        → locked mode (no edit function)
+    - option to keep screen on
+x   - CommandEditor: Create chained commands (→ submenu "custom"), per RECEIVER_TYPE basis
+    - Pref: remember last page
+    - Option: save / load configuration
+        Saves pref saved_fragments + version number → increment if module params changed
+
+
+Stuff someone could add if they feel bored
+    - WebViewFragment: optional actionBar with back, forward, reload-buttons (→if active, no optionsMenuEntry)
+    - keyboard functionality
+    - own toolbar instead of AppCompatActivity
+    - infrared FB?
+    - Add Help-button to Add…Dialog → ExplainDialog to explain options
+    - use different icon for launcher shortcuts than for launcher (take ic_launcher and change letters M and R to P and S or S and C or something)
+    - own typeface based on Roboto (get from AOSP) with special chars (play, pause, etc. → ensure visibility on all devices)
+    - tasker/locale plugin to send tcp commands
+    - custom widgets
+    - custom notifications

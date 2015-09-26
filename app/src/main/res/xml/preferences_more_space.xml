@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_more_space">
+    <CheckBoxPreference
+        android:key="pref_fullscreen"
+        android:title="@string/pref_fullscreen"
+        android:defaultValue="false"/>
+    <CheckBoxPreference
+        android:key="pref_hide_action_bar"
+        android:title="@string/pref_hide_action_bar"
+        android:defaultValue="false"
+        android:dependency="pref_fullscreen"/>
+    <CheckBoxPreference
+        android:key="pref_hide_pager_tab_strip"
+        android:title="@string/pref_hide_pager_tab_strip"
+        android:defaultValue="false"/>
+    <CheckBoxPreference
+        android:key="pref_hide_navigation_bar"
+        android:title="@string/pref_hide_navigation_bar"
+        android:defaultValue="false"/>
+    <EditTextPreference
+        android:key="pref_system_ui_timeout"
+        android:title="@string/pref_system_ui_timeout"
+        android:numeric="integer"
+        android:defaultValue="3"/>
+    <Preference
+        android:title="@string/pref_volume_button_settings_shortcut"
+        android:summary="@string/pref_volume_button_settings_shortcut_summary"/>
+</PreferenceScreen>

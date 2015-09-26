@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.spiritcroc.modular_remote.MainActivity">
+
+    <item
+        android:id="@+id/action_add_fragment"
+        android:title="@string/action_add_fragment"
+        android:icon="@drawable/ic_add_white_36dp"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_edit_page_content"
+        android:title="@string/action_edit_page_content"
+        android:icon="@drawable/ic_create_white_36dp"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_connection_manager"
+        android:title="@string/action_connection_manager"
+        android:orderInCategory="90"
+        app:showAsAction="never" />
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item android:id="@+id/action_about"
+        android:title="@string/action_about"
+        android:orderInCategory="101"
+        app:showAsAction="never" />
+</menu>

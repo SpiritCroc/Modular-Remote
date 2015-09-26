@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2015 SpiritCroc
+    Email: spiritcroc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="app_name">Modular Remote</string>
+    <string name="app_launcher_name">ModMote</string>
+    <string name="title_activity_main">Modular Remote</string>
+    <string name="title_activity_shortcut">Select page</string>
+    <string name="page_shortcut">Page shortcut</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_add_fragment">Add module</string>
+    <string name="action_reconnect_receiver">Reconnect TCP device</string>
+    <string name="action_reload_web_view">Reload site</string>
+    <string name="action_edit_page_content">Edit modules</string>
+    <string name="action_connection_manager">Connection manager</string>
+    <string name="action_about">About</string>
+
+    <string name="receiver_type_pioneer">Pioneer</string>
+    <string name="receiver_type_unspecified">Unspecified</string>
+    <string name="receiver_type_pioneer_value" translatable="false">PIONEER</string>
+    <string name="receiver_type_unspecified_value" translatable="false">UNSPECIFIED</string>
+    <string-array name="receiver_type_array" translatable="false">
+        <item>@string/receiver_type_unspecified</item>
+        <item>@string/receiver_type_pioneer</item>
+    </string-array>
+    <string-array name="receiver_type_array_values" translatable="false">
+        <item>@string/receiver_type_unspecified_value</item>
+        <item>@string/receiver_type_pioneer_value</item>
+    </string-array>
+
+    <string name="page_name_default">Page 1</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_remove">Remove</string>
+    <string name="dialog_add">Add</string>
+    <string name="dialog_add_fragment">Add module</string>
+    <string name="dialog_configure_fragment">Module settings</string>
+    <string name="dialog_receiver_ip">TCP device IP:</string>
+    <string name="dialog_receiver_ip_summary">e.g. 192.168.1.23</string>
+    <string name="dialog_address">Address:</string>
+    <string name="dialog_address_summary">Web address</string>
+    <string name="dialog_add_page">Add page</string>
+    <string name="dialog_name">Name:</string>
+    <string name="dialog_name_summary">Will be shown as page tab</string>
+    <string name="dialog_edit_page">Edit page</string>
+    <string name="dialog_enable_java_script">Enable java script (vulnerable)</string>
+    <string name="dialog_allow_external_links">Allow opening links to different hosts</string>
+    <string name="dialog_hide">Hide:" "</string>
+    <string name="dialog_hide_selected">Hide selected</string>
+    <string name="dialog_detect_inputs">Detect inputs</string>
+    <string name="dialog_detecting_inputs">Detecting inputs, click to cancel</string>
+    <string name="dialog_detect_inputs_finish">Inputs successful detected!</string>
+    <string name="dialog_reset">Reset</string>
+    <string name="dialog_label">Label:</string>
+    <string name="dialog_label_summary">Text on the button</string>
+    <string name="dialog_select_command">Select command</string>
+    <string name="dialog_edit_command">carriage return is not required</string>
+    <string name="dialog_enter_command">Enter command</string>
+    <string name="dialog_enter_raw">Enter raw</string>
+    <string name="dialog_enter_response">Enter response</string>
+    <string name="dialog_enter_raw_subcommand">Enter raw subcommand</string>
+    <string name="dialog_select_container">Select container</string>
+    <string name="dialog_edit">Edit</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_overwrite_receiver_type">Overwrite TCP device type</string>
+    <string name="dialog_overwrite_receiver_type_message">A connection for this ip already exists with the TCP device type \'%1$s\'.\nDo you want to change it to \'%2$s\'?</string>
+    <string name="dialog_use_hardware_volume">Use hardware volume</string>
+    <string name="dialog_finish">Finish</string>
+    <string name="dialog_height">Height:</string>
+    <string name="dialog_width">Width:</string>
+    <string name="dialog_size_in_block_units">In block units, as set up in the settings</string>
+    <string name="dialog_match_width">Match width</string>
+    <string name="dialog_match_height">Match height</string>
+    <string name="dialog_select_fragment">Select module</string>
+    <string name="dialog_command">Command:</string>
+    <string name="dialog_click_command">Click command:</string>
+    <string name="dialog_double_click_command">Double click command:</string>
+    <string name="dialog_long_click_command">Long click command:</string>
+    <string name="dialog_volume_up_command">Volume up command:</string>
+    <string name="dialog_volume_down_command">Volume down command:</string>
+    <string name="dialog_receiver_type">TCP device type:</string>
+    <string name="dialog_wrap_width">Wrap width</string>
+    <string name="dialog_wrap_height">Wrap height</string>
+    <string name="dialog_information_type">Display information type:</string>
+    <string name="dialog_title_enter_volume">Enter volume</string>
+    <string name="dialog_summary_enter_volume_db">Enter volume in dB</string>
+    <string name="dialog_select_connection">Select connection</string>
+    <string name="dialog_edit_connection">Edit connection</string>
+    <string name="dialog_submenu_customization">Submenu customization</string>
+    <string name="dialog_hide_submenu_elements">Hide submenu items (useful for overcrowded dropdown lists)</string>
+    <string name="dialog_select_submenu">Select submenu</string>
+    <string name="dialog_configure_toggle_on_state">Toggle on:</string>
+    <string name="dialog_configure_toggle_off_state">Toggle off:</string>
+    <string name="dialog_configure_toggle_on_state_title">Toggle on</string>
+    <string name="dialog_configure_toggle_off_state_title">Toggle off</string>
+    <string name="dialog_configure">Configure</string>
+    <string name="dialog_response">Response:</string>
+    <string name="dialog_select_response">Select response that will trigger this state</string>
+    <string name="dialog_toggle_default_state">State on start:</string>
+    <string name="dialog_static_text">Text:</string>
+    <string name="dialog_static_text_summary">Enter text</string>
+    <string name="dialog_display_mode">Display mode:</string>
+    <string name="dialog_horizontal_text_gravity">Text alignment:</string>
+    <string name="dialog_clone">Clone</string>
+    <string name="dialog_move">Move</string>
+    <string name="dialog_remove_connection">Remove connection</string>
+    <string name="dialog_remove_connection_message">Remove \'%1$s\'?\nIf you still have modules that use this connection, make sure to delete them or the connection will get recreated.</string>
+    <string name="dialog_configure_action_bar_display">Configure action bar display</string>
+    <string name="dialog_display_functionality">Display functionality:</string>
+    <string name="dialog_apply">Apply</string>
+    <string name="dialog_sort_fragments">Sort modules (drag &amp; drop)</string>
+    <string name="dialog_greeting">Welcome</string>
+    <string name="dialog_greeting_message">This app is still in its alpha state. This means:
+        \n- You should not expect a fully tested and bug-free app.
+        \n- Some commands and responses for some supported devices could be missing
+        \n- Future releases can invalidate all your previous settings (I\'ll try to migrate settings if there are enough users).
+        \n- Future releases might remove/change previous features.
+        \n- Updates are not necessarily delivered on a regular basis.\n
+        \nIf you find any bugs/issues or have suggestions on how to improve this app, feel free to email me (spiritcroc@gmail.com).\n
+        \nThis app is open source and requires contributions to grow! If you want to help with development, you can view the code at https://github.com/SpiritCroc/Modular-Remote.\n
+        \nCoding is not the only way to help: In order to natively support more TCP devices, command lists are required to include in this app. A guide to supporting new devices can be found here: [todo link]
+        \nAlso take a look at the to-do list, there should be a section called \'no coding required\'.
+        \n[todo link]\n
+        \nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
+
+    <string name="dialog_about_app_version">Version</string>
+    <string name="dialog_about_0">This app is published under the terms of the GNU General Public License, version 3.0.
+        \nSource code:
+        \nhttps://github.com/SpiritCroc/Modular-Remote\n
+        \nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
+    <string name="dialog_about_1_title">\n<u>Used 3rd party components</u></string>
+    <string name="dialog_about_1_body">\n"Material Design Icons" by Google (licensed under CC BY 4.0)
+        \nSource: http://www.google.com/design/spec/resources/sticker-sheets-icons.html#sticker-sheets-icons-components\n
+        \nThe Roboto typeface by Google (licensed under the Apache license)
+        \nSource: AOSP\n
+        \nDragSortListView by Carl Bauer (licensed under the Apache license)
+        \nSource: https://github.com/bauerca/drag-sort-listview</string>
+
+    <string name="horizontal_text_gravity_center">Center</string>
+    <string name="horizontal_text_gravity_left">Left</string>
+    <string name="horizontal_text_gravity_right">Right</string>
+    <integer name="horizontal_text_gravity_center_value" translatable="false">1</integer>
+    <integer name="horizontal_text_gravity_left_value" translatable="false">3</integer>
+    <integer name="horizontal_text_gravity_right_value" translatable="false">5</integer>
+    <string-array name="horizontal_text_gravities" translatable="false">
+        <item>@string/horizontal_text_gravity_center</item>
+        <item>@string/horizontal_text_gravity_left</item>
+        <item>@string/horizontal_text_gravity_right</item>
+    </string-array>
+    <integer-array name="horizontal_text_gravity_values" translatable="false">
+        <item>@integer/horizontal_text_gravity_center_value</item>
+        <item>@integer/horizontal_text_gravity_left_value</item>
+        <item>@integer/horizontal_text_gravity_right_value</item>
+    </integer-array>
+
+    <string name="fragment_web_view">WebView</string>
+    <string name="fragment_scroll_container">Vertical container</string>
+    <string name="fragment_page_container">Page</string>
+    <string name="fragment_widget">Widget</string>
+    <string name="fragment_horizontal_container">Horizontal container</string>
+    <string name="fragment_button">Button</string>
+    <string name="fragment_display">Display</string>
+    <string name="fragment_spinner">Dropdown list</string>
+    <string name="fragment_toggle">Toggle button</string>
+    <string name="fragment_web_view_value" translatable="false">web_view_fragment</string>
+    <string name="fragment_scroll_container_value" translatable="false">scroll_container_fragment</string>
+    <string name="fragment_page_container_value" translatable="false">page_container_fragment</string>
+    <string name="fragment_widget_value" translatable="false">widget_container_fragment</string>
+    <string name="fragment_horizontal_container_value" translatable="false">horizontal_container</string>
+    <string name="fragment_button_value" translatable="false">button_fragment</string>
+    <string name="fragment_display_value" translatable="false">display_fragment</string>
+    <string name="fragment_spinner_value" translatable="false">spinner_fragment</string>
+    <string name="fragment_toggle_value" translatable="false">toggle_fragment</string>
+    <string-array name="fragment_selection_array" translatable="false">
+        <item>@string/fragment_page_container</item>
+        <item>@string/fragment_button</item>
+        <item>@string/fragment_toggle</item>
+        <item>@string/fragment_spinner</item>
+        <item>@string/fragment_display</item>
+        <item>@string/fragment_web_view</item>
+        <item>@string/fragment_widget</item>
+        <item>@string/fragment_scroll_container</item>
+        <item>@string/fragment_horizontal_container</item>
+    </string-array>
+    <string-array name="fragment_selection_values_array" translatable="false">
+        <item>@string/fragment_page_container_value</item>
+        <item>@string/fragment_button_value</item>
+        <item>@string/fragment_toggle_value</item>
+        <item>@string/fragment_spinner_value</item>
+        <item>@string/fragment_display_value</item>
+        <item>@string/fragment_web_view_value</item>
+        <item>@string/fragment_widget_value</item>
+        <item>@string/fragment_scroll_container_value</item>
+        <item>@string/fragment_horizontal_container_value</item>
+    </string-array>
+    <string name="fragment_display_mode_tcp_display">TCP display</string>
+    <string name="fragment_display_mode_static_text">Static text</string>
+    <string name="fragment_display_mode_clock">Clock</string>
+    <string name="fragment_display_mode_tcp_display_value" translatable="false">TCP_DISPLAY</string>
+    <string name="fragment_display_mode_static_text_value" translatable="false">STATIC_TEXT</string>
+    <string name="fragment_display_mode_clock_value" translatable="false">CLOCK</string>
+    <string-array name="fragment_display_modes" translatable="false">
+        <item>@string/fragment_display_mode_tcp_display</item>
+        <item>@string/fragment_display_mode_static_text</item>
+        <item>@string/fragment_display_mode_clock</item>
+    </string-array>
+    <string-array name="fragment_display_mode_values" translatable="false">
+        <item>@string/fragment_display_mode_tcp_display_value</item>
+        <item>@string/fragment_display_mode_static_text_value</item>
+        <item>@string/fragment_display_mode_clock_value</item>
+    </string-array>
+
+    <string name="fragment_toggle_default_state_on">On</string>
+    <string name="fragment_toggle_default_state_off">Off</string>
+    <string name="fragment_toggle_default_state_remember">Remember</string>
+    <string-array name="fragment_toggle_default_states" translatable="false">
+        <item>@string/fragment_toggle_default_state_on</item>
+        <item>@string/fragment_toggle_default_state_off</item>
+        <item>@string/fragment_toggle_default_state_remember</item>
+    </string-array>
+    <integer-array name="fragment_toggle_default_state_values" translatable="false">
+        <item>1</item>
+        <item>0</item>
+        <item>2</item>
+    </integer-array>
+
+    <string name="error_could_not_add_page">Error: could not add page</string>
+    <string name="error_fragment_not_editable">Module has no settings</string>
+    <string name="error_last_page_removal_not_allowed">Removal of last page not allowed!</string>
+    <string name="error_could_not_load_pages">Error: could not load pages</string>
+    <string name="error_could_not_create_shortcut">Error: could not create shortcut</string>
+    <string name="error_page_not_available">The requested page does not exist anymore!</string>
+    <string name="error_should_not_be_empty">Required</string>
+    <string name="error_should_not_contain_s">Should not contain reserved string \'%1$s\'</string>
+    <string name="error_should_be_higher_than_zero">Should be higher than 0</string>
+    <string name="error_invalid">Invalid</string>
+    <string name="error_connection_already_exists">Connection already exists</string>
+
+    <string name="toast_containers_are_invisible">Containers are invisible! Add another module to use the container!</string>
+    <string name="toast_aborted_fragment_move">Module move aborted! Re-added module to its old container (order might be changed).</string>
+    <string name="toast_volume_button_settings_shortcut">You entered the shortcut code to reach the settings!</string>
+    <string name="toast_illegal_input">Illegal input!</string>
+
+    <!-- There are some unicode characters that you might want to use on a remote, but they are not included in most keyboards-->
+    <string-array name="button_label_spinner_chars" translatable="false">
+        <item>@string/button_label_spinner_chars_add</item><!--The first entry will not be added if selected-->
+        <item>▲</item>
+        <item>▼</item>
+        <item>◀</item>
+        <item>▶</item>
+        <item>↑</item>
+        <item>↓</item>
+        <item>←</item>
+        <item>→</item>
+        <item>±</item>
+        <item>♪</item>
+        <item>■</item>
+        <item>&#9199;</item>
+        <item>&#9198;</item>
+        <item>&#9197;</item>
+        <item>&#9194;</item>
+        <item>&#9193;</item>
+        <item>⟳</item>
+    </string-array>
+    <string name="button_label_spinner_chars_add">Add…</string>
+</resources>
