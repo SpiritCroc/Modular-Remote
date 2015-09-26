@@ -137,9 +137,9 @@
         \n- Updates are not necessarily delivered on a regular basis.\n
         \nIf you find any bugs/issues or have suggestions on how to improve this app, feel free to email me (spiritcroc@gmail.com).\n
         \nThis app is open source and requires contributions to grow! If you want to help with development, you can view the code at https://github.com/SpiritCroc/Modular-Remote.\n
-        \nCoding is not the only way to help: In order to natively support more TCP devices, command lists are required to include in this app. A guide to supporting new devices can be found here: [todo link]
-        \nAlso take a look at the to-do list, there should be a section called \'no coding required\'.
-        \n[todo link]\n
+        \nCoding is not the only way to help: In order to natively support more TCP devices, command lists are required to include in this app. A guide to supporting new devices can be found here: https://github.com/SpiritCroc/Modular-Remote/blob/master/guide_supporting_new_devices.md
+        \nAlso take a look at the to-do list, there should be a section called \'no coding required\':
+        \nhttps://github.com/SpiritCroc/Modular-Remote/blob/master/TODO.txt\n
         \nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
 
     <string name="dialog_about_app_version">Version</string>
