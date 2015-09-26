@@ -15,7 +15,6 @@ no coding required:
     - more screenshots
     - feature video
     - better icon
-    - support more devices [todo link]
 
 module upgrades:
     - button: type general: home, optionsMenu, open device volume dialog, display off, fullscreen on/off, navbar on/off, pagetabs on/off (last three also as response for toggle?)
