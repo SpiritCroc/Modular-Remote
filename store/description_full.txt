@@ -3,8 +3,8 @@ This app is still in its alpha state! This means that you should not expect a fi
 The aim of this app is to provide the user a possibility to fully create their own remote out of several modules.
 
 Currently supported remotely control-able devices:
-- Pioneer receivers (via network) (not all commands & responses supported yet)
 - Basically any device controllable via TCP, you just have to look up the commands when you set up your remote
+- Advanced support for pioneer receivers (via network): Select commands & responses (not all commands & responses supported yet)
 - Any device that supplies a browser-based user-interface
 - Any device control-able with widgets supplied by an external app
 
