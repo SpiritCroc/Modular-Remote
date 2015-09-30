@@ -2,7 +2,7 @@ Stuff that could or should be done.
 The more x, the more important
 
 WIP:
-x   - pioneer: complete strings_tcp_commands (when done: make app beta)
+x   - pioneer: complete strings_tcp_commands
 
 Fixes/Improvements:
     - no connection to ip "" (dummy connection to avoid null-pointers?)
@@ -27,6 +27,7 @@ x   - Page: Use toast as display: multi-selection-list to select displays (→to
         each display: possibility to chose between Toast.LENGTH_SHORT and Toast.LENGTH_LONG
 
 UI upgrades:
+xx  - Containers: save position of fragments, on add: let user drag & drop within selected container, also replace sort fragments with drag & drop (auto sort fragments on create depending on position?)
     - dialogFragments: add to back stack (particularly when selecting commands / adding fragments)
         @Override
         public void show(@NonNull FragmentManager manager, String tag) {
