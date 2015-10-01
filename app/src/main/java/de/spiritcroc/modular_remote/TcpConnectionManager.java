@@ -601,22 +601,22 @@ public class TcpConnectionManager {
                                      String rawData){
         ReceiverType type = connection.type;
         String result = null;
+        String logInfo = "enhancedResponse: type \'" + type + "\', classifier \'" + classifier +
+                "\', data \'" + rawData + "\'\n";
         switch (type) {
             case PIONEER:
                 if (classifier.equals("VOL···")) {// Volume
                     int i = 0;
                     try {
                         i = Integer.parseInt(rawData);
-                    }
-                    catch (Exception e){
-                        Log.w(LOG_TAG, "enhancedResponse: Got exception while trying to read " +
-                                "volume: " + e);
+                    } catch (Exception e) {
+                        Log.w(LOG_TAG, logInfo + "Got exception while trying to read volume: " + e);
                     }
                     result = i == 0 ? "" : (((double) i) * 0.5 - 80.5) +
                             context.getString(R.string.response_volume_db);
                 } else if (classifier.equals("FL…")) {// Display
                     String copy = rawData.substring(2), display = "";
-                    while (copy.length() >= 2){
+                    while (copy.length() >= 2) {
                         display += getDisplayCharacter(ReceiverType.PIONEER, copy.substring(0, 2));
                         copy = copy.substring(2);
                     }
@@ -660,8 +660,8 @@ public class TcpConnectionManager {
                 }
                 break;
             default:
-                Log.w(LOG_TAG, "createInformation: unhandled Receiver (brand): " + type);
-                return null;
+                Log.d(LOG_TAG, "enhancedResponse: unhandled Receiver (brand): " + type);
+                return result;
         }
         return result;
     }
