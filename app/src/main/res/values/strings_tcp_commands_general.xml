@@ -26,6 +26,7 @@
     <string name="command_input_change">Input change</string>
     <string name="command_input_select">Input select</string>
     <string name="command_listening_mode_select">Listening mode select</string>
+    <string name="command_listening_mode">Listening mode</string>
     <string name="command_tone_on_bypass">Tone on/bypass</string>
     <string name="command_bass">Bass</string>
     <string name="command_treble">Treble</string>
@@ -36,6 +37,7 @@
     <string name="command_video_parameter">Video parameter</string>
     <string name="command_home_menu">Home menu</string>
     <string name="command_mcacc_memory_set">MCACC memory set</string>
+    <string name="command_mcacc_memory">MCACC memory</string>
     <string name="command_phase_control">Phase control</string>
     <string name="command_phase_control_off">Phase control</string>
     <string name="command_phase_control_on">Phase control</string>
@@ -46,6 +48,7 @@
     <string name="command_ch_select">Channel select</string>
     <string name="command_ch_level_up">Channel level up</string>
     <string name="command_ch_level_down">Channel level down</string>
+    <string name="command_ch_level">Channel level</string>
     <string name="command_speakers">Speakers</string>
     <string name="command_speaker_off">Speakers</string>
     <string name="command_speaker_a_on">Speaker A on</string>
@@ -62,6 +65,16 @@
     <string name="command_through">Through</string>
     <string name="command_amp_through">Amp/through (cyclic)</string>
     <string name="command_pqls">PQLS</string>
+    <string name="comand_status_display">Status display</string>
+    <string name="command_panel_key_lock">Panel key lock</string>
+    <string name="command_and_volume_off">(&amp; volume) off</string>
+    <string name="command_and_volume_on">&amp; volume on</string>
+    <string name="command_remote_lock">Remote lock</string>
+    <string name="command_key_off_ipod_network">Key off (for iPod, network)</string>
+    <string name="command_zone_2_power">Zone 2 power</string>
+    <string name="command_zone_3_power">Zone 3 power</string>
+    <string name="command_zone_2_input_change">Zone 2 input change</string>
+    <string name="command_zone_3_input_change">Zone 3 input change</string>
 
     <string name="command_on">On</string>
     <string name="command_off">Off</string>

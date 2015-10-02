@@ -614,6 +614,26 @@ public class TcpConnectionManager {
                     }
                     result = i == 0 ? "" : (((double) i) * 0.5 - 80.5) +
                             context.getString(R.string.response_volume_db);
+                } else if (classifier.equals("BA··") || classifier.equals("TR··")) {// Bass/treble
+                    int i = 0;
+                    try {
+                        i = Integer.parseInt(rawData);
+                    } catch (Exception e) {
+                        Log.w(LOG_TAG, logInfo + "Got exception while trying to read bass/treble: "
+                                + e);
+                    }
+                    result = (i > 6 ? "+" : "") + ((i - 6) * -1) +//testMe
+                            context.getString(R.string.response_volume_db);
+                } else if (classifier.substring(0,3).equals("CLV")) {// Channel level
+                    int i = 0;
+                    try {
+                        i = Integer.parseInt(rawData);
+                    } catch (Exception e) {
+                        Log.w(LOG_TAG, logInfo + "Got exception while trying to read " +
+                                "channel level: " + e);
+                    }
+                    result = (i > 50 ? "+" : "") + ((i - 50) * 0.5) +//testMe
+                            context.getString(R.string.response_volume_db);
                 } else if (classifier.equals("FL…")) {// Display
                     String copy = rawData.substring(2), display = "";
                     while (copy.length() >= 2) {

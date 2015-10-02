@@ -48,11 +48,16 @@
         <item>@string/command_hdmi_output_select</item>
         <item>@string/command_hdmi_audio</item>
         <item>@string/command_pqls</item>
-
+        <item>@string/command_panel_key_lock</item>
+        <item>@string/command_remote_lock</item>
+        <item>@string/comand_status_display</item>
         <item>@string/command_cursor</item>
         <item>@string/command_audio_parameter</item>
         <item>@string/command_video_parameter</item>
         <item>@string/command_home_menu</item>
+        <item>@string/command_key_off_ipod_network</item>
+        <item>@string/command_zone_2_power</item>
+        <item>@string/command_zone_3_power</item>
     </string-array>
     <string-array name="pioneer_tcp_commands_values" translatable="false">
         <item>P·</item>
@@ -76,11 +81,16 @@
         <item>·HO</item>
         <item>·HA</item>
         <item>·PQ</item>
-
+        <item>·PKL</item>
+        <item>·RML</item>
+        <item>STS</item>
         <item>C··</item>
         <item>APA</item>
         <item>VPA</item>
         <item>HM</item>
+        <item>KOF</item>
+        <item>AP·</item>
+        <item>BP·</item>
     </string-array>
     <integer-array name="pioneer_tcp_commands_has_submenu" translatable="false">
         <item>1</item>
@@ -104,11 +114,16 @@
         <item>12</item>
         <item>16</item>
         <item>17</item>
-
+        <item>20</item>
+        <item>21</item>
+        <item>0</item>
         <item>15</item>
         <item>0</item>
         <item>0</item>
         <item>0</item>
+        <item>0</item>
+        <item>1</item>
+        <item>1</item>
     </integer-array>
 
     <string-array name="pioneer_tcp_commands_submenu_1" translatable="false">
@@ -1275,6 +1290,133 @@
         <item>0</item>
     </integer-array>
 
+    <string-array name="pioneer_tcp_commands_submenu_19" translatable="false"><!--difference to 18: enhanced response; testMe-->
+        <item>@string/command_front_left</item>
+        <item>@string/command_front_right</item>
+        <item>@string/command_center</item>
+        <item>@string/command_surround_left</item>
+        <item>@string/command_surround_right</item>
+        <item>@string/command_surround_back_left</item>
+        <item>@string/command_surround_back_right</item>
+        <item>@string/command_subwoofer</item>
+        <item>@string/command_front_height_left</item>
+        <item>@string/command_front_height_right</item>
+        <item>@string/command_front_wide_left</item>
+        <item>@string/command_front_wide_right</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_19_values" translatable="false">
+        <item>L__</item>
+        <item>R__</item>
+        <item>C__</item>
+        <item>SL_</item>
+        <item>SR_</item>
+        <item>SBL</item>
+        <item>SBR</item>
+        <item>SW_</item>
+        <item>LH_</item>
+        <item>RH_</item>
+        <item>LW_</item>
+        <item>RW_</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_19_has_submenu" translatable="false">
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_20" translatable="false">
+        <item>@string/command_and_volume_off</item>
+        <item>@string/command_on</item>
+        <item>@string/command_and_volume_on</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_20_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_20_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_21" translatable="false">
+        <item>@string/command_off</item>
+        <item>@string/command_on</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_21_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_21_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="pioneer_tcp_commands_submenu_22" translatable="false"><!--INPUT for zone 2/3-->
+        <item>@string/command_input_dvd</item>
+        <item>@string/command_input_tv_sat</item>
+        <item>@string/command_input_dvr_bdr</item><!--todo-->
+        <item>@string/command_input_video_1</item>
+        <item>@string/command_input_video_2</item>
+        <item>@string/command_input_hmg</item>
+        <item>@string/command_input_ipod_usb</item>
+        <item>@string/command_input_xm_radio</item>
+        <item>@string/command_input_cd</item>
+        <item>@string/command_input_cd_r_tape</item>
+        <item>@string/command_input_tuner</item>
+        <item>@string/command_input_phono</item>
+        <item>@string/command_input_multi_ch_in</item>
+        <item>@string/command_input_adapter_port</item>
+        <item>@string/command_input_sirius</item>
+        <item>@string/command_input_hdmi_cyclic</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_22_values" translatable="false">
+        <item>04</item>
+        <item>05</item>
+        <item>15</item>
+        <item>10</item>
+        <item>14</item>
+        <item>26</item>
+        <item>17</item>
+        <item>18</item>
+        <item>01</item>
+        <item>03</item>
+        <item>02</item>
+        <item>00</item>
+        <item>12</item>
+        <item>33</item>
+        <item>27</item>
+        <item>31</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_22_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
 
     <!--Responses use the same submenu system as commands-->
     <!--has_submenu -1 means handle it from code-->
@@ -1283,6 +1425,18 @@
         <item>@string/command_volume</item>
         <item>@string/command_mute</item>
         <item>@string/command_input</item>
+        <item>@string/command_listening_mode</item><!--testMe from here (also clearable?)-->
+        <item>@string/command_tone_on_bypass</item>
+        <item>@string/command_bass</item>
+        <item>@string/command_treble</item>
+        <item>@string/command_mcacc_memory</item>
+        <item>@string/command_phase_control</item>
+        <item>@string/command_virtual_sb</item>
+        <item>@string/command_virtual_height</item>
+        <item>@string/command_ch_level</item>
+        <item>@string/command_speakers</item>
+        <item>@string/command_hdmi_audio</item>
+        <item>@string/command_pqls</item>
         <!--todo more, also include in clear-able displays-->
         <item>@string/response_display</item>
 
@@ -1293,6 +1447,18 @@
         <item>VOL···</item>
         <item>MUT·</item>
         <item>FN··</item>
+        <item>LM····</item>
+        <item>TO·</item>
+        <item>BA··</item>
+        <item>TR··</item>
+        <item>MC·</item>
+        <item>IS·</item>
+        <item>VSB·</item>
+        <item>VHT·</item>
+        <item>CLV·····</item>
+        <item>SPK·</item>
+        <item>HA·</item>
+        <item>PQ·</item>
 
         <item>FL…</item>
 
@@ -1303,6 +1469,18 @@
         <item>-1</item>
         <item>13</item>
         <item>6</item>
+        <item>5</item>
+        <item>7</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>10</item>
+        <item>19</item>
+        <item>11</item>
+        <item>16</item>
+        <item>17</item>
 
         <item>-1</item>
 
