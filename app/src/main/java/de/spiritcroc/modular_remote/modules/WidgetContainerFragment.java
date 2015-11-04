@@ -20,12 +20,15 @@ package de.spiritcroc.modular_remote.modules;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import de.spiritcroc.modular_remote.MainActivity;
@@ -45,7 +48,9 @@ public class WidgetContainerFragment extends ModuleFragment {
     private Container parent;
     private LinearLayout widgetContainer;
     private View widget;
+    private ImageView previewView;
     private int appWidgetId = -1;
+    private boolean created = false;
 
     public static WidgetContainerFragment newInstance(int appWidgetId,
                                                       double width, double height) {
@@ -61,6 +66,13 @@ public class WidgetContainerFragment extends ModuleFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
 
         if (getArguments() != null) {
             appWidgetId = getArguments().getInt(ARG_APP_WIDGET_ID);
@@ -78,8 +90,13 @@ public class WidgetContainerFragment extends ModuleFragment {
         View view = inflater.inflate(R.layout.fragment_widget_container, container, false);
 
         widgetContainer = (LinearLayout) view.findViewById(R.id.widget_container);
+        previewView = (ImageView) view.findViewById(R.id.widget_preview);
         addWidget();
+        setDragView(widgetContainer);
         setValues(width, height);
+        updatePosition(view);
+
+        maybeStartDrag(view);
 
         return view;
     }
@@ -133,16 +150,18 @@ public class WidgetContainerFragment extends ModuleFragment {
     }
     @Override
     public String getRecreationKey() {
-        return fixRecreationKey(WIDGET_CONTAINER_FRAGMENT + SEP + appWidgetId + SEP +
-                width + SEP + height + SEP);
+        return fixRecreationKey(WIDGET_CONTAINER_FRAGMENT + SEP + pos.getRecreationKey() + SEP +
+                appWidgetId + SEP + width + SEP + height + SEP);
     }
     public static WidgetContainerFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            int appWidgetId = Integer.parseInt(args[1]);
-            double width = Double.parseDouble(args[2]);
-            double height = Double.parseDouble(args[3]);
-            return newInstance(appWidgetId, width, height);
+            int appWidgetId = Integer.parseInt(args[2]);
+            double width = Double.parseDouble(args[3]);
+            double height = Double.parseDouble(args[4]);
+            WidgetContainerFragment fragment = newInstance(appWidgetId, width, height);
+            fragment.recoverPos(args[1]);
+            return fragment;
         } catch (Exception e) {
             Log.e(LOG_TAG, "recoverFromRecreationKey: illegal key: " + key);
             Log.e(LOG_TAG, "Got exception: " + e);
@@ -190,6 +209,7 @@ public class WidgetContainerFragment extends ModuleFragment {
     }
     @Override
     public void resize() {
+        updatePosition();
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             View containerView = ((MainActivity) activity).getViewContainer();
@@ -203,5 +223,24 @@ public class WidgetContainerFragment extends ModuleFragment {
     @Override
     public boolean isConnected() {
         return true;
+    }
+
+    @Override
+    public void onStartDragMode() {
+        super.onStartDragMode();
+        // Replace widget with an image of its content to prevent the widget from stealing focus
+        previewView.setVisibility(View.VISIBLE);
+        Bitmap bitmap = Bitmap.createBitmap(
+                widget.getMeasuredWidth(), widget.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        widget.draw(canvas);
+        previewView.setImageBitmap(bitmap);
+        widget.setVisibility(View.GONE);
+
+    }
+    public void onStopDragMode() {
+        super.onStopDragMode();
+        previewView.setVisibility(View.GONE);
+        widget.setVisibility(View.VISIBLE);
     }
 }

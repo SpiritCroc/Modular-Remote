@@ -64,6 +64,7 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
     private String responseClassifier, command, submenuReadable;
     private String[] spinnerItemNames, spinnerItemValues;
     private ArrayAdapter<String> adapter;
+    private boolean created = false;
 
     public static SpinnerFragment newInstance(String ip, TcpConnectionManager.ReceiverType type,
                                               int menu, double width, double height) {
@@ -82,6 +83,13 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
 
         if (getArguments() != null) {
             ip = getArguments().getString(ARG_IP);
@@ -113,6 +121,7 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
 
         baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
         spinner = (Spinner) view.findViewById(R.id.spinner);
+        setDragView(spinner);
         spinner.setOnItemSelectedListener(this);
         //Workaround, at least prevents actionBar from showing because of opening of spinner
         spinner.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -127,6 +136,9 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
             }
         });
         setValues(ip, type, menu, width, height);
+        updatePosition(view);
+
+        maybeStartDrag(view);
 
         return view;
     }
@@ -196,20 +208,22 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
     }
     @Override
     public String getRecreationKey() {
-        return fixRecreationKey(SPINNER_FRAGMENT + SEP + ip + SEP +
+        return fixRecreationKey(SPINNER_FRAGMENT + SEP + pos.getRecreationKey() + SEP + ip + SEP +
                 connection.getType().toString() + SEP + menu + SEP +
                 width + SEP + height + SEP);
     }
     public static SpinnerFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            String ip = args[1];
+            String ip = args[2];
             TcpConnectionManager.ReceiverType type =
-                    TcpConnectionManager.ReceiverType.valueOf(args[2]);
-            int menu = Integer.parseInt(args[3]);
-            double width = Double.parseDouble(args[4]);
-            double height = Double.parseDouble(args[5]);
-            return newInstance(ip, type, menu, width, height);
+                    TcpConnectionManager.ReceiverType.valueOf(args[3]);
+            int menu = Integer.parseInt(args[4]);
+            double width = Double.parseDouble(args[5]);
+            double height = Double.parseDouble(args[6]);
+            SpinnerFragment fragment = newInstance(ip, type, menu, width, height);
+            fragment.recoverPos(args[1]);
+            return fragment;
         } catch (Exception e){
             Log.e(LOG_TAG, "recoverFromRecreationKey: illegal key: " + key);
             Log.e(LOG_TAG, "Got exception: " + e);
@@ -253,9 +267,9 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
         if (height <= 0) {
             height = 1;
         }
-        resize();
         this.width = width;
         this.height = height;
+        resize();
 
         connection = tcpConnectionManager.requireConnection(this);
 
@@ -284,6 +298,7 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
     }
     @Override
     public void resize() {
+        updatePosition();
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             View containerView = ((MainActivity) activity).getViewContainer();

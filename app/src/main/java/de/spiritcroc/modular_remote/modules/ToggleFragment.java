@@ -71,6 +71,7 @@ public class ToggleFragment extends ModuleFragment
     private int defaultState;
     private LinearLayout baseLayout;
     private boolean receivedInformation = false;
+    private boolean created = false;
 
     public static ToggleFragment newInstance(String ip, TcpConnectionManager.ReceiverType type,
                                              String toggleOnCommand, String toggleOffCommand,
@@ -98,6 +99,13 @@ public class ToggleFragment extends ModuleFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
 
         Bundle args = getArguments();
         if (getArguments() != null) {
@@ -138,11 +146,15 @@ public class ToggleFragment extends ModuleFragment
 
         baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
         toggleButton = (ToggleButton) view.findViewById(R.id.toggle);
+        setDragView(toggleButton);
         toggleButton.setOnClickListener(this);
         toggleButton.setChecked(defaultState == DEFAULT_STATE_ON ||
                 defaultState == DEFAULT_STATE_SAVE_ON);
         setValues(ip, type, toggleOnCommand, toggleOffCommand, toggleOnResponse, toggleOffResponse,
                 toggleOnLabel, toggleOffLabel, defaultState, width, height);
+        updatePosition(view);
+
+        maybeStartDrag(view);
 
         return view;
     }
@@ -215,7 +227,7 @@ public class ToggleFragment extends ModuleFragment
     }
     @Override
     public String getRecreationKey() {
-        return fixRecreationKey(TOGGLE_FRAGMENT + SEP + ip + SEP +
+        return fixRecreationKey(TOGGLE_FRAGMENT + SEP + pos.getRecreationKey() + SEP + ip + SEP +
                 connection.getType().toString() + SEP +
                 (defaultState == DEFAULT_STATE_SAVE_ON || defaultState == DEFAULT_STATE_SAVE_OFF ?
                         (toggleButton.isChecked() ?
@@ -228,21 +240,23 @@ public class ToggleFragment extends ModuleFragment
     public static ToggleFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            String ip = args[1];
+            String ip = args[2];
             TcpConnectionManager.ReceiverType type =
-                    TcpConnectionManager.ReceiverType.valueOf(args[2]);
-            int defaultState = Integer.parseInt(args[3]);
-            String toggleOnCommand = args[4];
-            String toggleOffCommand = args[5];
-            String toggleOnResponse = args[6];
-            String toggleOffResponse = args[7];
-            String toggleOnLabel = args[8];
-            String toggleOffLabel = args[9];
-            double width = Double.parseDouble(args[10]);
-            double height = Double.parseDouble(args[11]);
-            return newInstance(ip, type, toggleOnCommand, toggleOffCommand,
+                    TcpConnectionManager.ReceiverType.valueOf(args[3]);
+            int defaultState = Integer.parseInt(args[4]);
+            String toggleOnCommand = args[5];
+            String toggleOffCommand = args[6];
+            String toggleOnResponse = args[7];
+            String toggleOffResponse = args[8];
+            String toggleOnLabel = args[9];
+            String toggleOffLabel = args[10];
+            double width = Double.parseDouble(args[11]);
+            double height = Double.parseDouble(args[12]);
+            ToggleFragment fragment = newInstance(ip, type, toggleOnCommand, toggleOffCommand,
                     toggleOnResponse, toggleOffResponse, toggleOnLabel, toggleOffLabel,
                     defaultState, width, height);
+            fragment.recoverPos(args[1]);
+            return fragment;
         }
         catch (Exception e) {
             Log.e(LOG_TAG, "recoverFromRecreationKey: illegal key: " + key);
@@ -334,6 +348,7 @@ public class ToggleFragment extends ModuleFragment
     }
     @Override
     public void resize() {
+        updatePosition();
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             View containerView = ((MainActivity) activity).getViewContainer();

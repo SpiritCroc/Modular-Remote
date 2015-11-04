@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -33,7 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     private ModeSettings actionBarModeSettings;
     private String actionBarTitle = "";
     private String name, volumeUpCommand = "", volumeDownCommand = "";
-    private LinearLayout baseViewGroup;
+    private RelativeLayout baseViewGroup;
     private String recreationKey;
     private ArrayList<ModuleFragment> fragments;
     private MenuItem menuResetItem;
@@ -74,6 +75,7 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     private TcpConnectionManager.ReceiverType type;
     private long pageId = -1;//pageId == -1 → pageId not set yet
     private SharedPreferences sharedPreferences;
+    private boolean created = false;
 
     public PageContainerFragment(){
         fragments = new ArrayList<>();
@@ -165,6 +167,13 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         if (getArguments() != null) {
@@ -203,7 +212,8 @@ public class PageContainerFragment extends ModuleFragment implements Container,
 
         View view = inflater.inflate(R.layout.fragment_page_container, container, false);
 
-        baseViewGroup = (LinearLayout) view.findViewById(R.id.base_view_group);
+        baseViewGroup = (RelativeLayout) view.findViewById(R.id.base_view_group);
+        baseViewGroup.setOnDragListener(this);
         baseViewGroup.setId(Util.generateViewId());
 
         fragments.clear();
@@ -304,6 +314,14 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         for (ModuleFragment fragment: fragments) {
             fragment.resize();
         }
+    }
+    @Override
+    public double getArgWidth() {
+        return -1;// Has no such setting
+    }
+    @Override
+    public double getArgHeight() {
+        return -1;// Has no such setting
     }
     public boolean onKeyDown (int keyCode) {
         if (useHardwareButtons && connection != null) {
@@ -431,6 +449,9 @@ public class PageContainerFragment extends ModuleFragment implements Container,
             fragments.add(fragment);
             fragment.setMenuEnabled(menuEnabled);
             fragment.setParent(this);
+            if (isDragModeEnabled()) {
+                fragment.onStartDragMode();
+            }
         } else {
             Log.e(LOG_TAG, "Can't add " + fragment);
         }
@@ -609,4 +630,26 @@ public class PageContainerFragment extends ModuleFragment implements Container,
                     ((TcpDisplaySettings)actionBarModeSettings).receiverType = type;
                 }
             };
+
+
+    @Override
+    public void onStartDragMode() {
+        super.onStartDragMode();
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).onStartDragMode();
+        }
+    }
+
+    @Override
+    public void onStopDragMode() {
+        super.onStopDragMode();
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).onStopDragMode();
+        }
+    }
+
+    @Override
+    protected int getDragModeBgColor() {
+        return Color.TRANSPARENT;
+    }
 }

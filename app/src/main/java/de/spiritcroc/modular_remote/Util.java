@@ -23,6 +23,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -81,6 +82,7 @@ public abstract class Util {
     public static final String RK_CONTAINER_BRACKET = "䷄";
     public static final String RK_CUSTOMIZED_MENU_SEPARATOR = "䷂";
     public static final String RK_CUSTOMIZED_MENU_ATTRIBUTE_SEPARATOR = "䷃";
+    public static final String RK_FRAGMENT_POS = "䷚";
     // Replace empty string in recovery keys with following string in order to be able to recreate
     // with String.split()
     public static final String RK_EMPTY_STRING_REPLACEMENT = "䷅";
@@ -92,7 +94,8 @@ public abstract class Util {
             RK_CONTAINER_BRACKET,
             RK_CUSTOMIZED_MENU_SEPARATOR,
             RK_CUSTOMIZED_MENU_ATTRIBUTE_SEPARATOR,
-            RK_EMPTY_STRING_REPLACEMENT
+            RK_EMPTY_STRING_REPLACEMENT,
+            RK_FRAGMENT_POS
     };
 
     /**
@@ -207,7 +210,7 @@ public abstract class Util {
     public static void resizeLayoutWidth(View containerView, LinearLayout layout, double size,
                                          int valueForNegativeSize) {
         if (size > 0) {
-            layout.getLayoutParams().width = getWidthFromBlockUnits(containerView, size);
+            layout.getLayoutParams().width = getWidthFromBlockUnits(containerView, size, false);
         } else {
             layout.getLayoutParams().width = valueForNegativeSize;
         }
@@ -220,13 +223,13 @@ public abstract class Util {
     public static void resizeLayoutHeight(View containerView, LinearLayout layout, double size,
                                           int valueForNegativeSize) {
         if (size > 0) {
-            layout.getLayoutParams().height = getHeightFromBlockUnits(containerView, size);
+            layout.getLayoutParams().height = getHeightFromBlockUnits(containerView, size, false);
         } else {
             layout.getLayoutParams().height = valueForNegativeSize;
         }
         layout.requestLayout();
     }
-    public static int getWidthFromBlockUnits(View containerView, double size) {
+    public static int getWidthFromBlockUnits(View containerView, double size, boolean pos) {
         int screenWidth = getX(containerView);
         if (size <= 0) {
             return screenWidth;
@@ -239,14 +242,18 @@ public abstract class Util {
             blockUnits = 4;
         }
 
-        return (int) (size*screenWidth/blockUnits);
+        if (pos) {
+            return (int) Math.ceil(size * screenWidth / blockUnits);
+        } else {
+            return (int) Math.floor(size * screenWidth / blockUnits);
+        }
     }
 
-    public static int getHeightFromBlockUnits(View containerView, double size) {
+    public static int getHeightFromBlockUnits(View containerView, double size, boolean pos) {
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(containerView.getContext());
         if (!preferences.getBoolean(Preferences.KEY_USE_BLOCK_SIZE_HEIGHT, false)) {
-            return getWidthFromBlockUnits(containerView, size);
+            return getWidthFromBlockUnits(containerView, size, pos);
         }
 
         int screenHeight = getY(containerView);
@@ -259,7 +266,28 @@ public abstract class Util {
             blockUnits = 6;
         }
 
-        return (int) (size*screenHeight/blockUnits);
+        if (pos) {
+            return (int) Math.ceil(size * screenHeight / blockUnits);
+        } else {
+            return (int) Math.floor(size*screenHeight/blockUnits);
+        }
+    }
+
+    public static int blockRound(View containerView, double d, boolean yDir) {
+        SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(containerView.getContext());
+        int blockUnits, screenSize;
+        if (yDir) {
+            if (!preferences.getBoolean(Preferences.KEY_USE_BLOCK_SIZE_HEIGHT, false)) {
+                return blockRound(containerView, d, false);
+            }
+            blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT, 6);
+            screenSize = getY(containerView);
+        } else {
+            blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE, 4);
+            screenSize = getX(containerView);
+        }
+        return (int) Math.round(d/screenSize*blockUnits);
     }
 
     public static void restoreContentFromRecreationKey(Container container, String key,
@@ -413,10 +441,6 @@ public abstract class Util {
                     .show(activity.getFragmentManager(), "SelectContainerDialog");
         } else {
             container.addFragment(fragment);
-            if (fragment instanceof Container && ((Container) fragment).isEmpty()) {
-                Toast.makeText(activity, R.string.toast_containers_are_invisible,
-                        Toast.LENGTH_LONG).show();
-            }
             if (activity instanceof MainActivity) {
                 // Scroll to newly added fragment
                 Container parent = fragment instanceof Container ?
@@ -482,6 +506,40 @@ public abstract class Util {
             }
         }
         return list.toArray(new Container[list.size()]);
+    }
+
+    public static boolean hasContainerOverlappingFragments(Container container) {
+        ModuleFragment[] fragments = container.getFragments();
+        ArrayList<Container> containedContainers = new ArrayList<>();
+        for (int i = 0; i < fragments.length; i++) {
+            if (fragments[i] instanceof Container) {
+                containedContainers.add((Container) fragments[i]);
+            }
+            View currentView = fragments[i].getView();
+            if (currentView != null) {
+                Rect currentRect = new Rect(currentView.getLeft(), currentView.getTop(),
+                        currentView.getRight(), currentView.getBottom());
+
+                for (int j = i + 1; j < fragments.length; j++) {
+                    View checkView = fragments[j].getView();
+                    if (checkView != null &&
+                            currentRect.intersects(checkView.getLeft(), checkView.getTop(),
+                                    checkView.getRight(), checkView.getBottom())) {
+                        Log.i(LOG_TAG, fragments[i].getReadableName() + " overlaps with " +
+                                fragments[j].getReadableName());
+                        return true;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < containedContainers.size(); i++) {
+            if (hasContainerOverlappingFragments(containedContainers.get(i))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static int getPreferenceInt(SharedPreferences sharedPreferences, String key,

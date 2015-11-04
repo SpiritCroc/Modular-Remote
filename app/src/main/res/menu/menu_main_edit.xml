@@ -17,21 +17,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<LinearLayout android:id="@+id/base_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="de.spiritcroc.modular_remote.modules.ScrollContainerFragment"
-    android:orientation="vertical">
-    <de.spiritcroc.modular_remote.CustomScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-        </de.spiritcroc.modular_remote.CustomScrollView>
-</LinearLayout>
+    tools:context="de.spiritcroc.modular_remote.MainActivity">
+
+    <item
+        android:id="@+id/action_add_fragment"
+        android:title="@string/action_add_fragment"
+        android:icon="@drawable/ic_add_white_36dp"/>
+    <item
+        android:id="@+id/action_fragment_settings"
+        android:title="@string/action_fragment_settings"
+        android:icon="@drawable/ic_settings_white_36dp"/>
+</menu>
