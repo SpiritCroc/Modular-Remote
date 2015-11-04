@@ -18,11 +18,33 @@
 
 package de.spiritcroc.modular_remote.modules;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.RelativeLayout;
 
+import java.util.Random;
+
+import de.spiritcroc.modular_remote.DragManager;
+import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.Util;
 
-public abstract class ModuleFragment extends Fragment {
+public abstract class ModuleFragment extends Fragment implements View.OnTouchListener,
+        View.OnDragListener {
+    protected static final String LOG_TAG = ModuleFragment.class.getSimpleName();
+    private static final boolean DEBUG = false;
+
+    protected Pos pos = new Pos();
+    private boolean dragModeEnabled = false;
+
     public abstract String getReadableName();
     public abstract String getRecreationKey();
     public abstract void setMenuEnabled(boolean menuEnabled);
@@ -69,9 +91,275 @@ public abstract class ModuleFragment extends Fragment {
      */
     public abstract void resize();
 
+    public abstract double getArgWidth();
+    public abstract double getArgHeight();
+
+    /**
+     * Position attributes
+     */
+    protected static class Pos {
+        private static String SEP = Util.RK_FRAGMENT_POS;
+        protected int leftMargin, topMargin;
+        protected Pos () {
+            leftMargin = 0;
+            topMargin = 0;
+        }
+        protected String getRecreationKey() {
+            return fixRecreationKey(leftMargin + SEP + topMargin + SEP);
+        }
+        protected void recoverFromRecreationKey(String key) {
+            try {
+                String[] args = Util.split(key, SEP, 0);
+                leftMargin = Integer.parseInt(args[0]);
+                topMargin = Integer.parseInt(args[1]);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Pos: recoverFromRecreationKey: illegal key: " + key);
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected void recoverPos(String posRecreationKey) {
+        pos.recoverFromRecreationKey(posRecreationKey);
+        updatePosition();
+    }
+
+    protected void setPosition(int leftMargin, int topMargin) {
+        setPosition(leftMargin, topMargin, false);
+    }
+    /**
+     * @param relative
+     * false if absolute margin, true if changing margin for that value
+     */
+    protected void setPosition(int leftMargin, int topMargin, boolean relative) {
+        if (relative) {
+            pos.leftMargin += leftMargin;
+            pos.topMargin += topMargin;
+        } else {
+            pos.leftMargin = leftMargin;
+            pos.topMargin = topMargin;
+        }
+        updatePosition();
+    }
+
+    protected void updatePosition() {
+        View view = getView();
+        if (view == null) {
+            if (DEBUG) Log.d(LOG_TAG, "updatePosition: view is null");
+            return;
+        }
+        updatePosition(view);
+    }
+    protected void updatePosition(@NonNull View view) {
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            View containerView = ((MainActivity) activity).getViewContainer();
+            if (view.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+                RelativeLayout.LayoutParams rlp =
+                        (RelativeLayout.LayoutParams) view.getLayoutParams();
+                rlp.leftMargin = pos.leftMargin*Util.getWidthFromBlockUnits(containerView, 1, true);
+                rlp.topMargin = pos.topMargin*Util.getHeightFromBlockUnits(containerView, 1, true);
+                ViewParent viewParent = view.getParent();
+                if (viewParent != null) {
+                    viewParent.requestLayout();
+                }
+            } else {
+                Log.e(LOG_TAG, "setPosition: LayoutParams are " + view.getLayoutParams());
+            }
+        } else {
+            Log.w(LOG_TAG, "Can't update position: !(activity instanceof MainActivity)");
+        }
+    }
+
+
+    // Drag and Drop touch events
+
+    /**
+     * @param v
+     * The view used for to view drags
+     */
+    protected void setDragView(View v) {
+        v.setOnTouchListener(this);
+        v.setOnDragListener(this);
+    }
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (dragModeEnabled) {
+            if (DragManager.startDrag(this)) {
+                if (DEBUG) Log.v(LOG_TAG, "start drag: " + getClass());
+                v.invalidate();
+                v.startDrag(null, new DragShadowBuilder(v), null, 0);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        int action = event.getAction();
+
+        switch (action) {
+            case DragEvent.ACTION_DRAG_STARTED:
+            case DragEvent.ACTION_DRAG_ENTERED:
+            case DragEvent.ACTION_DRAG_EXITED:
+            case DragEvent.ACTION_DRAG_LOCATION:
+                return true;// Ignore
+            case DragEvent.ACTION_DROP:
+                final ModuleFragment insertFragment = DragManager.stopDrag();
+                if (insertFragment != null) {
+                    View view = insertFragment.getView();
+                    if (view != null) {
+                        ViewGroup.LayoutParams lp = view.getLayoutParams();
+                        if (lp instanceof RelativeLayout.LayoutParams) {
+                            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) lp;
+                            float dropX = event.getX();
+                            float dropY = event.getY();
+                            if (DEBUG) {
+                                Log.d(LOG_TAG, "drop x " + dropX);
+                                Log.d(LOG_TAG, "drop y " + dropY);
+                            }
+                            ModuleFragment primeContainer = this;
+                            while (primeContainer.getParent() != null &&
+                                    primeContainer.getParent() instanceof ModuleFragment) {
+                                primeContainer = (ModuleFragment) primeContainer.getParent();
+                            }
+                            View cView = primeContainer.getView();
+                            int newX = Util.blockRound(cView, dropX - rlp.width / 2, false);
+                            int newY = Util.blockRound(cView, dropY - rlp.height / 2, true);
+                            boolean dropOnItself = false;
+                            if (this == insertFragment) {
+                                dropOnItself = true;
+                            } else {
+                                Container c = getParent();
+                                while (c instanceof ModuleFragment) {
+                                    if (c == insertFragment) {
+                                        dropOnItself = true;
+                                        break;
+                                    } else {
+                                        c = ((ModuleFragment) c).getParent();
+                                    }
+                                }
+                            }
+                            if (dropOnItself) {
+                                insertFragment.setPosition(newX, newY, true);
+                            } else {
+                                if (this instanceof Container){
+                                    insertFragment.setPosition(newX, newY);
+                                } else {
+                                    // Overlapping fragments might be helpful while editing
+                                    insertFragment.setPosition(
+                                            pos.leftMargin + newX, pos.topMargin + newY);
+                                }
+                                if (insertFragment.getParent() != this) {
+                                    // Move fragment from old to this container
+                                    final Container container = this instanceof Container ?
+                                            (Container) this : getParent();
+                                    if (container == insertFragment) {
+                                        Log.w(LOG_TAG, "Can't add fragment to itself");
+                                    } else {
+                                        insertFragment.getParent()
+                                                .removeFragment(insertFragment, false);
+                                        v.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                container.addFragment(insertFragment);
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                            return true;
+                        } else {
+                            new Exception("Drop operation failed; layout is " + lp)
+                                    .printStackTrace();
+                        }
+                    } else {
+                        new Exception("Drop operation failed; view is null").printStackTrace();
+                    }
+                } else {
+                    new Exception("Drop operation failed; fragment is null").printStackTrace();
+                }
+                return true;
+            case DragEvent.ACTION_DRAG_ENDED:
+                DragManager.stopDrag();
+                return true;
+            default:
+                Log.e(LOG_TAG, "Unknown action type received by OnDragListener.");
+                return false;
+
+        }
+    }
+    public void onStartDragMode() {
+        dragModeEnabled = true;
+        if (getActivity() != null && getView() != null) {
+            getView().setBackgroundColor(getDragModeBgColor());
+        }
+    }
+    public void onStopDragMode() {
+        dragModeEnabled = false;
+        if (getActivity() != null && getView() != null) {
+            getView().setBackgroundColor(Color.TRANSPARENT);
+        }
+    }
+    public void onStartDrag(){
+        setAlpha(0.2f);
+    }
+    public void onStopDrag(){
+        setAlpha(1);
+    }
+    private void setAlpha(float alpha) {
+        View view = getView();
+        if (view != null) {
+            view.setAlpha(alpha);
+        }
+    }
+    public boolean isDragModeEnabled() {
+        return dragModeEnabled;
+    }
+    protected int getDragModeBgColor() {
+        Random random = new Random();
+        int r, g, b;
+        do {
+            r = random.nextInt(256);
+            g = random.nextInt(256);
+            b = random.nextInt(256);
+            // Color should not be too dark
+        } while (r < 128 && g < 128 && b < 128);
+        return Color.argb(127, r, g, b);
+    }
+
+    /**
+     * Call this in onCreateView()
+     */
+    protected void maybeStartDrag(View v) {
+        if (dragModeEnabled) {
+            v.post(new Runnable() {
+                @Override
+                public void run() {
+                    onStartDragMode();
+                }
+            });
+        }
+    }
+
     // For shorter code:
     protected final static String SEP = Util.RK_ATTRIBUTE_SEPARATOR;
     protected static String fixRecreationKey(String key) {
         return Util.fixRecreationKey(key, SEP);
+    }
+
+    private class DragShadowBuilder extends View.DragShadowBuilder {
+        View view;
+
+        public DragShadowBuilder(View view) {
+            super(view);
+            this.view = view;
+        }
+        @Override
+        public void onDrawShadow(Canvas canvas) {
+            canvas.drawRGB(0, 0, 0);//todo better shadow
+            super.onDrawShadow(canvas);
+        }
     }
 }

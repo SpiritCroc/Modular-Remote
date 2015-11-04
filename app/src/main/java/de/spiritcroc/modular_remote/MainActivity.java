@@ -21,6 +21,7 @@ package de.spiritcroc.modular_remote;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.KeyguardManager;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
@@ -39,6 +40,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +55,7 @@ import java.util.Arrays;
 import de.spiritcroc.modular_remote.dialogs.AboutDialog;
 import de.spiritcroc.modular_remote.dialogs.AddFragmentDialog;
 import de.spiritcroc.modular_remote.dialogs.GreetingDialog;
+import de.spiritcroc.modular_remote.dialogs.OverlapWarningDialog;
 import de.spiritcroc.modular_remote.dialogs.SelectConnectionDialog;
 import de.spiritcroc.modular_remote.dialogs.SelectFragmentsDialog;
 import de.spiritcroc.modular_remote.modules.Container;
@@ -90,6 +93,64 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private boolean changedRingerMode = false;
     private int volumeButtonSettingsShortcutCount = 0;
     private Handler resetVolumeButtonSettingsShortcutHandler = new Handler();
+    private MenuItem editModeMenuItem;
+
+    private ActionMode actionMode;
+    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_main_edit, menu);
+            for (int i = 0; i < pages.size(); i++) {
+                pages.get(i).onStartDragMode();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_fragment_settings:
+                    new SelectFragmentsDialog().setPage(pages.get(viewPager.getCurrentItem()))
+                            .show(getFragmentManager(), "SelectFragmentDialog");
+                    return true;
+                case R.id.action_add_fragment:
+                    new AddFragmentDialog().setPage(pages.get(viewPager.getCurrentItem()))
+                            .show(getFragmentManager(), "AddFragmentDialog");
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            for (int i = 0; i < pages.size(); i++) {
+                pages.get(i).onStopDragMode();
+            }
+            for (int i = 0; i < pages.size(); i++) {
+                if (Util.hasContainerOverlappingFragments(pages.get(i))) {
+                    new OverlapWarningDialog().setCallback(MainActivity.this)
+                            .show(getFragmentManager(), "OverlapWarningDialog");
+                    return;
+                }
+            }
+            exitEditMode();
+        }
+    };
+
+    public void enterEditMode() {
+        actionMode = startActionMode(actionModeCallback);
+    }
+    public void exitEditMode() {
+        saveSettings();
+    }
+
     //constants for AppWidgetHost:
     private static final int APPWIDGET_HOST_ID = 1024;
     private static final int REQUEST_PICK_APPWIDGET = 9;
@@ -239,8 +300,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         viewPager.removeOnPageChangeListener(this);
 
-        saveFragments();
-        saveConnections();
+        saveSettings();
         appWidgetHost.stopListening();
 
         if (changedRingerMode) {
@@ -297,11 +357,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
 
         resizeContent();
+
+        setEditModeVisibility();
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        editModeMenuItem = menu.findItem(R.id.action_edit_page_content);
+        setEditModeVisibility();
         MenuItem connectionManagerMenuItem = menu.findItem(R.id.action_connection_manager);
         if (connectionManagerMenuItem != null) {
             connectionManagerMenuItem
@@ -320,13 +384,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             case R.id.action_about:
                 new AboutDialog().show(getFragmentManager(), "AboutDialog");
                 return true;
-            case R.id.action_add_fragment:
-                new AddFragmentDialog().setPage(pages.get(viewPager.getCurrentItem()))
-                        .show(getFragmentManager(), "AddFragmentDialog");
-                return true;
             case R.id.action_edit_page_content:
-                new SelectFragmentsDialog().setPage(pages.get(viewPager.getCurrentItem()))
-                        .show(getFragmentManager(), "SelectFragmentDialog");
+                enterEditMode();
                 return true;
             case R.id.action_connection_manager:
                 new SelectConnectionDialog().show(getFragmentManager(), "SelectConnectionDialog");
@@ -398,6 +457,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         if (neverDestroyPages) {
             viewPager.setOffscreenPageLimit(pages.size());
         }
+        if (actionMode != null) {
+            fragment.onStartDragMode();
+        }
         pages.add(fragment);
         notifyDataSetChanged();
         viewPager.setCurrentItem(pages.size()-1, true);
@@ -438,6 +500,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
     }
 
+    private void saveSettings() {
+        saveFragments();
+        saveConnections();
+    }
     private void saveFragments() {
         String key = ModuleFragment.ROOT + separator + Util.RECREATION_KEY_VERSION + separator;
         for (int i = 0; i < pages.size(); i++) {
@@ -660,6 +726,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(title);
+        }
+    }
+
+    private void setEditModeVisibility() {
+        if (editModeMenuItem != null) {
+            // Only show edit menu item if device unlocked
+            KeyguardManager keyguardManager =
+                    (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+            editModeMenuItem.setVisible(!keyguardManager.inKeyguardRestrictedInputMode());
         }
     }
 }

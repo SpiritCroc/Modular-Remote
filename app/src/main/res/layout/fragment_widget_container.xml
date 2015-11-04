@@ -24,4 +24,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <!-- Preview for drag & drop -->
+    <ImageView
+        android:id="@+id/widget_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/fragment_widget"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -20,6 +20,7 @@ package de.spiritcroc.modular_remote.modules;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
@@ -28,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,11 +46,13 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
 
     private double width, height;// If height == -1, then match_parent
     private CustomScrollView scrollView;
-    private LinearLayout baseLayout, containerLayout;
+    private LinearLayout baseLayout;
+    private RelativeLayout containerLayout;
     private String recreationKey;
     private ArrayList<ModuleFragment> fragments = new ArrayList<>();;
     private Container parent;
     private boolean menuEnabled = false;
+    private boolean created = false;
 
     public static ScrollContainerFragment newInstance(double width, double height) {
         ScrollContainerFragment fragment = new ScrollContainerFragment();
@@ -62,6 +66,13 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
 
         if (getArguments() != null) {
             width = getArguments().getDouble(ARG_WIDTH);
@@ -77,14 +88,19 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
         View view = inflater.inflate(R.layout.fragment_scroll_container, container, false);
 
         scrollView = (CustomScrollView) view.findViewById(R.id.scroll_view);
+        scrollView.setOnDragListener(this);
         scrollView.setWrapFragment(this);
         baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
-        containerLayout = (LinearLayout) view.findViewById(R.id.container);
+        containerLayout = (RelativeLayout) view.findViewById(R.id.container);
+        setDragView(scrollView);
         containerLayout.setId(Util.generateViewId());
         setValues(width, height);
+        updatePosition(view);
 
         fragments.clear();
         restoreContentFromRecreationKey();
+
+        maybeStartDrag(view);
 
         return view;
     }
@@ -119,7 +135,8 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
     @Override
     public String getRecreationKey() {
         String separator = Util.getSeparator(this);
-        String key = SCROLL_CONTAINER_FRAGMENT +SEP + width + SEP + height + SEP + separator;
+        String key = SCROLL_CONTAINER_FRAGMENT + SEP + pos.getRecreationKey() + SEP +
+                width + SEP + height + SEP + separator;
         for (int i = 0; i < fragments.size(); i++) {
             ModuleFragment fragment = fragments.get(i);
             key += fragment.getRecreationKey() + separator;
@@ -129,10 +146,11 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
     public static ScrollContainerFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            double width = Double.parseDouble(args[1]);
-            double height = Double.parseDouble(args[2]);
+            double width = Double.parseDouble(args[2]);
+            double height = Double.parseDouble(args[3]);
             ScrollContainerFragment fragment = newInstance(width, height);
             fragment.setRecreationKey(key);
+            fragment.recoverPos(args[1]);
             return fragment;
         } catch (Exception e) {
             Log.e(LOG_TAG, "recoverFromRecreationKey: illegal key: " + key);
@@ -175,6 +193,9 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
             fragments.add(fragment);
             fragment.setMenuEnabled(menuEnabled);
             fragment.setParent(this);
+            if (isDragModeEnabled()) {
+                fragment.onStartDragMode();
+            }
         } else {
             Log.e(LOG_TAG, "Can't add " + fragment);
         }
@@ -211,6 +232,7 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
         resize(true);
     }
     private void resize(boolean resizeContent) {
+        updatePosition();
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             View containerView = ((MainActivity) activity).getViewContainer();
@@ -274,6 +296,22 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
     @Override
     public boolean scrollsY() {
         return scrollView.canScroll();
+    }
+
+    @Override
+    public void onStartDragMode() {
+        super.onStartDragMode();
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).onStartDragMode();
+        }
+    }
+    @Override
+    public void onStopDragMode() {
+        super.onStopDragMode();
+        scrollView.setBackgroundColor(Color.TRANSPARENT);
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).onStopDragMode();
+        }
     }
 
     @Override

@@ -53,6 +53,7 @@ public class WebViewFragment extends ModuleFragment {
     private MenuItem menuReloadItem;
     private LinearLayout baseLayout;
     private boolean menuEnabled = false;
+    private boolean created = false;
 
     public static WebViewFragment newInstance(String address, double width, double height,
                                               boolean javaScriptEnabled,
@@ -76,6 +77,13 @@ public class WebViewFragment extends ModuleFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
+
         Bundle arguments = getArguments();
         if (arguments != null) {
             address = arguments.getString(ARG_ADDRESS);
@@ -95,11 +103,15 @@ public class WebViewFragment extends ModuleFragment {
         View view = inflater.inflate(R.layout.fragment_web_view, container, false);
 
         webView = (WebView) view.findViewById(R.id.web_view);
+        setDragView(webView);
         baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
 
         // Set to our own WebViewClient so we can open links within the WebView
         webView.setWebViewClient(new CustomWebViewClient());
         setValues(address, width, height, javaScriptEnabled, allowExternalLinks);
+        updatePosition(view);
+
+        maybeStartDrag(view);
 
         return view;
     }
@@ -160,18 +172,22 @@ public class WebViewFragment extends ModuleFragment {
     }
     @Override
     public String getRecreationKey() {
-        return fixRecreationKey(WEB_VIEW_FRAGMENT + SEP + address + SEP + width + SEP +
-                height + SEP + javaScriptEnabled + SEP + allowExternalLinks + SEP);
+        return fixRecreationKey(WEB_VIEW_FRAGMENT + SEP + pos.getRecreationKey()+ SEP +
+                address + SEP + width + SEP + height + SEP + javaScriptEnabled + SEP +
+                allowExternalLinks + SEP);
     }
     public static WebViewFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            String address = args[1];
-            double width = Double.parseDouble(args[2]);
-            double height = Double.parseDouble(args[3]);
-            boolean javaScriptEnabled = Boolean.parseBoolean(args[4]);
-            boolean allowExternalLinks = Boolean.parseBoolean(args[5]);
-            return newInstance(address, width, height, javaScriptEnabled, allowExternalLinks);
+            String address = args[2];
+            double width = Double.parseDouble(args[3]);
+            double height = Double.parseDouble(args[4]);
+            boolean javaScriptEnabled = Boolean.parseBoolean(args[5]);
+            boolean allowExternalLinks = Boolean.parseBoolean(args[6]);
+            WebViewFragment fragment = newInstance(address, width, height, javaScriptEnabled,
+                    allowExternalLinks);
+            fragment.recoverPos(args[1]);
+            return fragment;
         } catch (Exception e) {
             Log.e(LOG_TAG, "recoverFromRecreationKey: illegal key: " + key);
             Log.e(LOG_TAG, "Got exception: " + e);
@@ -241,6 +257,7 @@ public class WebViewFragment extends ModuleFragment {
     }
     @Override
     public void resize() {
+        updatePosition();
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             View containerView = ((MainActivity) activity).getViewContainer();

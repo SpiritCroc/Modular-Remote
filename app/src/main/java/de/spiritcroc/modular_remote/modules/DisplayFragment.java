@@ -86,6 +86,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
             clickCount = 0;
         }
     };
+    private boolean created = false;
 
     public static DisplayFragment newInstance(String ip, TcpConnectionManager.ReceiverType type,
                                               ModeSettings modeSettings, String clickCommand,
@@ -112,6 +113,13 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -160,10 +168,14 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
         }
 
         baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
+        setDragView(textView);
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
         setValues(ip, type, modeSettings, clickCommand, doubleClickCommand, longClickCommand,
                 width, height, horizontalTextGravity);
+        updatePosition(view);
+
+        maybeStartDrag(view);
 
         return view;
     }
@@ -207,7 +219,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     }
 
     @Override
-    public void onResume () {
+    public void onResume() {
         super.onResume();
         if (modeSettings instanceof TcpDisplaySettings) {
             update(connection.getBufferedInformation(
@@ -304,6 +316,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     @Override
     public String getRecreationKey() {
         return fixRecreationKey((buttonMode ? BUTTON_FRAGMENT : DISPLAY_FRAGMENT) + SEP +
+                pos.getRecreationKey() + SEP +
                 ip + SEP + type.toString() + SEP + clickCommand + SEP +
                 doubleClickCommand + SEP + longClickCommand + SEP + width + SEP + height + SEP +
                 horizontalTextGravity + SEP + modeSettings.getRecreationKey() + SEP);
@@ -311,18 +324,21 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     public static DisplayFragment recoverFromRecreationKey(String key, boolean buttonMode) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            String ip = args[1];
+            String ip = args[2];
             TcpConnectionManager.ReceiverType type =
-                    TcpConnectionManager.ReceiverType.valueOf(args[2]);
-            String clickCommand = args[3];
-            String doubleClickCommand = args[4];
-            String longClickCommand = args[5];
-            double width = Double.parseDouble(args[6]);
-            double height = Double.parseDouble(args[7]);
-            int horizontalTextGravity = Integer.parseInt(args[8]);
-            ModeSettings modeSettings = ModeSettings.recoverFromRecreationKey(args[9]);
-            return newInstance(ip, type, modeSettings, clickCommand, doubleClickCommand,
-                    longClickCommand, width, height, horizontalTextGravity, buttonMode);
+                    TcpConnectionManager.ReceiverType.valueOf(args[3]);
+            String clickCommand = args[4];
+            String doubleClickCommand = args[5];
+            String longClickCommand = args[6];
+            double width = Double.parseDouble(args[7]);
+            double height = Double.parseDouble(args[8]);
+            int horizontalTextGravity = Integer.parseInt(args[9]);
+            ModeSettings modeSettings = ModeSettings.recoverFromRecreationKey(args[10]);
+            DisplayFragment fragment = newInstance(ip, type, modeSettings, clickCommand,
+                    doubleClickCommand, longClickCommand, width, height, horizontalTextGravity,
+                    buttonMode);
+            fragment.recoverPos(args[1]);
+            return fragment;
         } catch (Exception e) {
             Log.e(LOG_TAG, "recoverFromRecreationKey: illegal key: " + key);
             e.printStackTrace();
@@ -476,6 +492,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     }
     @Override
     public void resize() {
+        updatePosition();
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             View containerView = ((MainActivity) activity).getViewContainer();
@@ -489,7 +506,5 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     public TcpConnectionManager.TcpConnection getConnection() {
         return connection;
     }
-
-
 
 }

@@ -20,6 +20,7 @@ package de.spiritcroc.modular_remote.modules;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
@@ -28,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,12 +45,14 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     private static final String LOG_TAG = HorizontalContainerFragment.class.getSimpleName();
 
     private double width, height;//if width == -1, then match_parent
-    private LinearLayout baseLayout, containerLayout;
+    private LinearLayout baseLayout;
+    private RelativeLayout containerLayout;
     private CustomHorizontalScrollView scrollView;
     private String recreationKey;
     private ArrayList<ModuleFragment> fragments;
     private Container parent;
     private boolean menuEnabled = false;
+    private boolean created = false;
 
     public HorizontalContainerFragment() {
         fragments = new ArrayList<>();
@@ -67,6 +71,13 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (created) {
+            // Prevent overwriting attributes that are already set
+            return;
+        } else {
+            created = true;
+        }
+
         if (getArguments() != null) {
             width = getArguments().getDouble(ARG_WIDTH);
             height = getArguments().getDouble(ARG_HEIGHT);
@@ -81,14 +92,19 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
         View view = inflater.inflate(R.layout.fragment_horizontal_container, container, false);
 
         scrollView = (CustomHorizontalScrollView) view.findViewById(R.id.scroll_view);
+        scrollView.setOnDragListener(this);
         scrollView.setWrapFragment(this);
         baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
-        containerLayout = (LinearLayout) view.findViewById(R.id.container);
+        containerLayout = (RelativeLayout) view.findViewById(R.id.container);
+        setDragView(scrollView);
         containerLayout.setId(Util.generateViewId());
         setValues(width, height);
+        updatePosition(view);
 
         fragments.clear();
         restoreContentFromRecreationKey();
+
+        maybeStartDrag(view);
 
         return view;
     }
@@ -123,7 +139,8 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     @Override
     public String getRecreationKey() {
         String separator = Util.getSeparator(this);
-        String key = HORIZONTAL_CONTAINER + SEP + width + SEP + height + SEP + separator;
+        String key = HORIZONTAL_CONTAINER + SEP + pos.getRecreationKey() + SEP +
+                width + SEP + height + SEP + separator;
         for (int i = 0; i < fragments.size(); i++) {
             ModuleFragment fragment = fragments.get(i);
             key += fragment.getRecreationKey() + separator;
@@ -133,10 +150,11 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     public static HorizontalContainerFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            double width = Double.parseDouble(args[1]);
-            double height = Double.parseDouble(args[2]);
+            double width = Double.parseDouble(args[2]);
+            double height = Double.parseDouble(args[3]);
             HorizontalContainerFragment fragment = newInstance(width, height);
             fragment.setRecreationKey(key);
+            fragment.recoverPos(args[1]);
             return fragment;
         } catch (Exception e){
             Log.e(LOG_TAG, "recoverFromRecreationKey: illegal key: " + key);
@@ -179,6 +197,9 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
             fragments.add(fragment);
             fragment.setMenuEnabled(menuEnabled);
             fragment.setParent(this);
+            if (isDragModeEnabled()) {
+                fragment.onStartDragMode();
+            }
         } else {
             Log.e(LOG_TAG, "Can't add " + fragment);
         }
@@ -247,6 +268,7 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
         resize(true);
     }
     private void resize(boolean resizeContent) {
+        updatePosition();
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             View containerView = ((MainActivity) activity).getViewContainer();
@@ -279,6 +301,22 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     @Override
     public boolean scrollsY() {
         return false;
+    }
+
+    @Override
+    public void onStartDragMode() {
+        super.onStartDragMode();
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).onStartDragMode();
+        }
+    }
+    @Override
+    public void onStopDragMode() {
+        super.onStopDragMode();
+        scrollView.setBackgroundColor(Color.TRANSPARENT);
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).onStartDragMode();
+        }
     }
 
     @Override
