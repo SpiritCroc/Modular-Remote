@@ -44,6 +44,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -164,6 +165,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 GreetingDialog.VERSION) {
             new GreetingDialog().show(getFragmentManager(), "GreetingDialog");
         }
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 
         if (DEBUG) {
             getFragmentManager().addOnBackStackChangedListener(
