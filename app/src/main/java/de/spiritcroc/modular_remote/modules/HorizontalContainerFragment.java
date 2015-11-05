@@ -315,7 +315,7 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
         super.onStopDragMode();
         scrollView.setBackgroundColor(Color.TRANSPARENT);
         for (int i = 0; i < fragments.size(); i++) {
-            fragments.get(i).onStartDragMode();
+            fragments.get(i).onStopDragMode();
         }
     }
 
