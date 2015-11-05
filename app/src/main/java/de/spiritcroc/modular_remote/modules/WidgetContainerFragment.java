@@ -229,13 +229,15 @@ public class WidgetContainerFragment extends ModuleFragment {
     public void onStartDragMode() {
         super.onStartDragMode();
         // Replace widget with an image of its content to prevent the widget from stealing focus
-        previewView.setVisibility(View.VISIBLE);
-        Bitmap bitmap = Bitmap.createBitmap(
-                widget.getMeasuredWidth(), widget.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        widget.draw(canvas);
-        previewView.setImageBitmap(bitmap);
-        widget.setVisibility(View.GONE);
+        if (previewView != null) {
+            previewView.setVisibility(View.VISIBLE);
+            Bitmap bitmap = Bitmap.createBitmap(
+                    widget.getMeasuredWidth(), widget.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            widget.draw(canvas);
+            previewView.setImageBitmap(bitmap);
+            widget.setVisibility(View.GONE);
+        }
 
     }
     public void onStopDragMode() {
