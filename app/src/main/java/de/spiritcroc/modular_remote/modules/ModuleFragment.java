@@ -45,6 +45,12 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     protected Pos pos = new Pos();
     private boolean dragModeEnabled = false;
 
+    /**
+     * Whether a container should get dragged or scrolled when touched
+     * Only relevant for ModuleFragments instanceof Container
+     */
+    private boolean containerDragEnabled = true;
+
     public abstract String getReadableName();
     public abstract String getRecreationKey();
     public abstract void setMenuEnabled(boolean menuEnabled);
@@ -184,7 +190,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (dragModeEnabled) {
+        if (dragModeEnabled && (!(this instanceof Container) || containerDragEnabled)) {
             if (DragManager.startDrag(this)) {
                 if (DEBUG) Log.v(LOG_TAG, "start drag: " + getClass());
                 v.invalidate();
@@ -225,8 +231,6 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                 primeContainer = (ModuleFragment) primeContainer.getParent();
                             }
                             View cView = primeContainer.getView();
-                            int newX = Util.blockRound(cView, dropX - rlp.width / 2, false);
-                            int newY = Util.blockRound(cView, dropY - rlp.height / 2, true);
                             boolean dropOnItself = false;
                             if (this == insertFragment) {
                                 dropOnItself = true;
@@ -241,6 +245,20 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                     }
                                 }
                             }
+                            // Add scroll values if necessary
+                            Container c = insertFragment != this && this instanceof Container ?
+                                    (Container) this : getParent();
+                            while (c instanceof ModuleFragment) {
+                                if (c.scrollsX()) {
+                                    dropX += c.getScrollX();
+                                }
+                                if (c.scrollsY()) {
+                                    dropY += c.getScrollY();
+                                }
+                                c = ((ModuleFragment) c).getParent();
+                            }
+                            int newX = Util.blockRound(cView, dropX - rlp.width / 2, false);
+                            int newY = Util.blockRound(cView, dropY - rlp.height / 2, true);
                             if (dropOnItself) {
                                 insertFragment.setPosition(newX, newY, true);
                             } else {
@@ -258,8 +276,9 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                     if (container == insertFragment) {
                                         Log.w(LOG_TAG, "Can't add fragment to itself");
                                     } else {
-                                        insertFragment.getParent()
-                                                .removeFragment(insertFragment, false);
+                                        Container oldC = insertFragment.getParent();
+                                        oldC.removeFragment(insertFragment, false);
+                                        oldC.onContentMoved();
                                         v.post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -269,6 +288,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                     }
                                 }
                             }
+                            insertFragment.getParent().onContentMoved();
                             return true;
                         } else {
                             new Exception("Drop operation failed; layout is " + lp)
@@ -292,6 +312,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     }
     public void onStartDragMode() {
         dragModeEnabled = true;
+        containerDragEnabled = true;
         if (getActivity() != null && getView() != null) {
             getView().setBackgroundColor(getDragModeBgColor());
         }
@@ -316,6 +337,12 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     }
     public boolean isDragModeEnabled() {
         return dragModeEnabled;
+    }
+    public boolean isContainerDragEnabled() {
+        return containerDragEnabled;
+    }
+    public void setContainerDragEnabled(boolean containerDragEnabled) {
+        this.containerDragEnabled = containerDragEnabled;
     }
     protected int getDragModeBgColor() {
         Random random = new Random();

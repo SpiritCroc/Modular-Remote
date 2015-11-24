@@ -452,6 +452,7 @@ public class PageContainerFragment extends ModuleFragment implements Container,
             if (isDragModeEnabled()) {
                 fragment.onStartDragMode();
             }
+            fragment.setContainerDragEnabled(isContainerDragEnabled());
         } else {
             Log.e(LOG_TAG, "Can't add " + fragment);
         }
@@ -511,6 +512,14 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     @Override
     public boolean scrollsY() {
         return false;
+    }
+    @Override
+    public int getScrollX() {
+        return 0;
+    }
+    @Override
+    public int getScrollY() {
+        return 0;
     }
 
     @Override
@@ -646,6 +655,17 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         for (int i = 0; i < fragments.size(); i++) {
             fragments.get(i).onStopDragMode();
         }
+    }
+
+    @Override
+    public void setContainerDragEnabled(boolean containerDragEnabled) {
+        super.setContainerDragEnabled(containerDragEnabled);
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).setContainerDragEnabled(containerDragEnabled);
+        }
+    }
+    public void onContentMoved() {
+        // Nothing to do here
     }
 
     @Override
