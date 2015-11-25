@@ -200,6 +200,7 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
             if (isDragModeEnabled()) {
                 fragment.onStartDragMode();
             }
+            fragment.setContainerDragEnabled(isContainerDragEnabled());
         } else {
             Log.e(LOG_TAG, "Can't add " + fragment);
         }
@@ -302,6 +303,14 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     public boolean scrollsY() {
         return false;
     }
+    @Override
+    public int getScrollX() {
+        return scrollView.getScrollX();
+    }
+    @Override
+    public int getScrollY() {
+        return 0;
+    }
 
     @Override
     public void onStartDragMode() {
@@ -309,14 +318,55 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
         for (int i = 0; i < fragments.size(); i++) {
             fragments.get(i).onStartDragMode();
         }
+        requestContentSize();
     }
     @Override
     public void onStopDragMode() {
         super.onStopDragMode();
         scrollView.setBackgroundColor(Color.TRANSPARENT);
         for (int i = 0; i < fragments.size(); i++) {
-            fragments.get(i).onStartDragMode();
+            fragments.get(i).onStopDragMode();
         }
+        requestContentSize();
+    }
+    @Override
+    public void setContainerDragEnabled(boolean containerDragEnabled) {
+        super.setContainerDragEnabled(containerDragEnabled);
+        for (int i = 0; i < fragments.size(); i++) {
+            fragments.get(i).setContainerDragEnabled(containerDragEnabled);
+        }
+    }
+
+    /**
+     * Set content size to wrap content, and more if drag mode is enabled to provide more space
+     */
+    private void requestContentSize() {
+        if (containerLayout == null) {
+            return;
+        }
+        final int scrollX = getScrollX();
+        containerLayout.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        containerLayout.requestLayout();
+        if (isDragModeEnabled()) {
+            containerLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    containerLayout.getLayoutParams().width = containerLayout.getMeasuredWidth() +
+                            scrollView.getMeasuredWidth()*2;
+                    containerLayout.requestLayout();
+                    // Scroll to previous position
+                    containerLayout.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.scrollTo(scrollX, 0);
+                        }
+                    });
+                }
+            });
+        }
+    }
+    public void onContentMoved() {
+        requestContentSize();
     }
 
     @Override

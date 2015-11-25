@@ -33,6 +33,21 @@ public interface Container {
     int getDepth();
     boolean scrollsX();
     boolean scrollsY();
+    /**
+     * @return
+     * Scroll offset in x-direction
+     */
+    int getScrollX();
+    /**
+     * @return
+     * Scroll offset in y-direction
+     */
+    int getScrollY();
+
+    /**
+     * If container needs some resizing because of moved content, it can be called in this method
+     */
+    void onContentMoved();
 
     /**
      * @return

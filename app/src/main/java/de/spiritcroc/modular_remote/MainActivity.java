@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private MenuItem editModeMenuItem;
 
     private ActionMode actionMode;
+    private boolean editModeContainerDrag = true;// If false: editModeContainerScroll
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -103,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             for (int i = 0; i < pages.size(); i++) {
                 pages.get(i).onStartDragMode();
             }
+            editModeContainerDrag = true;
+            MenuItem editModeItem = menu.findItem(R.id.action_container_edit_mode);
+            editModeItem.setTitle(R.string.action_container_edit_mode_scroll);
             return true;
         }
 
@@ -121,6 +125,20 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 case R.id.action_add_fragment:
                     new AddFragmentDialog().setPage(pages.get(viewPager.getCurrentItem()))
                             .show(getFragmentManager(), "AddFragmentDialog");
+                    return true;
+                case R.id.action_container_edit_mode:
+                    if (editModeContainerDrag) {
+                        editModeContainerDrag = false;
+                        item.setTitle(R.string.action_container_edit_mode_drag);
+                        item.setIcon(R.drawable.ic_action_container_drag);
+                    } else {
+                        editModeContainerDrag = true;
+                        item.setTitle(R.string.action_container_edit_mode_scroll);
+                        item.setIcon(R.drawable.ic_action_container_scroll);
+                    }
+                    for (int i = 0; i < pages.size(); i++) {
+                        pages.get(i).setContainerDragEnabled(editModeContainerDrag);
+                    }
                     return true;
                 default:
                     return false;
