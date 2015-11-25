@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private boolean changedRingerMode = false;
     private int volumeButtonSettingsShortcutCount = 0;
     private Handler resetVolumeButtonSettingsShortcutHandler = new Handler();
-    private MenuItem editModeMenuItem;
+    private MenuItem editModeMenuItem, connectionMgrMenuItem;
 
     private ActionMode actionMode;
     private boolean editModeContainerDrag = true;// If false: editModeContainerScroll
@@ -376,19 +376,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         resizeContent();
 
-        setEditModeVisibility();
+        setLockedModeVisibilities();
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
         getMenuInflater().inflate(R.menu.menu_main, menu);
         editModeMenuItem = menu.findItem(R.id.action_edit_page_content);
-        setEditModeVisibility();
-        MenuItem connectionManagerMenuItem = menu.findItem(R.id.action_connection_manager);
-        if (connectionManagerMenuItem != null) {
-            connectionManagerMenuItem
-                    .setVisible(tcpConnectionManager.getConnectionSuggestions().length != 0);
-        }
+        connectionMgrMenuItem = menu.findItem(R.id.action_connection_manager);
+        setLockedModeVisibilities();
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -480,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
         pages.add(fragment);
         notifyDataSetChanged();
-        viewPager.setCurrentItem(pages.size()-1, true);
+        viewPager.setCurrentItem(pages.size() - 1, true);
     }
     public void notifyDataSetChanged() {
         if (fragmentPagerAdapter != null) {
@@ -747,12 +743,17 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
     }
 
-    private void setEditModeVisibility() {
+    private void setLockedModeVisibilities() {
+        // Only show some menu items if device unlocked
+        KeyguardManager keyguardManager =
+                (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        boolean unlocked = !keyguardManager.inKeyguardRestrictedInputMode();
         if (editModeMenuItem != null) {
-            // Only show edit menu item if device unlocked
-            KeyguardManager keyguardManager =
-                    (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-            editModeMenuItem.setVisible(!keyguardManager.inKeyguardRestrictedInputMode());
+            editModeMenuItem.setVisible(unlocked);
+        }
+        if (connectionMgrMenuItem != null) {
+            connectionMgrMenuItem.setVisible(unlocked &&
+                    tcpConnectionManager.getConnectionSuggestions().length != 0);
         }
     }
 }
