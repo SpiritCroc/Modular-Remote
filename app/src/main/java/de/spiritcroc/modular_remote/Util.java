@@ -41,7 +41,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -488,7 +487,7 @@ public abstract class Util {
             int spanStartIndex = name.length();
             name += " [" + fragments[0].getReadableName();
             int contentColor = fragments[0].getActivity().getResources()
-                    .getColor(R.color.container_readable_content_color);
+                    .getColor(R.color.text_container_content);
             for (int i = 1; i < fragments.length; i++) {
                 name += "; " + fragments[i].getReadableName();
             }

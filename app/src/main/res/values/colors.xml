@@ -18,23 +18,7 @@
 -->
 
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
-        <!-- No customization yet. -->
-    </style>
-
-    <!-- Theme for dialogs. -->
-    <style name="DialogTheme" parent="AppTheme">
-        <item name="android:textViewStyle">@style/DialogTextViewTheme</item>
-    </style>
-
-    <!-- Themes for single views. -->
-    <style name="DialogTextViewTheme" parent="android:TextAppearance.Widget.TextView">
-        <item name="android:padding">@dimen/dialog_content_padding</item>
-    </style>
-    <style name="DialogTitleViewTheme" parent="DialogTextViewTheme">
-        <item name="android:textColor">@color/text_title</item>
-    </style>
-
+    <!-- Text colors -->
+    <color name="text_title">#CE80cbc4</color>
+    <color name="text_container_content">#9e9e9e</color>
 </resources>
