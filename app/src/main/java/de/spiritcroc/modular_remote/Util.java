@@ -95,7 +95,12 @@ public abstract class Util {
             RK_CUSTOMIZED_MENU_SEPARATOR,
             RK_CUSTOMIZED_MENU_ATTRIBUTE_SEPARATOR,
             RK_EMPTY_STRING_REPLACEMENT,
-            RK_FRAGMENT_POS
+            RK_FRAGMENT_POS,
+            // Reserved for future needs:
+            "䷆", "䷇", "䷈", "䷉", "䷊", "䷋", "䷌", "䷍", "䷎", "䷏",
+            "䷐", "䷑", "䷒", "䷓", "䷔", "䷕", "䷖", "䷗", "䷘", "䷙", "䷛", "䷜", "䷝", "䷞", "䷟",
+            "䷠", "䷡", "䷢", "䷣", "䷤", "䷥", "䷦", "䷧", "䷨", "䷩", "䷪", "䷫", "䷬", "䷭", "䷮", "䷯",
+            "䷰", "䷱", "䷲", "䷳", "䷴", "䷵", "䷶", "䷷", "䷸", "䷹", "䷺", "䷻", "䷼", "䷽", "䷾", "䷿"
     };
 
     /**
