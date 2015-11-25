@@ -327,7 +327,32 @@ public abstract class Util {
         }
     }
     public static String getSeparator(Container container) {
-        return RK_CONTAINER_BRACKET + container.getDepth() + RK_CONTAINER_BRACKET;
+        return getSeparator(container.getDepth());
+    }
+    private static String getSeparator(int depth) {
+        return RK_CONTAINER_BRACKET + depth + RK_CONTAINER_BRACKET;
+    }
+
+    public static String updateRecreationKey(String recreationKey, int oldDepth, int newDepth) {
+        if (oldDepth < newDepth) {
+            int highestDepth = oldDepth;
+            while (recreationKey.contains(getSeparator(highestDepth))) {
+                highestDepth++;
+            }
+            highestDepth--;
+            // Increase found separators
+            int diff = newDepth - oldDepth;
+            for (int i = highestDepth; i >= oldDepth; i--) {
+                recreationKey = recreationKey.replaceAll(getSeparator(i), getSeparator(i + diff));
+            }
+        } else if (oldDepth > newDepth) {
+            // Decrease found separators
+            int diff = newDepth - oldDepth;
+            for (int i = oldDepth; recreationKey.contains(getSeparator(i)); i++) {
+                recreationKey = recreationKey.replaceAll(getSeparator(i), getSeparator(i + diff));
+            }
+        }
+        return recreationKey;
     }
 
     /*

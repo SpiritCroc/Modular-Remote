@@ -279,10 +279,16 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                         Container oldC = insertFragment.getParent();
                                         oldC.removeFragment(insertFragment, false);
                                         oldC.onContentMoved();
+                                        final int oldDepth = insertFragment instanceof Container ?
+                                                ((Container) insertFragment).getDepth() : -1;
                                         v.post(new Runnable() {
                                             @Override
                                             public void run() {
                                                 container.addFragment(insertFragment);
+                                                if (insertFragment instanceof Container) {
+                                                    ((Container) insertFragment)
+                                                            .updateDepth(oldDepth);
+                                                }
                                             }
                                         });
                                     }

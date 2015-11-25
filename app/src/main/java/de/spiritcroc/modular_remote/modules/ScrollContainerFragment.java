@@ -161,6 +161,10 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
     private void setRecreationKey(String recreationKey) {
         this.recreationKey = recreationKey;
     }
+    @Override
+    public void updateDepth(int oldDepth) {
+        recreationKey = Util.updateRecreationKey(recreationKey, oldDepth, getDepth());
+    }
     private void restoreContentFromRecreationKey() {
         if (recreationKey != null) {
             Util.restoreContentFromRecreationKey(this, recreationKey, menuEnabled);
