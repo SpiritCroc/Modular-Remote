@@ -59,6 +59,8 @@ public class TcpConnectionManager {
     public static final int CUSTOMIZABLE_SUBMENU_FLAG_HIDE_ITEMS = 1;
     public static final int CUSTOMIZABLE_SUBMENU_FLAG_RECEIVE_NAMES = 2;
 
+    private static final String COMMAND_CHAIN_READABLE_SEPARATOR = ": ";
+
     private static TcpConnectionManager instance;
     private SharedPreferences sharedPreferences;
     private Context applicationContext;
@@ -664,7 +666,8 @@ public class TcpConnectionManager {
 
                     TcpInformation buffer = connection.getBufferedInformation("FN··");
                     if (buffer != null && buffer.isStringAvailable()) {
-                        for (int i = 0; i < inputMenu2.values.length; i++) {// Update buffered information
+                        for (int i = 0; i < inputMenu2.values.length; i++) {
+                            // Update buffered information
                             if (inputMenu2.values[i].equals(value)) {
                                 if (buffer.getStringValue().equals(inputMenu2.names[i])) {
                                     buffer.overwriteStringValue(rawData.substring(3));
@@ -1107,7 +1110,8 @@ public class TcpConnectionManager {
             commandNames = getCommandNameArrayFromResource(resources, receiverType, menu);
         }
         String[] commandValues = getCommandValueArrayFromResource(resources, receiverType, menu);
-        int[] commandHasSubMenu = getCommandHasSubmenuArrayFromResource(resources, receiverType, menu);
+        int[] commandHasSubMenu =
+                getCommandHasSubmenuArrayFromResource(resources, receiverType, menu);
         if (commandNames.length == 0 || commandValues.length == 0) {
             // Error message already in getCommandNameArrayFromResource() or
             // getCommandValueArrayFromResource()
@@ -1151,10 +1155,12 @@ public class TcpConnectionManager {
                     rawValue = rawValue.replaceAll("·", "");
                     int index = command.indexOf(rawValue);
                     if (index >= 0) {
-                        rawValue = command.substring(0, index) + command.substring(index + rawValue.length());
-                        return commandNames[i] + ": " + rawValue;
+                        rawValue = command.substring(0, index) +
+                                command.substring(index + rawValue.length());
+                        return commandNames[i] + COMMAND_CHAIN_READABLE_SEPARATOR + rawValue;
                     } else {
-                        Log.e(LOG_TAG, "Could not read rawValue from command " + command + " and rawValue " + rawValue);
+                        Log.e(LOG_TAG, "Could not read rawValue from command " + command +
+                                " and rawValue " + rawValue);
                         return commandNames[i];
                     }
                 } else {
@@ -1163,7 +1169,8 @@ public class TcpConnectionManager {
                     }
                     String sub = getCommandNameFromResource(resources, connection, receiverType,
                             command, commandValue, submenu, commandSearchPath, null);
-                    return sub.equals(command) ? sub : commandNames[i] + ": " + sub;
+                    return sub.equals(command) ? sub :
+                            commandNames[i] + COMMAND_CHAIN_READABLE_SEPARATOR + sub;
                 }
             }
             if (commandSearchPath != null) {
@@ -1183,7 +1190,7 @@ public class TcpConnectionManager {
         if (classifier.value == null) {
             return null;
         }
-        String searchingFor = ": ";
+        String searchingFor = COMMAND_CHAIN_READABLE_SEPARATOR;
         int index = command.indexOf(searchingFor);
         if (index >= 0) {
             // Remove unneeded stuff (already given by classifier)
