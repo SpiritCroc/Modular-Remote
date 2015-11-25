@@ -481,6 +481,14 @@ public class TcpConnectionManager {
             return connected;
         }
 
+        /**
+         * @return
+         * Whether this connection should not get displayed to users
+         */
+        public boolean isHidden() {
+            return "".equals(tcpIp);
+        }
+
         public class CustomizedMenu {
             private int menuValue;
             public String[] names;
@@ -1629,7 +1637,7 @@ public class TcpConnectionManager {
     public String[] getConnectionSuggestions() {
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < tcpConnections.size(); i++) {
-            if (!tcpConnections.get(i).shouldRemove) {
+            if (!tcpConnections.get(i).isHidden() && !tcpConnections.get(i).shouldRemove) {
                 result.add(tcpConnections.get(i).getIp());
             }
         }
