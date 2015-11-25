@@ -1379,6 +1379,14 @@ public class TcpConnectionManager {
                         return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_17);
                     case 18:
                         return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_18);
+                    case 19:
+                        return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_19);
+                    case 20:
+                        return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_20);
+                    case 21:
+                        return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_21);
+                    case 22:
+                        return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_22);
                     case MENU_TCP_RESPONSES:
                         return resources.getStringArray(R.array.pioneer_tcp_responses);
                 }
@@ -1453,6 +1461,18 @@ public class TcpConnectionManager {
                     case 18:
                         return resources.getStringArray(
                                 R.array.pioneer_tcp_commands_submenu_18_values);
+                    case 19:
+                        return resources.getStringArray(
+                                R.array.pioneer_tcp_commands_submenu_19_values);
+                    case 20:
+                        return resources.getStringArray(
+                                R.array.pioneer_tcp_commands_submenu_20_values);
+                    case 21:
+                        return resources.getStringArray(
+                                R.array.pioneer_tcp_commands_submenu_21_values);
+                    case 22:
+                        return resources.getStringArray(
+                                R.array.pioneer_tcp_commands_submenu_22_values);
                     case MENU_TCP_RESPONSES:
                         return resources.getStringArray(R.array.pioneer_tcp_responses_values);
                     case MENU_START_REQUESTS:
@@ -1543,6 +1563,18 @@ public class TcpConnectionManager {
                     case 18:
                         return resources.getIntArray(
                                 R.array.pioneer_tcp_commands_submenu_18_has_submenu);
+                    case 19:
+                        return resources.getIntArray(
+                                R.array.pioneer_tcp_commands_submenu_19_has_submenu);
+                    case 20:
+                        return resources.getIntArray(
+                                R.array.pioneer_tcp_commands_submenu_20_has_submenu);
+                    case 21:
+                        return resources.getIntArray(
+                                R.array.pioneer_tcp_commands_submenu_21_has_submenu);
+                    case 22:
+                        return resources.getIntArray(
+                                R.array.pioneer_tcp_commands_submenu_22_has_submenu);
                     case MENU_TCP_RESPONSES:
                         return resources.getIntArray(R.array.pioneer_tcp_responses_has_submenu);
                     case MENU_START_REQUESTS:
