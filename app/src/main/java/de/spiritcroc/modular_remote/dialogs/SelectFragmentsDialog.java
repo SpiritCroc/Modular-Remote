@@ -357,7 +357,7 @@ public class SelectFragmentsDialog extends DialogFragment {
             } else {
                 for (int i = 0; i < selectedModuleFragments.size(); i++) {
                     ModuleFragment fragment = selectedModuleFragments.get(i);
-                    fragment.getParent().removeFragment(fragment, false);
+                    fragment.getParent().removeFragment(fragment, true);
                 }
                 updateContent();
             }
