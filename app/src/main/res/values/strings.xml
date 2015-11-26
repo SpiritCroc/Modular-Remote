@@ -165,6 +165,7 @@
     <string name="dialog_overlapping_fragments_warning">Some modules are overlapping. This is likely to cause unwanted results.</string>
     <string name="dialog_ignore">Ignore</string>
     <string name="dialog_change">Change</string>
+    <string name="dialog_remove_page">Remove page \'%1$s\'?</string>
 
     <string name="horizontal_text_gravity_center">Center</string>
     <string name="horizontal_text_gravity_left">Left</string>
