@@ -34,6 +34,7 @@ import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.TcpConnectionManager;
 import de.spiritcroc.modular_remote.TcpInformation;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.dialogs.AddToggleFragmentDialog;
 
 public class ToggleFragment extends ModuleFragment
         implements TcpConnectionManager.TcpUpdateInterface, View.OnClickListener {
@@ -407,5 +408,12 @@ public class ToggleFragment extends ModuleFragment
 
     public TcpConnectionManager.TcpConnection getConnection() {
         return connection;
+    }
+
+    @Override
+    protected void editActionEdit() {
+        new AddToggleFragmentDialog()
+                .setEditFragment(this, connection)
+                .show(getFragmentManager(), "AddToggleFragmentDialog");
     }
 }

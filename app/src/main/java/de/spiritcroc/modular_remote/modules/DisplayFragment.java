@@ -42,6 +42,7 @@ import de.spiritcroc.modular_remote.TcpConnectionManager;
 import de.spiritcroc.modular_remote.TcpInformation;
 import de.spiritcroc.modular_remote.TimeSingleton;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.dialogs.AddDisplayFragmentDialog;
 
 public class DisplayFragment extends ModuleFragment implements Display, TimeSingleton.TimeListener,
         View.OnClickListener, View.OnLongClickListener,
@@ -507,4 +508,10 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
         return connection;
     }
 
+    @Override
+    protected void editActionEdit() {
+        new AddDisplayFragmentDialog()
+                .setEditFragment(this, connection)
+                .show(getFragmentManager(), "AddDisplayFragmentDialog");
+    }
 }

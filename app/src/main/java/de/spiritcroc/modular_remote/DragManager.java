@@ -54,4 +54,22 @@ public class DragManager {
         }
         return fragment;
     }
+
+    private static float dragStartX, dragStartY;
+    public static void setLongPressPos(float dragStartX, float dragStartY) {
+        DragManager.dragStartX = dragStartX;
+        DragManager.dragStartY = dragStartY;
+    }
+    public static float getDragStartX() {
+        return dragStartX;
+    }
+    public static float getDragStartY() {
+        return dragStartY;
+    }
+    public static void cancelLongPress() {
+        dragStartX = -1;
+    }
+    public static boolean isLongPressPossible() {
+        return dragStartX != -1;
+    }
 }

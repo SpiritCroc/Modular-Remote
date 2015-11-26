@@ -35,6 +35,7 @@ import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.Preferences;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.dialogs.AddWidgetContainerDialog;
 
 public class WidgetContainerFragment extends ModuleFragment {
     private static final String LOG_TAG = WidgetContainerFragment.class.getSimpleName();
@@ -244,5 +245,12 @@ public class WidgetContainerFragment extends ModuleFragment {
         super.onStopDragMode();
         previewView.setVisibility(View.GONE);
         widget.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void editActionEdit() {
+        new AddWidgetContainerDialog()
+                .setEditFragment(this)
+                .show(getFragmentManager(), "AddWidgetContainerDialog");
     }
 }

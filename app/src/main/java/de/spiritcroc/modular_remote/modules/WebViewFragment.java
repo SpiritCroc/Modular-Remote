@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.dialogs.AddWebViewFragmentDialog;
 
 public class WebViewFragment extends ModuleFragment {
     private static final String ARG_ADDRESS = "ip";
@@ -271,5 +272,12 @@ public class WebViewFragment extends ModuleFragment {
     @Override
     public boolean isConnected() {
         return connected;
+    }
+
+    @Override
+    protected void editActionEdit() {
+        new AddWebViewFragmentDialog()
+                .setEditFragment(this)
+                .show(getFragmentManager(), "AddWebViewFragmentDialog");
     }
 }

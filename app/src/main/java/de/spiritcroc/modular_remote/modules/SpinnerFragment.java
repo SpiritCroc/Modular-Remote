@@ -40,6 +40,7 @@ import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.TcpConnectionManager;
 import de.spiritcroc.modular_remote.TcpInformation;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.dialogs.AddSpinnerFragmentDialog;
 
 public class SpinnerFragment extends ModuleFragment implements AdapterView.OnItemSelectedListener,
         TcpConnectionManager.TcpUpdateInterface {
@@ -358,5 +359,12 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
                 spinner.setSelection(index);
             }
         }
+    }
+
+    @Override
+    protected void editActionEdit() {
+        new AddSpinnerFragmentDialog()
+                .setEditFragment(this)
+                .show(getFragmentManager(), "AddSpinnerFragmentDialog");
     }
 }

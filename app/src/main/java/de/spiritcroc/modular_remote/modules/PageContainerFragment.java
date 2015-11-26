@@ -676,4 +676,45 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     protected int getDragModeBgColor() {
         return Color.TRANSPARENT;
     }
+
+    @Override
+    protected void prepareEditMenu(Menu menu) {
+        // Don't call super: don't enable menu at all
+        // No possibility to reach menu (longPress disabled)
+    }
+    @Override
+    protected void editActionEdit() {
+        // No possibility to reach menu (longPress disabled)
+        /*
+        new AddPageDialog().setPage(this, connection)
+                .show(getFragmentManager(), "AddPageDialog");
+        */
+    }
+    @Override
+    protected void editActionMove() {
+        // No possibility to reach menu (longPress disabled)
+    }
+    @Override
+    protected void editActionClone() {
+        // No possibility to reach menu (longPress disabled)
+    }
+    @Override
+    protected void editActionRemove() {
+        // No possibility to reach menu (longPress disabled)
+        /*
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            if (((MainActivity) activity).isPageRemovalAllowed()) {
+                new ConfirmRemovePageDialog().setPage(this)
+                        .show(getFragmentManager(), "ConfirmRemovePageDialog");
+            } else {
+                Toast.makeText(activity,
+                        R.string.error_last_page_removal_not_allowed,
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Log.e(LOG_TAG, "!(activity instanceof MainActivity)");
+        }
+        */
+    }
 }

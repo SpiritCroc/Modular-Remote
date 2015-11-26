@@ -22,20 +22,28 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 
 import java.util.Random;
 
 import de.spiritcroc.modular_remote.DragManager;
 import de.spiritcroc.modular_remote.MainActivity;
+import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.dialogs.AddFragmentDialog;
+import de.spiritcroc.modular_remote.dialogs.SelectContainerDialog;
 
 public abstract class ModuleFragment extends Fragment implements View.OnTouchListener,
         View.OnDragListener {
@@ -188,18 +196,112 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         v.setOnTouchListener(this);
         v.setOnDragListener(this);
     }
+    private Handler longPressHandler = new Handler();
+    private Runnable longPress = new Runnable() {
+        @Override
+        public void run() {
+            if (DragManager.isLongPressPossible()) {
+                if (DEBUG) Log.d(LOG_TAG, "longPress");
+                DragManager.stopDrag();
+                cancelLongPress();
+                showEditMenu();
+            }
+        }
+    };
+    private void cancelLongPress() {
+        longPressHandler.removeCallbacks(longPress);
+        DragManager.cancelLongPress();
+    }
+    private void showEditMenu() {
+        PopupMenu popupMenu = new PopupMenu(getActivity(), getView());
+        popupMenu.setOnMenuItemClickListener(editMenuItemClickListener);
+        prepareEditMenu(popupMenu.getMenu());
+        popupMenu.show();
+    }
+    protected void prepareEditMenu(Menu menu) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_fragment_edit, menu);
+        menu.setGroupVisible(R.id.action_container, this instanceof Container);
+        if (getActivity() instanceof MainActivity) {
+            // Hide move action if only one container available
+            menu.findItem(R.id.action_move).setVisible(
+                    ((MainActivity) getActivity()).getAllContainers().length > 1);
+        }
+    }
+    private PopupMenu.OnMenuItemClickListener editMenuItemClickListener =
+            new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_edit:
+                            editActionEdit();
+                            return true;
+                        case R.id.action_move:
+                            editActionMove();
+                            return true;
+                        case R.id.action_clone:
+                            editActionClone();
+                            return true;
+                        case R.id.action_remove:
+                            editActionRemove();
+                            return true;
+                        case R.id.action_add_fragment:
+                            editActionAddFragment();
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+            };
+    protected abstract void editActionEdit();
+    protected void editActionMove() {
+        getParent().removeFragment(this, false);
+        new SelectContainerDialog().setValues(Util.getPage(this), this)
+                .setMode(SelectContainerDialog.Mode.MOVE_FRAGMENT)
+                .show(getFragmentManager(), "SelectContainerDialog");
+    }
+    protected void editActionClone() {
+        new SelectContainerDialog().setValues(Util.getPage(this), copy())
+                .setMode(SelectContainerDialog.Mode.COPY_FRAGMENT)
+                .show(getFragmentManager(), "SelectContainerDialog");
+    }
+    protected void editActionRemove() {
+        getParent().removeFragment(this, true);
+    }
+    protected void editActionAddFragment() {
+        if (this instanceof Container) {
+            new AddFragmentDialog().setPage(Util.getPage(this))
+                    .setContainer((Container) this)
+                    .show(getFragmentManager(), "AddFragmentDialog");
+        } else {
+            Log.w(LOG_TAG, "editActionAddFragment called by non-container class " +
+                    this.getClass().getSimpleName());
+        }
+    }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (dragModeEnabled && (!(this instanceof Container) || containerDragEnabled)) {
-            if (DragManager.startDrag(this)) {
-                if (DEBUG) Log.v(LOG_TAG, "start drag: " + getClass());
-                v.invalidate();
-                v.startDrag(null, new DragShadowBuilder(v), null, 0);
-            }
-            return true;
-        } else {
-            return false;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (dragModeEnabled && (!(this instanceof Container) || containerDragEnabled)) {
+                    if (DragManager.startDrag(this)) {
+                        if (DEBUG) Log.v(LOG_TAG, "start drag: " + getClass());
+                        v.invalidate();
+                        v.startDrag(null, new DragShadowBuilder(v), null, 0);
+                        // Detect long presses
+                        int[] location = new int[2];
+                        v.getLocationOnScreen(location);
+                        DragManager.setLongPressPos(location[0] + event.getX(),
+                                location[1] + event.getY());
+                        longPressHandler.postDelayed(longPress,
+                                ViewConfiguration.getLongPressTimeout());
+                    }
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                cancelLongPress();
+                break;
         }
+        return false;
     }
     @Override
     public boolean onDrag(View v, DragEvent event) {
@@ -209,8 +311,26 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
             case DragEvent.ACTION_DRAG_STARTED:
             case DragEvent.ACTION_DRAG_ENTERED:
             case DragEvent.ACTION_DRAG_EXITED:
-            case DragEvent.ACTION_DRAG_LOCATION:
                 return true;// Ignore
+            case DragEvent.ACTION_DRAG_LOCATION:
+                // Abort long press if moved for more then one block
+                if (DragManager.isLongPressPossible()) {
+                    int[] location = new int[2];
+                    v.getLocationOnScreen(location);
+                    int diffX = (int) (location[0] + event.getX() - DragManager.getDragStartX());
+                    int diffY = (int) (location[1] + event.getY() - DragManager.getDragStartY());
+                    if (diffX < 0)
+                        diffX *= -1;
+                    if (diffY < 0)
+                        diffY *= -1;
+                    View primeContainer = Util.getPrimeContainer(this).getView();
+                    if (Util.blockRound(primeContainer, diffX, false) != 0 ||
+                            Util.blockRound(primeContainer, diffY, true) != 0) {
+                        if (DEBUG) Log.d(LOG_TAG, "Drag module, cancel longPress");
+                        cancelLongPress();
+                    }
+                }
+                return true;
             case DragEvent.ACTION_DROP:
                 final ModuleFragment insertFragment = DragManager.stopDrag();
                 if (insertFragment != null) {
@@ -225,12 +345,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                 Log.d(LOG_TAG, "drop x " + dropX);
                                 Log.d(LOG_TAG, "drop y " + dropY);
                             }
-                            ModuleFragment primeContainer = this;
-                            while (primeContainer.getParent() != null &&
-                                    primeContainer.getParent() instanceof ModuleFragment) {
-                                primeContainer = (ModuleFragment) primeContainer.getParent();
-                            }
-                            View cView = primeContainer.getView();
+                            View cView = Util.getPrimeContainer(this).getView();
                             boolean dropOnItself = false;
                             if (this == insertFragment) {
                                 dropOnItself = true;
@@ -304,7 +419,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                         new Exception("Drop operation failed; view is null").printStackTrace();
                     }
                 } else {
-                    new Exception("Drop operation failed; fragment is null").printStackTrace();
+                    if (DEBUG) Log.d(LOG_TAG, "Drop operation failed; fragment is null");
                 }
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:

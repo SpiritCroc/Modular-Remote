@@ -294,6 +294,34 @@ public abstract class Util {
         return (int) Math.round(d/screenSize*blockUnits);
     }
 
+    /**
+     * @return
+     * The root container in the hierarchy of the fragment
+     */
+    public static ModuleFragment getPrimeContainer(ModuleFragment fragment) {
+        ModuleFragment primeContainer = fragment;
+        while (primeContainer.getParent() != null &&
+                primeContainer.getParent() instanceof ModuleFragment) {
+            primeContainer = (ModuleFragment) primeContainer.getParent();
+        }
+        return primeContainer;
+    }
+
+    public static PageContainerFragment getPage(ModuleFragment fragment) {
+        if (fragment instanceof PageContainerFragment) {
+            return (PageContainerFragment) fragment;
+        }
+        ModuleFragment parent = fragment;
+        while (parent.getParent() != null &&
+                parent.getParent() instanceof ModuleFragment) {
+            parent = (ModuleFragment) parent.getParent();
+            if (parent instanceof PageContainerFragment) {
+                return (PageContainerFragment) parent;
+            }
+        }
+        return null;
+    }
+
     public static void restoreContentFromRecreationKey(Container container, String key,
                                                        boolean menuEnabled) {
         String[] args = split(key, getSeparator(container), 0);

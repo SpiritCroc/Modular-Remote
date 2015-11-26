@@ -38,6 +38,7 @@ import de.spiritcroc.modular_remote.CustomHorizontalScrollView;
 import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.dialogs.AddHorizontalContainerDialog;
 
 public class HorizontalContainerFragment extends ModuleFragment implements Container {
     private static final String ARG_WIDTH = "width";
@@ -381,5 +382,12 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
             }
         }
         return false;
+    }
+
+    @Override
+    protected void editActionEdit() {
+        new AddHorizontalContainerDialog()
+                .setEditFragment(this)
+                .show(getFragmentManager(), "AddHorizontalContainerDialog");
     }
 }
