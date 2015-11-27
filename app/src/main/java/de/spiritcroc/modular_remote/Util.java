@@ -236,7 +236,7 @@ public abstract class Util {
     public static int getWidthFromBlockUnits(View containerView, double size, boolean pos) {
         int screenWidth = getX(containerView);
         if (size <= 0) {
-            return screenWidth;
+            return 0;
         }
 
         SharedPreferences preferences =
@@ -262,7 +262,7 @@ public abstract class Util {
 
         int screenHeight = getY(containerView);
         if (size <= 0) {
-            return screenHeight;
+            return 0;
         }
 
         int blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT, 6);
