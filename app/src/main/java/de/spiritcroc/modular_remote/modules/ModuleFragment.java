@@ -398,7 +398,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                         oldC.onContentMoved();
                                         int oldDepth = insertFragment instanceof Container ?
                                                 ((Container) insertFragment).getDepth() : -1;
-                                        container.addFragment(insertFragment);
+                                        container.addFragment(insertFragment, true);
                                         if (insertFragment instanceof Container) {
                                             ((Container) insertFragment)
                                                     .updateDepth(oldDepth);

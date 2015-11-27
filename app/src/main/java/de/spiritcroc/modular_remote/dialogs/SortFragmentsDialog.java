@@ -82,7 +82,7 @@ public class SortFragmentsDialog extends CustomDialogFragment {
                         }
                         // Re-add in new order
                         for (int i = 0; i < sortFragments.size(); i++) {
-                            container.addFragment(sortFragments.get(i));
+                            container.addFragment(sortFragments.get(i), true);
                         }
                     }
                 })

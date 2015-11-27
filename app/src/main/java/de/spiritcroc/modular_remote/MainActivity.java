@@ -674,7 +674,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
         if (addWidgetContainer != null) {
             addWidgetContainer.addFragment(WidgetContainerFragment
-                    .newInstance(appWidgetId, addWidgetWidth, addWidgetHeight));
+                    .newInstance(appWidgetId, addWidgetWidth, addWidgetHeight), false);
             if (addWidgetListener != null) {
                 addWidgetListener.dismiss();
                 addWidgetListener = null;

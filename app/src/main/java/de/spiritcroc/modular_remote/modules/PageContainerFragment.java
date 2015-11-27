@@ -446,26 +446,35 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     }
 
     @Override
-    public void addFragment(final ModuleFragment fragment) {
-        baseViewGroup.post(new Runnable() {
-            @Override
-            public void run() {
-                FragmentManager fragmentManager = getFragmentManager();
-                if (fragmentManager != null) {
-                    fragmentManager.beginTransaction().add(baseViewGroup.getId(), fragment)
-                            .commit();
-                    fragments.add(fragment);
-                    fragment.setMenuEnabled(menuEnabled);
-                    fragment.setParent(PageContainerFragment.this);
-                    if (isDragModeEnabled()) {
-                        fragment.onStartDragMode();
-                    }
-                    fragment.setContainerDragEnabled(isContainerDragEnabled());
-                } else {
-                    Log.e(LOG_TAG, "Can't add " + fragment);
+    public void addFragment(final ModuleFragment fragment, boolean post) {
+        if (post) {
+            baseViewGroup.post(new AddFragment(fragment));
+        } else {
+            new AddFragment(fragment).run();
+        }
+    }
+    private class AddFragment implements Runnable {
+        private ModuleFragment fragment;
+        private AddFragment(ModuleFragment fragment){
+            this.fragment = fragment;
+        }
+        @Override
+        public void run() {
+            FragmentManager fragmentManager = getFragmentManager();
+            if (fragmentManager != null) {
+                fragmentManager.beginTransaction().add(baseViewGroup.getId(), fragment)
+                        .commit();
+                fragments.add(fragment);
+                fragment.setMenuEnabled(menuEnabled);
+                fragment.setParent(PageContainerFragment.this);
+                if (isDragModeEnabled()) {
+                    fragment.onStartDragMode();
                 }
+                fragment.setContainerDragEnabled(isContainerDragEnabled());
+            } else {
+                Log.e(LOG_TAG, "Can't add " + fragment);
             }
-        });
+        }
     }
     @Override
     public void removeFragment(ModuleFragment fragment, boolean callOnRemove) {

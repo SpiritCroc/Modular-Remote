@@ -22,7 +22,7 @@ import android.support.annotation.Nullable;
 import android.text.Spannable;
 
 public interface Container {
-    void addFragment(ModuleFragment fragment);
+    void addFragment(ModuleFragment fragment, boolean post);
 
     /**
      * @param callOnRemove

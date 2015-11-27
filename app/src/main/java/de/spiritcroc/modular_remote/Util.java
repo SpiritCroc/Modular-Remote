@@ -350,7 +350,7 @@ public abstract class Util {
             }
             if (fragment != null) {
                 fragment.setMenuEnabled(menuEnabled);
-                container.addFragment(fragment);
+                container.addFragment(fragment, false);
             }
         }
     }
@@ -497,7 +497,7 @@ public abstract class Util {
             new SelectContainerDialog().setValues(page, fragment)
                     .show(activity.getFragmentManager(), "SelectContainerDialog");
         } else {
-            container.addFragment(fragment);
+            container.addFragment(fragment, false);
             if (activity instanceof MainActivity) {
                 // Scroll to newly added fragment
                 Container parent = fragment instanceof Container ?
