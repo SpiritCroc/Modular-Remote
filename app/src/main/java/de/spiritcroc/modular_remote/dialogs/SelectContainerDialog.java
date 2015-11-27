@@ -108,6 +108,7 @@ public class SelectContainerDialog extends CustomDialogFragment {
                 break;
             case MOVE_FRAGMENT:
                 addFragment.getParent().removeFragment(addFragment, false);
+                addFragment.resetPosition();
                 containers[index].addFragment(addFragment);
                 break;
             case COPY_FRAGMENTS:
@@ -120,6 +121,7 @@ public class SelectContainerDialog extends CustomDialogFragment {
                 for (int i = 0; i < addFragments.size(); i++) {
                     ModuleFragment addFragment = addFragments.get(i);
                     addFragment.getParent().removeFragment(addFragment, false);
+                    addFragment.resetPosition();
                     containers[index].addFragment(addFragment);
                 }
                 break;

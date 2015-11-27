@@ -138,6 +138,9 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         updatePosition();
     }
 
+    public void resetPosition() {
+        setPosition(0, 0);
+    }
     protected void setPosition(int leftMargin, int topMargin) {
         setPosition(leftMargin, topMargin, false);
     }
