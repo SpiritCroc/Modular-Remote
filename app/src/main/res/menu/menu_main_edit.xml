@@ -32,5 +32,5 @@
     <item
         android:id="@+id/action_fragment_settings"
         android:title="@string/action_fragment_settings"
-        android:icon="@drawable/ic_settings_white_36dp"/>
+        android:icon="@drawable/ic_tune_white_36dp"/>
 </menu>
