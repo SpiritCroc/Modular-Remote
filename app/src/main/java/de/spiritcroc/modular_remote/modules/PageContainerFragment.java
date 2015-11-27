@@ -446,20 +446,26 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     }
 
     @Override
-    public void addFragment(ModuleFragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager != null) {
-            fragmentManager.beginTransaction().add(baseViewGroup.getId(), fragment).commit();
-            fragments.add(fragment);
-            fragment.setMenuEnabled(menuEnabled);
-            fragment.setParent(this);
-            if (isDragModeEnabled()) {
-                fragment.onStartDragMode();
+    public void addFragment(final ModuleFragment fragment) {
+        baseViewGroup.post(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getFragmentManager();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction().add(baseViewGroup.getId(), fragment)
+                            .commit();
+                    fragments.add(fragment);
+                    fragment.setMenuEnabled(menuEnabled);
+                    fragment.setParent(PageContainerFragment.this);
+                    if (isDragModeEnabled()) {
+                        fragment.onStartDragMode();
+                    }
+                    fragment.setContainerDragEnabled(isContainerDragEnabled());
+                } else {
+                    Log.e(LOG_TAG, "Can't add " + fragment);
+                }
             }
-            fragment.setContainerDragEnabled(isContainerDragEnabled());
-        } else {
-            Log.e(LOG_TAG, "Can't add " + fragment);
-        }
+        });
     }
     @Override
     public void removeFragment(ModuleFragment fragment, boolean callOnRemove) {

@@ -195,20 +195,26 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     }
 
     @Override
-    public void addFragment(ModuleFragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager != null) {
-            fragmentManager.beginTransaction().add(containerLayout.getId(), fragment).commit();
-            fragments.add(fragment);
-            fragment.setMenuEnabled(menuEnabled);
-            fragment.setParent(this);
-            if (isDragModeEnabled()) {
-                fragment.onStartDragMode();
+    public void addFragment(final ModuleFragment fragment) {
+        containerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getFragmentManager();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction().add(containerLayout.getId(), fragment)
+                            .commit();
+                    fragments.add(fragment);
+                    fragment.setMenuEnabled(menuEnabled);
+                    fragment.setParent(HorizontalContainerFragment.this);
+                    if (isDragModeEnabled()) {
+                        fragment.onStartDragMode();
+                    }
+                    fragment.setContainerDragEnabled(isContainerDragEnabled());
+                } else {
+                    Log.e(LOG_TAG, "Can't add " + fragment);
+                }
             }
-            fragment.setContainerDragEnabled(isContainerDragEnabled());
-        } else {
-            Log.e(LOG_TAG, "Can't add " + fragment);
-        }
+        });
     }
     @Override
     public void removeFragment(ModuleFragment fragment, boolean callOnRemove) {

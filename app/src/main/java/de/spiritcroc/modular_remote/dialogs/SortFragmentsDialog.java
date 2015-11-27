@@ -42,7 +42,6 @@ public class SortFragmentsDialog extends CustomDialogFragment {
     private ArrayList<ModuleFragment> sortFragments = new ArrayList<>();
     private ArrayList<Spannable> sortFragmentNames = new ArrayList<>();
     private ArrayAdapter arrayAdapter;
-    private boolean reAddedFragments = false;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -59,7 +58,6 @@ public class SortFragmentsDialog extends CustomDialogFragment {
             sortFragmentNames.add(fragment instanceof Container ?
                     ((Container) fragment).getContentReadableName(null) :
                     new SpannableString(fragment.getReadableName()));
-            container.removeFragment(fragment, false);
         }
 
         arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
@@ -78,8 +76,11 @@ public class SortFragmentsDialog extends CustomDialogFragment {
                 .setPositiveButton(R.string.dialog_apply, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Remove
+                        for (int i = 0; i < sortFragments.size(); i++) {
+                            container.removeFragment(sortFragments.get(i), false);
+                        }
                         // Re-add in new order
-                        reAddedFragments = true;
                         for (int i = 0; i < sortFragments.size(); i++) {
                             container.addFragment(sortFragments.get(i));
                         }
@@ -97,25 +98,5 @@ public class SortFragmentsDialog extends CustomDialogFragment {
     public SortFragmentsDialog setContainer(Container container) {
         this.container = container;
         return this;
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        maybeResetContent();
-    }
-
-    @Override
-    public void onDestroy() {
-        maybeResetContent();
-    }
-
-    private void maybeResetContent() {
-        if (!reAddedFragments) {
-            reAddedFragments = true;
-            // Re-add in old order
-            for (ModuleFragment fragment: initFragments) {
-                container.addFragment(fragment);
-            }
-        }
     }
 }

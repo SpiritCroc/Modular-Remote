@@ -47,7 +47,6 @@ public class SelectContainerDialog extends CustomDialogFragment {
     private Container[] containers;
     private Activity activity;
     private Mode mode = Mode.ADD_FRAGMENT;
-    private boolean moveSuccess = false;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -108,7 +107,7 @@ public class SelectContainerDialog extends CustomDialogFragment {
                 }
                 break;
             case MOVE_FRAGMENT:
-                moveSuccess = true;
+                addFragment.getParent().removeFragment(addFragment, false);
                 containers[index].addFragment(addFragment);
                 break;
             case COPY_FRAGMENTS:
@@ -118,9 +117,9 @@ public class SelectContainerDialog extends CustomDialogFragment {
                 }
                 break;
             case MOVE_FRAGMENTS:
-                moveSuccess = true;
                 for (int i = 0; i < addFragments.size(); i++) {
                     ModuleFragment addFragment = addFragments.get(i);
+                    addFragment.getParent().removeFragment(addFragment, false);
                     containers[index].addFragment(addFragment);
                 }
                 break;
@@ -155,31 +154,9 @@ public class SelectContainerDialog extends CustomDialogFragment {
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         super.onDismiss(dialogInterface);
-        maybeReAddFragment();
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        maybeReAddFragment();
-    }
-    private void maybeReAddFragment() {
-        if (!moveSuccess) {
-            moveSuccess = true;
-            if (mode == Mode.MOVE_FRAGMENT) {
-                addFragment.getParent().addFragment(addFragment);
-                Toast.makeText(getActivity(), R.string.toast_aborted_fragment_move,
-                        Toast.LENGTH_LONG)
-                        .show();
-            } else if (mode == Mode.MOVE_FRAGMENTS) {
-                for (int i = 0; i < addFragments.size(); i++) {
-                    ModuleFragment addFragment = addFragments.get(i);
-                    addFragment.getParent().addFragment(addFragment);
-                }
-                Toast.makeText(getActivity(), R.string.toast_aborted_fragment_move,
-                        Toast.LENGTH_LONG)
-                        .show();
-
-            }
-        }
     }
 }

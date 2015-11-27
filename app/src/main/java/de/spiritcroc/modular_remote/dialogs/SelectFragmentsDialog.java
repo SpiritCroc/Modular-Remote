@@ -322,10 +322,6 @@ public class SelectFragmentsDialog extends DialogFragment {
                 mainActivity.removePage(fragment, false);
                 mainActivity.addPage(fragment);
             } else {
-                for (int i = 0; i < selectedModuleFragments.size(); i++) {
-                    ModuleFragment fragment = selectedModuleFragments.get(i);
-                    fragment.getParent().removeFragment(fragment, false);
-                }
                 new SelectContainerDialog().setValues(page, selectedModuleFragments)
                         .setMode(SelectContainerDialog.Mode.MOVE_FRAGMENTS)
                         .setOnDismissListener(contentUpdateListener)

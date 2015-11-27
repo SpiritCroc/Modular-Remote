@@ -268,7 +268,6 @@
     <string name="error_connection_already_exists">Connection already exists</string>
     <string name="error_cannot_resize_not_enough_space">Can\'t resize: not enough space</string>
 
-    <string name="toast_aborted_fragment_move">Module move aborted! Re-added module to its old container (order might be changed).</string>
     <string name="toast_volume_button_settings_shortcut">You entered the shortcut code to reach the settings!</string>
     <string name="toast_illegal_input">Illegal input!</string>
 

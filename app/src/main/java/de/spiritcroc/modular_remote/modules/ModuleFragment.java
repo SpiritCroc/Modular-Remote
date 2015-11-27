@@ -254,7 +254,6 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
             };
     protected abstract void editActionEdit();
     protected void editActionMove() {
-        getParent().removeFragment(this, false);
         new SelectContainerDialog().setValues(Util.getPage(this), this)
                 .setMode(SelectContainerDialog.Mode.MOVE_FRAGMENT)
                 .show(getFragmentManager(), "SelectContainerDialog");
@@ -394,18 +393,13 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                         Container oldC = insertFragment.getParent();
                                         oldC.removeFragment(insertFragment, false);
                                         oldC.onContentMoved();
-                                        final int oldDepth = insertFragment instanceof Container ?
+                                        int oldDepth = insertFragment instanceof Container ?
                                                 ((Container) insertFragment).getDepth() : -1;
-                                        v.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                container.addFragment(insertFragment);
-                                                if (insertFragment instanceof Container) {
-                                                    ((Container) insertFragment)
-                                                            .updateDepth(oldDepth);
-                                                }
-                                            }
-                                        });
+                                        container.addFragment(insertFragment);
+                                        if (insertFragment instanceof Container) {
+                                            ((Container) insertFragment)
+                                                    .updateDepth(oldDepth);
+                                        }
                                     }
                                 }
                             }
