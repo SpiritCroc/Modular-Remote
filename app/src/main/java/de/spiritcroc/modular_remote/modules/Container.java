@@ -73,13 +73,6 @@ public interface Container {
      */
     Spannable getContentReadableName(@Nullable String prefix);
 
-    /**
-     * Some containers might need to update when changing depth (e.g. recovery key adaptions)
-     * @param oldDepth
-     * The depth before changing it
-     */
-    void updateDepth(int oldDepth);
-
     boolean isEmpty();
     int getFragmentCount();
 

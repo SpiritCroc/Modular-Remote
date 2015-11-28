@@ -166,12 +166,15 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     private void setRecreationKey(String recreationKey) {
         this.recreationKey = recreationKey;
     }
-    @Override
-    public void updateDepth(int oldDepth) {
-        recreationKey = Util.updateRecreationKey(recreationKey, oldDepth, getDepth());
+    private void updateDepth() {
+        if (oldDepth != -1) {
+            recreationKey = Util.updateRecreationKey(recreationKey, oldDepth, getDepth());
+            oldDepth = -1;
+        }
     }
     private void restoreContentFromRecreationKey() {
         if (recreationKey != null) {
+            updateDepth();
             Util.restoreContentFromRecreationKey(this, recreationKey, menuEnabled);
         }
     }

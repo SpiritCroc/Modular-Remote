@@ -64,6 +64,12 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     public abstract void setMenuEnabled(boolean menuEnabled);
 
     /**
+     * If module needs updating when re-adding with new depth, old depth is stored in this variable
+     * When updating is done/no updating required, set to -1
+     */
+    protected int oldDepth = -1;
+
+    /**
      * Some fragments (e.g. WidgetContainerFragment) might need to free some space on removal
      */
     public void onRemove() {}
@@ -396,13 +402,11 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                         Container oldC = insertFragment.getParent();
                                         oldC.removeFragment(insertFragment, false);
                                         oldC.onContentMoved();
-                                        int oldDepth = insertFragment instanceof Container ?
-                                                ((Container) insertFragment).getDepth() : -1;
+                                        insertFragment.oldDepth =
+                                                insertFragment instanceof Container ?
+                                                        ((Container) insertFragment).getDepth() :
+                                                        insertFragment.getParent().getDepth() + 1;
                                         container.addFragment(insertFragment, true);
-                                        if (insertFragment instanceof Container) {
-                                            ((Container) insertFragment)
-                                                    .updateDepth(oldDepth);
-                                        }
                                     }
                                 }
                             }
