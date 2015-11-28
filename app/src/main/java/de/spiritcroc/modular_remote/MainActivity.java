@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         viewPager.removeOnPageChangeListener(this);
 
-        saveSettings();
+        saveConnections();
         appWidgetHost.stopListening();
 
         if (changedRingerMode) {
