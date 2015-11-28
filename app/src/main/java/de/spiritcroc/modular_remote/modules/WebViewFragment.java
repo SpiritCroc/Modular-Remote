@@ -251,6 +251,7 @@ public class WebViewFragment extends ModuleFragment {
         this.width = width;
         this.height = height;
         resize();
+        this.address = address;
         this.javaScriptEnabled = javaScriptEnabled;
         this.allowExternalLinks = allowExternalLinks;
         webView.getSettings().setJavaScriptEnabled(javaScriptEnabled);
