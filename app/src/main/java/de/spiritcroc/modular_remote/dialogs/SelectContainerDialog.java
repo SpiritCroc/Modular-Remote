@@ -43,7 +43,6 @@ public class SelectContainerDialog extends CustomDialogFragment {
     private ModuleFragment addFragment;
     private ArrayList<ModuleFragment> addFragments;
     private boolean addWidget = false;
-    private double addWidgetWidth, addWidgetHeight;
     private int selection = 0;
     private Container[] containers;
     private Activity activity;
@@ -118,8 +117,7 @@ public class SelectContainerDialog extends CustomDialogFragment {
             case ADD_FRAGMENT:
             case COPY_FRAGMENT:
                 if (addWidget) {
-                    Util.addWidgetToContainer(getActivity(), addWidgetWidth, addWidgetHeight,
-                            page, containers[index], null);
+                    Util.addWidgetToContainer(getActivity(), page, containers[index], null);
                 } else {
                     Util.addFragmentToContainer(activity, addFragment, page, containers[index]);
                 }
@@ -157,12 +155,9 @@ public class SelectContainerDialog extends CustomDialogFragment {
         this.addFragments = addFragments;
         return this;
     }
-    public SelectContainerDialog addWidget(PageContainerFragment page, double width,
-                                           double height) {
+    public SelectContainerDialog addWidget(PageContainerFragment page) {
         this.page = page;
         addWidget = true;
-        addWidgetWidth = width;
-        addWidgetHeight = height;
         return this;
     }
 

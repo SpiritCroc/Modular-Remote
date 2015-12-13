@@ -25,49 +25,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_width"
-        style="@style/DialogTitleViewTheme"/>
-    <EditText
-        android:id="@+id/edit_width"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:selectAllOnFocus="true"
-        android:hint="@string/dialog_size_in_block_units"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <CheckBox
-            android:id="@+id/edit_match_height"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="false"/>
-        <TextView
-            android:id="@+id/view_match_height"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_match_height"
-            android:layout_gravity="center"/>
-    </LinearLayout>
-    <TextView
-        android:id="@+id/height_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/dialog_height"
-        style="@style/DialogTitleViewTheme"/>
-    <EditText
-        android:id="@+id/edit_height"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:selectAllOnFocus="true"
-        android:hint="@string/dialog_size_in_block_units"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/dialog_address"
         style="@style/DialogTitleViewTheme"/>
     <EditText

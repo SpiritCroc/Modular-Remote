@@ -43,9 +43,11 @@ import de.spiritcroc.modular_remote.Display;
 import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.Preferences;
 import de.spiritcroc.modular_remote.R;
+import de.spiritcroc.modular_remote.ResizeFrame;
 import de.spiritcroc.modular_remote.TcpConnectionManager;
 import de.spiritcroc.modular_remote.TcpInformation;
 import de.spiritcroc.modular_remote.TimeSingleton;
+import de.spiritcroc.modular_remote.TouchOverlay;
 import de.spiritcroc.modular_remote.Util;
 
 public class PageContainerFragment extends ModuleFragment implements Container,
@@ -310,18 +312,12 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         }
     }
     @Override
-    public void resize() {
-        for (ModuleFragment fragment: fragments) {
-            fragment.resize();
+    public void resize(boolean resizeContent) {
+        if (resizeContent) {
+            for (ModuleFragment fragment: fragments) {
+                fragment.resize(true);
+            }
         }
-    }
-    @Override
-    public double getArgWidth() {
-        return -1;// Has no such setting
-    }
-    @Override
-    public double getArgHeight() {
-        return -1;// Has no such setting
     }
     public boolean onKeyDown (int keyCode) {
         if (useHardwareButtons && connection != null) {
@@ -431,12 +427,6 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         fragment.init(getActivity(), true).setRecreationKey(getRecreationKey());
         return fragment;
     }
-    @Override
-    public Container getParent() {//has no official Container as parent
-        return null;
-    }
-    @Override
-    public void setParent(Container parent) {}
     public int getDepth() {
         return 1;
     }
@@ -727,5 +717,35 @@ public class PageContainerFragment extends ModuleFragment implements Container,
             Log.e(LOG_TAG, "!(activity instanceof MainActivity)");
         }
         */
+    }
+
+    @Override
+    public void addResizeFrame(ResizeFrame resizeFrame) {
+        baseViewGroup.addView(resizeFrame);
+    }
+    @Override
+    public void removeResizeFrame(ResizeFrame resizeFrame) {
+        baseViewGroup.removeView(resizeFrame);
+    }
+
+    public void addResizeOverlay(TouchOverlay overlay) {
+        baseViewGroup.addView(overlay, new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            // Prevent intercepting touch events
+            ((MainActivity) activity).setViewPagerEnabled(false);
+        } else {
+            Log.w(LOG_TAG, "addResizeOverlay: !(activity instanceof MainActivity)");
+        }
+    }
+    public void removeResizeOverlay(TouchOverlay overlay) {
+        baseViewGroup.removeView(overlay);
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            ((MainActivity) activity).setViewPagerEnabled(true);
+        } else {
+            Log.w(LOG_TAG, "addResizeOverlay: !(activity instanceof MainActivity)");
+        }
     }
 }

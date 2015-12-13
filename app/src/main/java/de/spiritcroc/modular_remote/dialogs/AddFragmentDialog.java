@@ -31,10 +31,13 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import de.spiritcroc.modular_remote.Util;
 import de.spiritcroc.modular_remote.modules.Container;
+import de.spiritcroc.modular_remote.modules.HorizontalContainerFragment;
 import de.spiritcroc.modular_remote.modules.ModuleFragment;
 import de.spiritcroc.modular_remote.modules.PageContainerFragment;
 import de.spiritcroc.modular_remote.R;
+import de.spiritcroc.modular_remote.modules.ScrollContainerFragment;
 
 public class AddFragmentDialog extends DialogFragment {
     private static final String LOG_TAG = AddFragmentDialog.class.getSimpleName();
@@ -105,23 +108,24 @@ public class AddFragmentDialog extends DialogFragment {
                                         .show(getFragmentManager(), "AddWebViewFragmentDialog");
                                 break;
                             case ModuleFragment.WIDGET_CONTAINER_FRAGMENT:
-                                new AddWidgetContainerDialog().setPage(page)
-                                        .setContainer(container)
-                                        .setOnDismissListener(updateListener)
-                                        .show(getFragmentManager(), "AddWidgetContainerDialog");
+                                Util.addWidgetToContainer(getActivity(), page, container, null);
+                                if (updateListener != null) {
+                                    updateListener.onDismiss();
+                                }
                                 break;
                             case ModuleFragment.SCROLL_CONTAINER_FRAGMENT:
-                                new AddScrollContainerFragmentDialog().setPage(page)
-                                        .setContainer(container)
-                                        .setOnDismissListener(updateListener)
-                                        .show(getFragmentManager(),
-                                                "AddScrollContainerFragmentDialog");
+                                Util.addFragmentToContainer(activity, ScrollContainerFragment
+                                        .newInstance(), page, container);
+                                if (updateListener != null) {
+                                    updateListener.onDismiss();
+                                }
                                 break;
                             case ModuleFragment.HORIZONTAL_CONTAINER:
-                                new AddHorizontalContainerDialog().setPage(page)
-                                        .setContainer(container)
-                                        .setOnDismissListener(updateListener)
-                                        .show(getFragmentManager(), "AddHorizontalContainerDialog");
+                                Util.addFragmentToContainer(activity, HorizontalContainerFragment
+                                        .newInstance(), page, container);
+                                if (updateListener != null) {
+                                    updateListener.onDismiss();
+                                }
                                 break;
                             default:
                                 Log.w(LOG_TAG, "Unknown fragment: " + fragmentValues[selection]);

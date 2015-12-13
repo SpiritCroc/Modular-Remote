@@ -256,10 +256,6 @@ public abstract class Util {
     public static int getHeightFromBlockUnits(View containerView, double size, boolean pos) {
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(containerView.getContext());
-        if (!preferences.getBoolean(Preferences.KEY_USE_BLOCK_SIZE_HEIGHT, false)) {
-            return getWidthFromBlockUnits(containerView, size, pos);
-        }
-
         int screenHeight = getY(containerView);
         if (size <= 0) {
             return 0;
@@ -282,9 +278,6 @@ public abstract class Util {
                 PreferenceManager.getDefaultSharedPreferences(containerView.getContext());
         int blockUnits, screenSize;
         if (yDir) {
-            if (!preferences.getBoolean(Preferences.KEY_USE_BLOCK_SIZE_HEIGHT, false)) {
-                return blockRound(containerView, d, false);
-            }
             blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT, 6);
             screenSize = getY(containerView);
         } else {
@@ -512,16 +505,15 @@ public abstract class Util {
             }
         }
     }
-    public static void addWidgetToContainer(Activity activity, double width, double height,
-                                            PageContainerFragment page,
+    public static void addWidgetToContainer(Activity activity, PageContainerFragment page,
                                             @Nullable Container container,
                                             @Nullable DialogFragment dismissDialog) {
         if (container == null) {
-            new SelectContainerDialog().addWidget(page, width, height)
+            new SelectContainerDialog().addWidget(page)
                     .show(activity.getFragmentManager(), "SelectContainerDialog");
         } else if (activity instanceof MainActivity) {
             ((MainActivity) activity).setAddWidgetListener(dismissDialog);
-            ((MainActivity) activity).addWidget(container, width, height);
+            ((MainActivity) activity).addWidget(container);
         } else {
             Log.w(LOG_TAG, "addWidgetToContainer: !(activity instanceof MainActivity)");
         }

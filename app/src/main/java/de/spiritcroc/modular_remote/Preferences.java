@@ -31,7 +31,6 @@ public final class Preferences {
             KEY_SYSTEM_UI_TIMEOUT = "pref_system_ui_timeout",
             KEY_CHANGE_RINGER_MODE = "pref_change_ringer_mode",
             KEY_BLOCK_SIZE = "pref_block_size",
-            KEY_USE_BLOCK_SIZE_HEIGHT = "pref_use_block_size_height",
             KEY_BLOCK_SIZE_HEIGHT = "pref_block_size_height",
             KEY_LAST_PAGE_ID = "last_page_id",
             KEY_DOUBLE_CLICK_TIMEOUT = "pref_double_click_timeout",

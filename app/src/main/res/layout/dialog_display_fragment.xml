@@ -22,39 +22,6 @@
     android:layout_height="match_parent"
     android:theme="@style/DialogTheme">
 
-    <LinearLayout
-        android:id="@+id/fragment_layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_width"
-            style="@style/DialogTitleViewTheme"/>
-        <EditText
-            android:id="@+id/edit_width"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"
-            android:hint="@string/dialog_size_in_block_units"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_height"
-            style="@style/DialogTitleViewTheme"/>
-        <EditText
-            android:id="@+id/edit_height"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"
-            android:hint="@string/dialog_size_in_block_units"/>
-    </LinearLayout>
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

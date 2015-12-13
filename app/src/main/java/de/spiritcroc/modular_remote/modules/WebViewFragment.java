@@ -18,7 +18,6 @@
 
 package de.spiritcroc.modular_remote.modules;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -31,33 +30,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 
-import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
 import de.spiritcroc.modular_remote.dialogs.AddWebViewFragmentDialog;
 
 public class WebViewFragment extends ModuleFragment {
     private static final String ARG_ADDRESS = "ip";
-    private static final String ARG_WIDTH = "width";
-    private static final String ARG_HEIGHT = "height";
     private static final String ARG_JAVA_SCRIPT_ENABLED = "java_script_enabled";
     private static final String ARG_ALLOW_EXTERNAL_LINKS = "allow_external_links";
     private static final String LOG_TAG = WebViewFragment.class.getSimpleName();
 
-    private Container parent;
     private String address;
-    private double width, height;
     private boolean javaScriptEnabled, allowExternalLinks, connected = true;
     private WebView webView;
     private MenuItem menuReloadItem;
-    private LinearLayout baseLayout;
     private boolean menuEnabled = false;
     private boolean created = false;
 
-    public static WebViewFragment newInstance(String address, double width, double height,
-                                              boolean javaScriptEnabled,
+    public static WebViewFragment newInstance(String address, boolean javaScriptEnabled,
                                               boolean allowExternalLinks) {
         if (!address.contains("//")) {
             address = "http://" + address;
@@ -65,8 +56,6 @@ public class WebViewFragment extends ModuleFragment {
         WebViewFragment fragment = new WebViewFragment();
         Bundle args = new Bundle();
         args.putString(ARG_ADDRESS, address);
-        args.putDouble(ARG_WIDTH, width);
-        args.putDouble(ARG_HEIGHT, height);
         args.putBoolean(ARG_JAVA_SCRIPT_ENABLED, javaScriptEnabled);
         args.putBoolean(ARG_ALLOW_EXTERNAL_LINKS, allowExternalLinks);
         fragment.setArguments(args);
@@ -88,14 +77,11 @@ public class WebViewFragment extends ModuleFragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             address = arguments.getString(ARG_ADDRESS);
-            width = getArguments().getDouble(ARG_WIDTH);
-            height = getArguments().getDouble(ARG_HEIGHT);;
             javaScriptEnabled = arguments.getBoolean(ARG_JAVA_SCRIPT_ENABLED);
             allowExternalLinks = arguments.getBoolean(ARG_ALLOW_EXTERNAL_LINKS);
         } else {
             Log.e(LOG_TAG, "onCreate: getArguments()==null");
             address = "";
-            width = height = 1;
         }
     }
     @Override
@@ -105,12 +91,12 @@ public class WebViewFragment extends ModuleFragment {
 
         webView = (WebView) view.findViewById(R.id.web_view);
         setDragView(webView);
-        baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
 
         // Set to our own WebViewClient so we can open links within the WebView
         webView.setWebViewClient(new CustomWebViewClient());
-        setValues(address, width, height, javaScriptEnabled, allowExternalLinks);
+        setValues(address, javaScriptEnabled, allowExternalLinks);
         updatePosition(view);
+        resize(view);
 
         maybeStartDrag(view);
 
@@ -164,28 +150,18 @@ public class WebViewFragment extends ModuleFragment {
         return Util.getACString(R.string.fragment_web_view) + " " + address;
     }
     @Override
-    public Container getParent() {
-        return parent;
-    }
-    @Override
-    public void setParent(Container parent) {
-        this.parent = parent;
-    }
-    @Override
     public String getRecreationKey() {
         return fixRecreationKey(WEB_VIEW_FRAGMENT + SEP + pos.getRecreationKey()+ SEP +
-                address + SEP + width + SEP + height + SEP + javaScriptEnabled + SEP +
+                address + SEP + javaScriptEnabled + SEP +
                 allowExternalLinks + SEP);
     }
     public static WebViewFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
             String address = args[2];
-            double width = Double.parseDouble(args[3]);
-            double height = Double.parseDouble(args[4]);
-            boolean javaScriptEnabled = Boolean.parseBoolean(args[5]);
-            boolean allowExternalLinks = Boolean.parseBoolean(args[6]);
-            WebViewFragment fragment = newInstance(address, width, height, javaScriptEnabled,
+            boolean javaScriptEnabled = Boolean.parseBoolean(args[3]);
+            boolean allowExternalLinks = Boolean.parseBoolean(args[4]);
+            WebViewFragment fragment = newInstance(address, javaScriptEnabled,
                     allowExternalLinks);
             fragment.recoverPos(args[1]);
             return fragment;
@@ -197,7 +173,7 @@ public class WebViewFragment extends ModuleFragment {
     }
     @Override
     public ModuleFragment copy() {
-        return newInstance(address, width, height, javaScriptEnabled, allowExternalLinks);
+        return newInstance(address, javaScriptEnabled, allowExternalLinks);
     }
 
     private class CustomWebViewClient extends WebViewClient {
@@ -228,46 +204,18 @@ public class WebViewFragment extends ModuleFragment {
     public String getAddress() {
         return address;
     }
-    public double getArgWidth() {
-        return width;
-    }
-    public double getArgHeight() {
-        return height;
-    }
     public boolean getJavaScriptEnabled() {
         return javaScriptEnabled;
     }
     public boolean getAllowExternalLinks() {
         return allowExternalLinks;
     }
-    public void setValues(String address, double width, double height, boolean javaScriptEnabled,
-                          boolean allowExternalLinks) {
-        if (width <= 0) {
-            width = 1;
-        }
-        if (height != -1 && height <= 0) {// height == -1 → match_parent
-            height = 1;
-        }
-        this.width = width;
-        this.height = height;
-        resize();
+    public void setValues(String address, boolean javaScriptEnabled, boolean allowExternalLinks) {
         this.address = address;
         this.javaScriptEnabled = javaScriptEnabled;
         this.allowExternalLinks = allowExternalLinks;
         webView.getSettings().setJavaScriptEnabled(javaScriptEnabled);
         webView.loadUrl(address);
-    }
-    @Override
-    public void resize() {
-        updatePosition();
-        Activity activity = getActivity();
-        if (activity instanceof MainActivity) {
-            View containerView = ((MainActivity) activity).getViewContainer();
-            Util.resizeLayoutWidth(containerView, baseLayout, width);
-            Util.resizeLayoutHeight(containerView, baseLayout, height);
-        } else {
-            Log.w(LOG_TAG, "Can't resize: !(activity instanceof MainActivity)");
-        }
     }
 
     @Override

@@ -34,6 +34,7 @@
     <string name="action_fragment_settings">Module settings</string>
     <string name="action_connection_manager">Connection manager</string>
     <string name="action_about">About</string>
+    <string name="action_resize">Resize</string>
     <string name="action_edit">Edit</string>
     <string name="action_move">Move</string>
     <string name="action_clone">Clone</string>
@@ -92,11 +93,6 @@
     <string name="dialog_overwrite_receiver_type_message">A connection for this ip already exists with the TCP device type \'%1$s\'.\nDo you want to change it to \'%2$s\'?</string>
     <string name="dialog_use_hardware_volume">Use hardware volume</string>
     <string name="dialog_finish">Finish</string>
-    <string name="dialog_height">Height:</string>
-    <string name="dialog_width">Width:</string>
-    <string name="dialog_size_in_block_units">In block units, as set up in the settings</string>
-    <string name="dialog_match_width">Match width</string>
-    <string name="dialog_match_height">Match height</string>
     <string name="dialog_select_fragment">Select module</string>
     <string name="dialog_command">Command:</string>
     <string name="dialog_click_command">Click command:</string>
@@ -105,8 +101,6 @@
     <string name="dialog_volume_up_command">Volume up command:</string>
     <string name="dialog_volume_down_command">Volume down command:</string>
     <string name="dialog_receiver_type">TCP device type:</string>
-    <string name="dialog_wrap_width">Wrap width</string>
-    <string name="dialog_wrap_height">Wrap height</string>
     <string name="dialog_information_type">Display information type:</string>
     <string name="dialog_title_enter_volume">Enter volume</string>
     <string name="dialog_summary_enter_volume_db">Enter volume in dB</string>

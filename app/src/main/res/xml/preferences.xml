@@ -55,14 +55,8 @@
             android:title="@string/pref_block_size"
             android:numeric="integer"
             android:defaultValue="4"/>
-        <CheckBoxPreference
-            android:key="pref_use_block_size_height"
-            android:title="@string/pref_use_block_size_height"
-            android:summary="@string/pref_use_block_size_height_summary"
-            android:defaultValue="false"/>
         <EditTextPreference
             android:key="pref_block_size_height"
-            android:dependency="pref_use_block_size_height"
             android:title="@string/pref_block_size_height"
             android:numeric="integer"
             android:defaultValue="6"/>

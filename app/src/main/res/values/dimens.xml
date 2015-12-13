@@ -19,4 +19,6 @@
 
 <resources>
     <dimen name="dialog_content_padding">4dp</dimen>
+
+    <dimen name="resize_handle_margin">13dp</dimen>
 </resources>

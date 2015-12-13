@@ -261,28 +261,11 @@ public class SelectFragmentsDialog extends DialogFragment {
                         .setOnDismissListener(contentUpdateListener)
                         .show(getFragmentManager(),
                                 "EditWebViewFragmentDialog");
-            } else if (fragment instanceof ScrollContainerFragment) {
-                new AddScrollContainerFragmentDialog()
-                        .setEditFragment((ScrollContainerFragment) fragment)
-                        .setOnDismissListener(contentUpdateListener)
-                        .show(getFragmentManager(),
-                                "AddScrollContainerFragmentDialog");
             } else if (fragment instanceof PageContainerFragment) {
                 new AddPageDialog().setPage((PageContainerFragment) fragment,
                         ((PageContainerFragment)fragment).getConnection())
                         .setOnDismissListener(contentUpdateListener)
                         .show(getFragmentManager(), "ManagePagesDialog");
-            } else if (fragment instanceof HorizontalContainerFragment) {
-                new AddHorizontalContainerDialog()
-                        .setEditFragment((HorizontalContainerFragment) fragment)
-                        .setOnDismissListener(contentUpdateListener)
-                        .show(getFragmentManager(),
-                                "AddHorizontalContainerDialog");
-            } else if (fragment instanceof WidgetContainerFragment) {
-                new AddWidgetContainerDialog()
-                        .setEditFragment((WidgetContainerFragment) fragment)
-                        .setOnDismissListener(contentUpdateListener)
-                        .show(getFragmentManager(), "AddWidgetContainerDialog");
             } else if (fragment instanceof DisplayFragment) {
                 new AddDisplayFragmentDialog()
                         .setEditFragment((DisplayFragment) fragment,

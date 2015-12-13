@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.Arrays;
@@ -47,13 +46,11 @@ public class AddSpinnerFragmentDialog extends CustomDialogFragment
     private TcpConnectionManager.ReceiverType type = TcpConnectionManager.ReceiverType.UNSPECIFIED;
     private SpinnerFragment fragment;
     private PageContainerFragment page;
-    private EditText editWidth, editHeight;
     private String ip;
     private Spinner receiverTypeSpinner, informationTypeSpinner;
     private String[] typeValues;
     private int[] informationTypeValues;
     private int informationType;
-    private double width, height;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -67,9 +64,6 @@ public class AddSpinnerFragmentDialog extends CustomDialogFragment
         final AutoCompleteTextView editReceiverIp =
                 (AutoCompleteTextView) view.findViewById(R.id.edit_receiver_ip);
         Util.suggestPreviousIps(this, editReceiverIp);
-
-        editWidth = (EditText) view.findViewById(R.id.edit_width);
-        editHeight = (EditText) view.findViewById(R.id.edit_height);
 
         typeValues = getResources().getStringArray(R.array.receiver_type_array_values);
         receiverTypeSpinner.setAdapter(ArrayAdapter.createFromResource(activity,
@@ -96,8 +90,6 @@ public class AddSpinnerFragmentDialog extends CustomDialogFragment
         String positiveButtonText;
         if (fragment != null) {// Edit fragment
             positiveButtonText = getString(R.string.dialog_ok);
-            editWidth.setText(String.valueOf(fragment.getArgWidth()));
-            editHeight.setText(String.valueOf(fragment.getArgHeight()));
             editReceiverIp.setText(fragment.getIp());
             type = fragment.getType();
             informationType = fragment.getMenu();
@@ -146,14 +138,6 @@ public class AddSpinnerFragmentDialog extends CustomDialogFragment
                             public void onClick(View v) {
                                 ip = Util.getUserInput(editReceiverIp, false);
                                 if (ip == null) {
-                                    return;
-                                }
-                                width = Util.getSizeInput(editWidth);
-                                if (width == -1) {
-                                    return;
-                                }
-                                height = Util.getSizeInput(editHeight);
-                                if (height == -1) {
                                     return;
                                 }
 
@@ -226,10 +210,10 @@ public class AddSpinnerFragmentDialog extends CustomDialogFragment
     @Override
     public void resumeDismiss() {
         if (fragment != null) {// Edit fragment
-            fragment.setValues(ip, type, informationType, width, height);
+            fragment.setValues(ip, type, informationType);
         } else {// Add new fragment
             Util.addFragmentToContainer(getActivity(), SpinnerFragment.newInstance(ip, type,
-                    informationType, width, height), page, container);
+                    informationType), page, container);
         }
         dismiss();
     }

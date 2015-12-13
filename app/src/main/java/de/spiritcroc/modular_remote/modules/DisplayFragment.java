@@ -18,7 +18,6 @@
 
 package de.spiritcroc.modular_remote.modules;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.spiritcroc.modular_remote.Display;
-import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.Preferences;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.TcpConnectionManager;
@@ -50,8 +48,6 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     private static final String LOG_TAG = DisplayFragment.class.getSimpleName();
     private static final boolean DEBUG = false;
 
-    private static final String ARG_WIDTH = "width";
-    private static final String ARG_HEIGHT = "height";
     private static final String ARG_BUTTON_MODE = "button";
     private static final String ARG_IP = "ip";
     private static final String ARG_TYPE = "type";
@@ -62,8 +58,6 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     // Contains mode specific extras
     private static final String ARG_MODE_SETTINGS = "settings";
 
-    private Container parent;
-    private double width, height;
     private int horizontalTextGravity;
     private boolean buttonMode;
     private String ip, clickCommand, doubleClickCommand, longClickCommand;
@@ -92,12 +86,9 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     public static DisplayFragment newInstance(String ip, TcpConnectionManager.ReceiverType type,
                                               ModeSettings modeSettings, String clickCommand,
                                               String doubleClickCommand, String longClickCommand,
-                                              double width, double height,
                                               int horizontalTextGravity, boolean buttonMode) {
         DisplayFragment fragment = new DisplayFragment();
         Bundle args = new Bundle();
-        args.putDouble(ARG_WIDTH, width);
-        args.putDouble(ARG_HEIGHT, height);
         args.putInt(ARG_HORIZONTAL_TEXT_GRAVITY, horizontalTextGravity);
         args.putBoolean(ARG_BUTTON_MODE, buttonMode);
         args.putString(ARG_IP, ip);
@@ -126,8 +117,6 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
 
         Bundle args = getArguments();
         if (args != null) {
-            width = args.getDouble(ARG_WIDTH);
-            height = args.getDouble(ARG_HEIGHT);
             horizontalTextGravity = args.getInt(ARG_HORIZONTAL_TEXT_GRAVITY);
             buttonMode = args.getBoolean(ARG_BUTTON_MODE);
             ip = args.getString(ARG_IP);
@@ -152,7 +141,6 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
             Log.e(LOG_TAG, "onCreate: getArguments() == null");
             ip = "";
             type = TcpConnectionManager.ReceiverType.UNSPECIFIED;
-            width = height = 1;
         }
         tcpConnectionManager = TcpConnectionManager.getInstance(getActivity().getApplicationContext());
     }
@@ -173,8 +161,9 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
         setValues(ip, type, modeSettings, clickCommand, doubleClickCommand, longClickCommand,
-                width, height, horizontalTextGravity);
+                horizontalTextGravity);
         updatePosition(view);
+        resize(view);
 
         maybeStartDrag(view);
 
@@ -307,19 +296,11 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
 
     }
     @Override
-    public Container getParent() {
-        return parent;
-    }
-    @Override
-    public void setParent(Container parent) {
-        this.parent = parent;
-    }
-    @Override
     public String getRecreationKey() {
         return fixRecreationKey((buttonMode ? BUTTON_FRAGMENT : DISPLAY_FRAGMENT) + SEP +
                 pos.getRecreationKey() + SEP +
                 ip + SEP + type.toString() + SEP + clickCommand + SEP +
-                doubleClickCommand + SEP + longClickCommand + SEP + width + SEP + height + SEP +
+                doubleClickCommand + SEP + longClickCommand + SEP +
                 horizontalTextGravity + SEP + modeSettings.getRecreationKey() + SEP);
     }
     public static DisplayFragment recoverFromRecreationKey(String key, boolean buttonMode) {
@@ -331,13 +312,10 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
             String clickCommand = args[4];
             String doubleClickCommand = args[5];
             String longClickCommand = args[6];
-            double width = Double.parseDouble(args[7]);
-            double height = Double.parseDouble(args[8]);
-            int horizontalTextGravity = Integer.parseInt(args[9]);
-            ModeSettings modeSettings = ModeSettings.recoverFromRecreationKey(args[10]);
+            int horizontalTextGravity = Integer.parseInt(args[7]);
+            ModeSettings modeSettings = ModeSettings.recoverFromRecreationKey(args[8]);
             DisplayFragment fragment = newInstance(ip, type, modeSettings, clickCommand,
-                    doubleClickCommand, longClickCommand, width, height, horizontalTextGravity,
-                    buttonMode);
+                    doubleClickCommand, longClickCommand, horizontalTextGravity, buttonMode);
             fragment.recoverPos(args[1]);
             return fragment;
         } catch (Exception e) {
@@ -349,8 +327,11 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
 
     @Override
     public ModuleFragment copy(){
-        return newInstance(ip, type, modeSettings.copy(), clickCommand, doubleClickCommand,
-                longClickCommand, width, height, horizontalTextGravity, buttonMode);
+        DisplayFragment fragment =
+                newInstance(ip, type, modeSettings.copy(), clickCommand, doubleClickCommand,
+                longClickCommand, horizontalTextGravity, buttonMode);
+        fragment.setPosMeasures(pos.width, pos.height);
+        return fragment;
     }
 
     @Override
@@ -425,16 +406,9 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     public int getHorizontalTextGravity() {
         return horizontalTextGravity;
     }
-    public double getArgWidth() {
-        return width;
-    }
-    public double getArgHeight() {
-        return height;
-    }
     public void setValues(String ip, TcpConnectionManager.ReceiverType type,
                           ModeSettings modeSettings, String clickCommand, String doubleClickCommand,
-                          String longClickCommand, double width, double height,
-                          int horizontalTextGravity) {
+                          String longClickCommand, int horizontalTextGravity) {
         if (connection != null) {
             tcpConnectionManager.stopUpdate(this);
         }
@@ -447,15 +421,6 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
         this.clickCommand = clickCommand;
         this.doubleClickCommand = doubleClickCommand;
         this.longClickCommand = longClickCommand;
-        if (width <= 0) {
-            width = 1;
-        }
-        if (height <= 0) {
-            height = 1;
-        }
-        this.width = width;
-        this.height = height;
-        resize();
 
         this.horizontalTextGravity = horizontalTextGravity;
         textView.setGravity(Gravity.CENTER_VERTICAL | horizontalTextGravity);
@@ -489,18 +454,6 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
         } else if (modeSettings instanceof ClockSettings) {
             TimeSingleton.getInstance(Util.getPreferenceInt(sharedPreferences,
                     Preferences.KEY_TIME_UPDATE_INTERVAL, 500)).registerListener(this);
-        }
-    }
-    @Override
-    public void resize() {
-        updatePosition();
-        Activity activity = getActivity();
-        if (activity instanceof MainActivity) {
-            View containerView = ((MainActivity) activity).getViewContainer();
-            Util.resizeLayoutWidth(containerView, baseLayout, width);
-            Util.resizeLayoutHeight(containerView, baseLayout, height);
-        } else {
-            Log.w(LOG_TAG, "Can't resize: !(activity instanceof MainActivity)");
         }
     }
 

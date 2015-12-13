@@ -18,7 +18,6 @@
 
 package de.spiritcroc.modular_remote.modules;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,10 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
-import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.TcpConnectionManager;
 import de.spiritcroc.modular_remote.TcpInformation;
@@ -50,18 +47,14 @@ public class ToggleFragment extends ModuleFragment
     private static final String ARG_TOGGLE_OFF_RESPONSE = "response2";
     private static final String ARG_TOGGLE_ON_LABEL = "label1";
     private static final String ARG_TOGGLE_OFF_LABEL = "label2";
-    private static final String ARG_WIDTH = "width";
-    private static final String ARG_HEIGHT = "height";
 
     public static final int DEFAULT_STATE_OFF = 0;
     public static final int DEFAULT_STATE_ON = 1;
     public static final int DEFAULT_STATE_SAVE_ON = 2;
     public static final int DEFAULT_STATE_SAVE_OFF = 3;
 
-    private Container parent;
     private String ip;
     private TcpConnectionManager.ReceiverType type;
-    private double width, height;
     private TcpConnectionManager tcpConnectionManager;
     private TcpConnectionManager.TcpConnection connection;
     private boolean menuEnabled = false;
@@ -70,7 +63,6 @@ public class ToggleFragment extends ModuleFragment
     private String toggleOnCommand, toggleOffCommand, toggleOnResponse, toggleOffResponse,
             toggleOnLabel, toggleOffLabel;
     private int defaultState;
-    private LinearLayout baseLayout;
     private boolean receivedInformation = false;
     private boolean created = false;
 
@@ -78,7 +70,7 @@ public class ToggleFragment extends ModuleFragment
                                              String toggleOnCommand, String toggleOffCommand,
                                              String toggleOnResponse, String toggleOffResponse,
                                              String toggleOnLabel, String toggleOffLabel,
-                                             int defaultState, double width, double height) {
+                                             int defaultState) {
         ToggleFragment fragment = new ToggleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_IP, ip);
@@ -90,8 +82,6 @@ public class ToggleFragment extends ModuleFragment
         args.putString(ARG_TOGGLE_OFF_RESPONSE, toggleOffResponse);
         args.putString(ARG_TOGGLE_ON_LABEL, toggleOnLabel);
         args.putString(ARG_TOGGLE_OFF_LABEL, toggleOffLabel);
-        args.putDouble(ARG_WIDTH, width);
-        args.putDouble(ARG_HEIGHT, height);
         fragment.setArguments(args);
         return fragment;
     }
@@ -119,15 +109,12 @@ public class ToggleFragment extends ModuleFragment
             toggleOffResponse = args.getString(ARG_TOGGLE_OFF_RESPONSE);
             toggleOnLabel = args.getString(ARG_TOGGLE_ON_LABEL);
             toggleOffLabel = args.getString(ARG_TOGGLE_OFF_LABEL);
-            width = args.getDouble(ARG_WIDTH);
-            height = args.getDouble(ARG_HEIGHT);
         } else {
             Log.e(LOG_TAG, "onCreate: getArguments()==null");
             ip = toggleOnCommand = toggleOffCommand = toggleOnResponse = toggleOffResponse =
                     toggleOnLabel = toggleOffLabel = "";
             type = TcpConnectionManager.ReceiverType.UNSPECIFIED;
             defaultState = DEFAULT_STATE_ON;
-            width = height = 1;
         }
 
         tcpConnectionManager =
@@ -145,15 +132,15 @@ public class ToggleFragment extends ModuleFragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_toggle, container, false);
 
-        baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
         toggleButton = (ToggleButton) view.findViewById(R.id.toggle);
         setDragView(toggleButton);
         toggleButton.setOnClickListener(this);
         toggleButton.setChecked(defaultState == DEFAULT_STATE_ON ||
                 defaultState == DEFAULT_STATE_SAVE_ON);
         setValues(ip, type, toggleOnCommand, toggleOffCommand, toggleOnResponse, toggleOffResponse,
-                toggleOnLabel, toggleOffLabel, defaultState, width, height);
+                toggleOnLabel, toggleOffLabel, defaultState);
         updatePosition(view);
+        resize(view);
 
         maybeStartDrag(view);
 
@@ -219,14 +206,6 @@ public class ToggleFragment extends ModuleFragment
                 toggleOnLabel : (toggleOnLabel + "/" + toggleOffLabel));
     }
     @Override
-    public Container getParent() {
-        return parent;
-    }
-    @Override
-    public void setParent(Container parent) {
-        this.parent = parent;
-    }
-    @Override
     public String getRecreationKey() {
         return fixRecreationKey(TOGGLE_FRAGMENT + SEP + pos.getRecreationKey() + SEP + ip + SEP +
                 connection.getType().toString() + SEP +
@@ -236,7 +215,7 @@ public class ToggleFragment extends ModuleFragment
                         defaultState) + SEP +
                 toggleOnCommand + SEP + toggleOffCommand + SEP +
                 toggleOnResponse + SEP + toggleOffResponse + SEP +
-                toggleOnLabel + SEP + toggleOffLabel + SEP + width + SEP + height + SEP);
+                toggleOnLabel + SEP + toggleOffLabel + SEP);
     }
     public static ToggleFragment recoverFromRecreationKey(String key) {
         try {
@@ -251,11 +230,9 @@ public class ToggleFragment extends ModuleFragment
             String toggleOffResponse = args[8];
             String toggleOnLabel = args[9];
             String toggleOffLabel = args[10];
-            double width = Double.parseDouble(args[11]);
-            double height = Double.parseDouble(args[12]);
             ToggleFragment fragment = newInstance(ip, type, toggleOnCommand, toggleOffCommand,
                     toggleOnResponse, toggleOffResponse, toggleOnLabel, toggleOffLabel,
-                    defaultState, width, height);
+                    defaultState);
             fragment.recoverPos(args[1]);
             return fragment;
         }
@@ -268,7 +245,7 @@ public class ToggleFragment extends ModuleFragment
     @Override
     public ModuleFragment copy() {
         return newInstance(ip,  type, toggleOnCommand, toggleOffCommand, toggleOnResponse,
-                toggleOffResponse, toggleOnLabel, toggleOffLabel, defaultState, width, height);
+                toggleOffResponse, toggleOnLabel, toggleOffLabel, defaultState);
     }
 
     public int getDefaultState() {
@@ -292,12 +269,6 @@ public class ToggleFragment extends ModuleFragment
     public String getToggleOffLabel() {
         return toggleOffLabel;
     }
-    public double getArgWidth() {
-        return width;
-    }
-    public double getArgHeight() {
-        return height;
-    }
     @Override
     public String getIp() {
         return ip;
@@ -314,8 +285,7 @@ public class ToggleFragment extends ModuleFragment
     public void setValues(String ip, TcpConnectionManager.ReceiverType type,
                           String toggleOnCommand, String toggleOffCommand,
                           String toggleOnResponse, String toggleOffResponse,
-                          String toggleOnLabel, String toggleOffLabel,
-                          int defaultState, double width, double height) {
+                          String toggleOnLabel, String toggleOffLabel, int defaultState) {
         this.ip = ip;
         this.type = type;
         this.toggleOnCommand = toggleOnCommand;
@@ -325,15 +295,6 @@ public class ToggleFragment extends ModuleFragment
         this.toggleOnLabel = toggleOnLabel;
         this.toggleOffLabel = toggleOffLabel;
         this.defaultState = defaultState;
-        if (width <= 0) {
-            width = 1;
-        }
-        if (height <= 0) {
-            height = 1;
-        }
-        this.width = width;
-        this.height = height;
-        resize();
 
         if (toggleButton != null) {
             toggleButton.setTextOn(toggleOnLabel);
@@ -346,18 +307,6 @@ public class ToggleFragment extends ModuleFragment
         connection = tcpConnectionManager.requireConnection(this);
 
         updateFromBuffer();
-    }
-    @Override
-    public void resize() {
-        updatePosition();
-        Activity activity = getActivity();
-        if (activity instanceof MainActivity) {
-            View containerView = ((MainActivity) activity).getViewContainer();
-            Util.resizeLayoutWidth(containerView, baseLayout, width);
-            Util.resizeLayoutHeight(containerView, baseLayout, height);
-        } else {
-            Log.w(LOG_TAG, "Can't resize: !(activity instanceof MainActivity)");
-        }
     }
 
     private void updateFromBuffer() {

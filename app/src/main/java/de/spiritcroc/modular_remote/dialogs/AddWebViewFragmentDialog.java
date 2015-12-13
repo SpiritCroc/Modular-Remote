@@ -27,7 +27,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import de.spiritcroc.modular_remote.Util;
 import de.spiritcroc.modular_remote.modules.Container;
@@ -39,9 +38,6 @@ public class AddWebViewFragmentDialog extends CustomDialogFragment {
     private Container container;
     private WebViewFragment fragment;
     private PageContainerFragment page;
-    private EditText editWidth, editHeight;
-    private TextView heightTextView;
-    private CheckBox editMatchHeight;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,24 +50,7 @@ public class AddWebViewFragmentDialog extends CustomDialogFragment {
                 (CheckBox) view.findViewById(R.id.edit_java_script_enabled),
                 editAllowExternalLinks =
                         (CheckBox) view.findViewById(R.id.edit_allow_external_links);
-        editWidth = (EditText) view.findViewById(R.id.edit_width);
-        editHeight = (EditText) view.findViewById(R.id.edit_height);
-        editMatchHeight = (CheckBox) view.findViewById(R.id.edit_match_height);
-        heightTextView = (TextView) view.findViewById(R.id.height_text_view);
 
-        view.findViewById(R.id.view_match_height).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editMatchHeight.toggle();
-                if (editMatchHeight.isChecked()) {
-                    editHeight.setVisibility(View.GONE);
-                    heightTextView.setVisibility(View.GONE);
-                } else {
-                    editHeight.setVisibility(View.VISIBLE);
-                    heightTextView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
         view.findViewById(R.id.view_java_script_enabled).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -89,33 +68,10 @@ public class AddWebViewFragmentDialog extends CustomDialogFragment {
                 }
         );
 
-        editMatchHeight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editMatchHeight.isChecked()) {
-                    editHeight.setVisibility(View.GONE);
-                    heightTextView.setVisibility(View.GONE);
-                } else {
-                    editHeight.setVisibility(View.VISIBLE);
-                    heightTextView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         String positiveButtonText;
         if (fragment != null) {// Edit fragment
             positiveButtonText = getString(R.string.dialog_ok);
             editAddress.setText(fragment.getAddress());
-            double width = fragment.getArgWidth();
-            double height = fragment.getArgHeight();
-            if (height == -1) {
-                editMatchHeight.setChecked(true);
-                editHeight.setVisibility(View.GONE);
-                heightTextView.setVisibility(View.GONE);
-            } else {
-                editHeight.setText(String.valueOf(height));
-            }
-            editWidth.setText(String.valueOf(width));
             editJavaScriptEnabled.setChecked(fragment.getJavaScriptEnabled());
             editAllowExternalLinks.setChecked(fragment.getAllowExternalLinks());
         } else {// Create new fragment
@@ -141,27 +97,18 @@ public class AddWebViewFragmentDialog extends CustomDialogFragment {
                             @Override
                             public void onClick(View v) {
                                 String address = Util.getUserInput(editAddress, false);
-                                double width, height;
-                                width = Util.getSizeInput(editWidth);
-                                if (editMatchHeight.isChecked()) {
-                                    height = -1;
-                                } else {
-                                    height = Util.getSizeInput(editHeight);
-                                    if (height == -1) {
-                                        height = -2;
-                                    }
-                                }
-                                if (address == null || width == -1 || height == -2) {
+                                if (address == null) {
                                     return;
                                 }
                                 boolean javaScriptEnabled = editJavaScriptEnabled.isChecked(),
                                         allowExternalLinks = editAllowExternalLinks.isChecked();
                                 if (fragment != null) {// Edit fragment
-                                    fragment.setValues(address, width, height, javaScriptEnabled,
+                                    fragment.setValues(address, javaScriptEnabled,
                                             allowExternalLinks);
                                 } else {// Create new fragment
-                                    Util.addFragmentToContainer(activity, WebViewFragment.newInstance(
-                                                    address, width, height, javaScriptEnabled, allowExternalLinks),
+                                    Util.addFragmentToContainer(activity,
+                                            WebViewFragment.newInstance(address, javaScriptEnabled,
+                                                    allowExternalLinks),
                                             page, container);
                                 }
                                 dismiss();

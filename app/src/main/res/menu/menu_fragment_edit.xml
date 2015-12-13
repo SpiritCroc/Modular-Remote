@@ -21,6 +21,9 @@
     <item
         android:id="@+id/action_edit"
         android:title="@string/action_edit"/>
+    <item
+        android:id="@+id/action_resize"
+        android:title="@string/action_resize"/>
     <group
         android:id="@+id/action_container"
         android:visible="false">

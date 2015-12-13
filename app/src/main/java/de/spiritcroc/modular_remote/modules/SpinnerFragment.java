@@ -18,7 +18,6 @@
 
 package de.spiritcroc.modular_remote.modules;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -47,35 +45,28 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
     private static final String ARG_IP = "ip";
     private static final String ARG_TYPE = "type";
     private static final String ARG_MENU = "menu";
-    private static final String ARG_WIDTH = "width";
-    private static final String ARG_HEIGHT = "height";
     private static final String LOG_TAG = SpinnerFragment.class.getSimpleName();
 
-    private Container parent;
     private String ip;
     private TcpConnectionManager.ReceiverType type;
     private int menu;
-    private double width, height;
     private TcpConnectionManager tcpConnectionManager;
     private TcpConnectionManager.TcpConnection connection;
     private boolean menuEnabled = false, spinnerActive = false;
     private MenuItem menuResetItem;
     private Spinner spinner;
-    private LinearLayout baseLayout;
     private String responseClassifier, command, submenuReadable;
     private String[] spinnerItemNames, spinnerItemValues;
     private ArrayAdapter<String> adapter;
     private boolean created = false;
 
     public static SpinnerFragment newInstance(String ip, TcpConnectionManager.ReceiverType type,
-                                              int menu, double width, double height) {
+                                              int menu) {
         SpinnerFragment fragment = new SpinnerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_IP, ip);
         args.putString(ARG_TYPE, type.toString());
         args.putInt(ARG_MENU, menu);
-        args.putDouble(ARG_WIDTH, width);
-        args.putDouble(ARG_HEIGHT, height);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,13 +87,10 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
             ip = getArguments().getString(ARG_IP);
             type = TcpConnectionManager.ReceiverType.valueOf(getArguments().getString(ARG_TYPE));
             menu = getArguments().getInt(ARG_MENU);
-            width = getArguments().getDouble(ARG_WIDTH);
-            height = getArguments().getDouble(ARG_HEIGHT);
         } else {
             Log.e(LOG_TAG, "onCreate: getArguments()==null");
             ip = "";
             type = TcpConnectionManager.ReceiverType.UNSPECIFIED;
-            width = height = 1;
             menu = 0;
         }
 
@@ -120,7 +108,6 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spinner, container, false);
 
-        baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
         spinner = (Spinner) view.findViewById(R.id.spinner);
         setDragView(spinner);
         spinner.setOnItemSelectedListener(this);
@@ -136,8 +123,9 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
                 }
             }
         });
-        setValues(ip, type, menu, width, height);
+        setValues(ip, type, menu);
         updatePosition(view);
+        resize(view);
 
         maybeStartDrag(view);
 
@@ -200,18 +188,9 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
                 (submenuReadable == null ? "" : (" " + submenuReadable));
     }
     @Override
-    public Container getParent() {
-        return parent;
-    }
-    @Override
-    public void setParent(Container parent) {
-        this.parent = parent;
-    }
-    @Override
     public String getRecreationKey() {
         return fixRecreationKey(SPINNER_FRAGMENT + SEP + pos.getRecreationKey() + SEP + ip + SEP +
-                connection.getType().toString() + SEP + menu + SEP +
-                width + SEP + height + SEP);
+                connection.getType().toString() + SEP + menu + SEP);
     }
     public static SpinnerFragment recoverFromRecreationKey(String key) {
         try {
@@ -220,9 +199,7 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
             TcpConnectionManager.ReceiverType type =
                     TcpConnectionManager.ReceiverType.valueOf(args[3]);
             int menu = Integer.parseInt(args[4]);
-            double width = Double.parseDouble(args[5]);
-            double height = Double.parseDouble(args[6]);
-            SpinnerFragment fragment = newInstance(ip, type, menu, width, height);
+            SpinnerFragment fragment = newInstance(ip, type, menu);
             fragment.recoverPos(args[1]);
             return fragment;
         } catch (Exception e){
@@ -233,16 +210,10 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
     }
     @Override
     public ModuleFragment copy() {
-        return newInstance(ip, type, menu, width, height);
+        return newInstance(ip, type, menu);
     }
     public int getMenu() {
         return menu;
-    }
-    public double getArgWidth() {
-        return width;
-    }
-    public double getArgHeight() {
-        return height;
     }
     @Override
     public String getIp() {
@@ -257,20 +228,10 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
         this.ip = ip;
         this.type = type;
     }
-    public void setValues(String ip, TcpConnectionManager.ReceiverType type, int menu, double width,
-                          double height) {
+    public void setValues(String ip, TcpConnectionManager.ReceiverType type, int menu) {
         this.ip = ip;
         this.type = type;
         this.menu = menu;
-        if (width <= 0) {
-            width = 1;
-        }
-        if (height <= 0) {
-            height = 1;
-        }
-        this.width = width;
-        this.height = height;
-        resize();
 
         connection = tcpConnectionManager.requireConnection(this);
 
@@ -296,18 +257,6 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
         }
 
         setSpinnerContent();
-    }
-    @Override
-    public void resize() {
-        updatePosition();
-        Activity activity = getActivity();
-        if (activity instanceof MainActivity) {
-            View containerView = ((MainActivity) activity).getViewContainer();
-            Util.resizeLayoutWidth(containerView, baseLayout, width);
-            Util.resizeLayoutHeight(containerView, baseLayout, height);
-        } else {
-            Log.w(LOG_TAG, "Can't resize: !(activity instanceof MainActivity)");
-        }
     }
     private void setSpinnerContent() {
         ArrayList<String> list = new ArrayList<>();

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,31 +36,23 @@ import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.Preferences;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
-import de.spiritcroc.modular_remote.dialogs.AddWidgetContainerDialog;
 
 public class WidgetContainerFragment extends ModuleFragment {
     private static final String LOG_TAG = WidgetContainerFragment.class.getSimpleName();
     private static final boolean DEBUG = false;
 
     private static final String ARG_APP_WIDGET_ID = "app_widget_id";
-    private static final String ARG_WIDTH = "width";
-    private static final String ARG_HEIGHT = "height";
 
-    private double width, height;// If -1, then wrap_content
-    private Container parent;
     private LinearLayout widgetContainer;
     private View widget;
     private ImageView previewView;
     private int appWidgetId = -1;
     private boolean created = false;
 
-    public static WidgetContainerFragment newInstance(int appWidgetId,
-                                                      double width, double height) {
+    public static WidgetContainerFragment newInstance(int appWidgetId) {
         WidgetContainerFragment fragment = new WidgetContainerFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_APP_WIDGET_ID, appWidgetId);
-        args.putDouble(ARG_WIDTH, width);
-        args.putDouble(ARG_HEIGHT, height);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,11 +70,8 @@ public class WidgetContainerFragment extends ModuleFragment {
 
         if (getArguments() != null) {
             appWidgetId = getArguments().getInt(ARG_APP_WIDGET_ID);
-            width = getArguments().getDouble(ARG_WIDTH);
-            height = getArguments().getDouble(ARG_HEIGHT);
         } else {
             Log.e(LOG_TAG, "onCreate: getArguments()==null");
-            width = height = -1;
         }
     }
 
@@ -94,8 +84,8 @@ public class WidgetContainerFragment extends ModuleFragment {
         previewView = (ImageView) view.findViewById(R.id.widget_preview);
         addWidget();
         setDragView(widgetContainer);
-        setValues(width, height);
         updatePosition(view);
+        resize(view);
 
         maybeStartDrag(view);
 
@@ -142,25 +132,15 @@ public class WidgetContainerFragment extends ModuleFragment {
         return Util.getACString(R.string.fragment_widget) + " " + widget.getContentDescription();
     }
     @Override
-    public Container getParent() {
-        return parent;
-    }
-    @Override
-    public void setParent(Container parent) {
-        this.parent = parent;
-    }
-    @Override
     public String getRecreationKey() {
         return fixRecreationKey(WIDGET_CONTAINER_FRAGMENT + SEP + pos.getRecreationKey() + SEP +
-                appWidgetId + SEP + width + SEP + height + SEP);
+                appWidgetId + SEP);
     }
     public static WidgetContainerFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
             int appWidgetId = Integer.parseInt(args[2]);
-            double width = Double.parseDouble(args[3]);
-            double height = Double.parseDouble(args[4]);
-            WidgetContainerFragment fragment = newInstance(appWidgetId, width, height);
+            WidgetContainerFragment fragment = newInstance(appWidgetId);
             fragment.recoverPos(args[1]);
             return fragment;
         } catch (Exception e) {
@@ -181,43 +161,13 @@ public class WidgetContainerFragment extends ModuleFragment {
         sharedPreferences.edit().putInt(widgetAmountKey, amount).apply();
         if (DEBUG) Log.v(LOG_TAG, "New amount for " + appWidgetId + ": " + amount);
 
-        return newInstance(appWidgetId, width, height);
+        return newInstance(appWidgetId);
     }
     private void addWidget() {
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             widget = ((MainActivity) activity).createWidget(appWidgetId);
             widgetContainer.addView(widget);
-        }
-    }
-
-    public double getArgWidth() {
-        return width;
-    }
-    public double getArgHeight() {
-        return height;
-    }
-    public void setValues(double width, double height) {
-        if (width != -1 &&width <= 0) {// If -1: wrap_content
-            width = 1;
-        }
-        if (height != -1 && height <= 0) {// If -1: wrap_content
-            height = 1;
-        }
-        this.width = width;
-        this.height = height;
-        resize();
-    }
-    @Override
-    public void resize() {
-        updatePosition();
-        Activity activity = getActivity();
-        if (activity instanceof MainActivity) {
-            View containerView = ((MainActivity) activity).getViewContainer();
-            Util.resizeLayoutWidth(containerView, widgetContainer, width);
-            Util.resizeLayoutHeight(containerView, widgetContainer, height);
-        } else {
-            Log.w(LOG_TAG, "Can't resize: !(activity instanceof MainActivity)");
         }
     }
 
@@ -248,9 +198,13 @@ public class WidgetContainerFragment extends ModuleFragment {
     }
 
     @Override
+    protected void prepareEditMenu(Menu menu) {
+        super.prepareEditMenu(menu);
+        menu.findItem(R.id.action_edit).setVisible(false);
+    }
+
+    @Override
     protected void editActionEdit() {
-        new AddWidgetContainerDialog()
-                .setEditFragment(this)
-                .show(getFragmentManager(), "AddWidgetContainerDialog");
+        // No settings
     }
 }

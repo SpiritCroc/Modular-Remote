@@ -29,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.Arrays;
@@ -52,13 +51,11 @@ public class AddToggleFragmentDialog extends CustomDialogFragment implements Rec
     private TcpConnectionManager.TcpConnection connection;
     private ToggleFragment fragment;
     private PageContainerFragment page;
-    private EditText editWidth, editHeight;
     private String ip;
     private Button configureOnStateButton, configureOffStateButton;
     private Spinner receiverTypeSpinner, defaultStateSpinner;
     private String[] typeValues;
     private int[] stateValues;
-    private double width, height;
     private String label1, label2, command1, command2, response1, response2;
 
     @Override
@@ -73,9 +70,6 @@ public class AddToggleFragmentDialog extends CustomDialogFragment implements Rec
         final AutoCompleteTextView editReceiverIp =
                 (AutoCompleteTextView) view.findViewById(R.id.edit_receiver_ip);
         Util.suggestPreviousIps(this, editReceiverIp);
-
-        editWidth = (EditText) view.findViewById(R.id.edit_width);
-        editHeight = (EditText) view.findViewById(R.id.edit_height);
 
         typeValues = getResources().getStringArray(R.array.receiver_type_array_values);
         receiverTypeSpinner.setAdapter(ArrayAdapter.createFromResource(activity,
@@ -120,8 +114,6 @@ public class AddToggleFragmentDialog extends CustomDialogFragment implements Rec
         String positiveButtonText;
         if (fragment != null) {// Edit fragment
             positiveButtonText = getString(R.string.dialog_ok);
-            editWidth.setText(String.valueOf(fragment.getArgWidth()));
-            editHeight.setText(String.valueOf(fragment.getArgHeight()));
             label1 = fragment.getToggleOnLabel();
             label2 = fragment.getToggleOffLabel();
             command1 = fragment.getToggleOnCommand();
@@ -176,11 +168,6 @@ public class AddToggleFragmentDialog extends CustomDialogFragment implements Rec
                             @Override
                             public void onClick(View v) {
                                 ip = Util.getUserInput(editReceiverIp, false);
-                                width = Util.getSizeInput(editWidth);
-                                height = Util.getSizeInput(editHeight);
-                                if (ip == null || width == -1 || height == -1) {
-                                    return;
-                                }
 
                                 TcpConnectionManager.TcpConnection connectionCheck =
                                         TcpConnectionManager
@@ -247,12 +234,11 @@ public class AddToggleFragmentDialog extends CustomDialogFragment implements Rec
     public void resumeDismiss() {
         if (fragment != null) { // Edit fragment
             fragment. setValues(ip, type, command1, command2, response1, response2,
-                    label1, label2, stateValues[defaultStateSpinner.getSelectedItemPosition()],
-                    width, height);
+                    label1, label2, stateValues[defaultStateSpinner.getSelectedItemPosition()]);
         } else {// Add new fragment
             Util.addFragmentToContainer(getActivity(), ToggleFragment.newInstance(ip, type,
                     command1, command2, response1, response2, label1, label2,
-                    stateValues[defaultStateSpinner.getSelectedItemPosition()], width, height),
+                    stateValues[defaultStateSpinner.getSelectedItemPosition()]),
                     page, container);
         }
         dismiss();

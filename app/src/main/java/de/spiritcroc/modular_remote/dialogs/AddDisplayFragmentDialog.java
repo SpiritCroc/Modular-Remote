@@ -55,7 +55,7 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
     private AddPageDialog pageDialog;// PageContainerFragments can also be used as display
     private PageContainerFragment page;// The page for the DisplayFragment
     private Container container;
-    private EditText editWidth, editHeight, editStaticText;
+    private EditText editStaticText;
     private String ip, command = "", command2 = "", command3 = "", informationType = "";
     private Display.ViewMode mode;
     private Spinner receiverTypeSpinner, informationTypeSpinner,
@@ -64,7 +64,6 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
     private String[] typeValues, informationTypeValues, displayModeValues, addStaticTextValues;
     private int[] horizontalTextGravityValues;
     private String staticText;
-    private double width, height;
     private ArrayList<Integer> commandSearchPath = new ArrayList<>();
     private ArrayList<Integer> command2SearchPath = new ArrayList<>();
     private ArrayList<Integer> command3SearchPath = new ArrayList<>();
@@ -100,8 +99,6 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
                 (AutoCompleteTextView) view.findViewById(R.id.edit_receiver_ip);
         Util.suggestPreviousIps(this, editReceiverIp);
 
-        editWidth = (EditText) view.findViewById(R.id.edit_width);
-        editHeight = (EditText) view.findViewById(R.id.edit_height);
         editStaticText = (EditText) view.findViewById(R.id.edit_static_text);
         selectCommand = (Button) view.findViewById(R.id.select_command);
         selectCommand.setOnClickListener(new View.OnClickListener() {
@@ -216,8 +213,6 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
             modeSettings = fragment.getModeSettings();
             editReceiverIp.setText(fragment.getIp());
             type = fragment.getType();
-            editWidth.setText(String.valueOf(fragment.getArgWidth()));
-            editHeight.setText(String.valueOf(fragment.getArgHeight()));
             command = fragment.getClickCommand();
             command2 = fragment.getDoubleClickCommand();
             command3 = fragment.getLongClickCommand();
@@ -232,7 +227,6 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
         } else if (pageDialog != null) {
             title =  R.string.dialog_configure_action_bar_display;
             modeSettings = pageDialog.getDisplaySettings();
-            view.findViewById(R.id.fragment_layout).setVisibility(View.GONE);
             view.findViewById(R.id.text_gravity_layout).setVisibility(View.GONE);
             view.findViewById(R.id.edit_buttons_layout).setVisibility(View.GONE);
         } else {
@@ -327,10 +321,7 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
                             @Override
                             public void onClick(View v) {
                                 ip = Util.getUserInput(editReceiverIp, false);
-                                width = Util.getSizeInput(editWidth);
-                                height = Util.getSizeInput(editHeight);
-                                if (pageDialog == null &&
-                                        (ip == null || width == -1 || height == -1)) {
+                                if (pageDialog == null && ip == null) {
                                     return;
                                 }
                                 if (mode == Display.ViewMode.STATIC_TEXT) {
@@ -476,14 +467,15 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
         int horizontalTextGravity = horizontalTextGravityValues[
                 horizontalTextGravitySpinner.getSelectedItemPosition()];
         if (fragment != null) {// Edit fragment
-            fragment.setValues(ip, type, modeSettings, command, command2, command3, width, height,
+            fragment.setValues(ip, type, modeSettings, command, command2, command3,
                     horizontalTextGravity);
         } else if (pageDialog != null) {// Edit pageContainer
             pageDialog.setDisplaySettings(modeSettings);
         } else {// Add new fragment
-            Util.addFragmentToContainer(getActivity(), DisplayFragment.newInstance(ip, type,
-                    modeSettings, command, command2, command3, width, height, horizontalTextGravity,
-                    buttonMode), page, container);
+            Util.addFragmentToContainer(getActivity(),
+                    DisplayFragment.newInstance(ip, type, modeSettings, command, command2, command3,
+                            horizontalTextGravity, buttonMode),
+                    page, container);
         }
         dismiss();
     }

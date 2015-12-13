@@ -21,6 +21,8 @@ package de.spiritcroc.modular_remote.modules;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
 
+import de.spiritcroc.modular_remote.ResizeFrame;
+
 public interface Container {
     void addFragment(ModuleFragment fragment, boolean post);
 
@@ -77,4 +79,7 @@ public interface Container {
     int getFragmentCount();
 
     String getReadableName();
+
+    void addResizeFrame(ResizeFrame resizeFrame);
+    void removeResizeFrame(ResizeFrame resizeFrame);
 }

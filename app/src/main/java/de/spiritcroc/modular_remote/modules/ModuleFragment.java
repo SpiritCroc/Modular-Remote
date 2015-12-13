@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 
@@ -41,6 +42,8 @@ import java.util.Random;
 import de.spiritcroc.modular_remote.DragManager;
 import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
+import de.spiritcroc.modular_remote.ResizeFrame;
+import de.spiritcroc.modular_remote.TouchOverlay;
 import de.spiritcroc.modular_remote.Util;
 import de.spiritcroc.modular_remote.dialogs.AddFragmentDialog;
 import de.spiritcroc.modular_remote.dialogs.SelectContainerDialog;
@@ -50,8 +53,12 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     protected static final String LOG_TAG = ModuleFragment.class.getSimpleName();
     private static final boolean DEBUG = false;
 
+    protected Container parent;
     protected Pos pos = new Pos();
     private boolean dragModeEnabled = false;
+
+    private ResizeFrame resizeFrame;
+    private TouchOverlay resizeOverlay;
 
     /**
      * Whether a container should get dragged or scrolled when touched
@@ -73,8 +80,12 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
      * Some fragments (e.g. WidgetContainerFragment) might need to free some space on removal
      */
     public void onRemove() {}
-    public abstract Container getParent();
-    public abstract void setParent(Container parent);
+    final public Container getParent() {
+        return parent;
+    }
+    final public void setParent(Container parent) {
+        this.parent = parent;
+    }
 
     /**
      * @return
@@ -107,12 +118,31 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
 
     /**
      * Resize if block unit size changed
-     * Containers should call the same method for their contained fragments
+     * @param updateContent
+     * Whether containers should call the same method for their contained fragments
      */
-    public abstract void resize();
+    public void resize (boolean updateContent) {
+        View v = getView();
+        if (v != null) {
+            resize(v);
+        }
+    }
 
-    public abstract double getArgWidth();
-    public abstract double getArgHeight();
+    protected void resize(@NonNull View v) {
+        updatePosition();
+        if (v instanceof LinearLayout) {
+            Activity activity = getActivity();
+            if (activity instanceof MainActivity) {
+                View containerView = ((MainActivity) activity).getViewContainer();
+                Util.resizeLayoutWidth(containerView, (LinearLayout) v, pos.width);
+                Util.resizeLayoutHeight(containerView, (LinearLayout) v, pos.height);
+            } else {
+                Log.w(LOG_TAG, "Can't resize: !(activity instanceof MainActivity)");
+            }
+        } else {
+            Log.e(LOG_TAG, "Can't resize: !(getView() instanceof LinearLayout)");
+        }
+    }
 
     /**
      * Position attributes
@@ -120,18 +150,24 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     protected static class Pos {
         private static String SEP = Util.RK_FRAGMENT_POS;
         protected int leftMargin, topMargin;
+        protected int width, height;
         protected Pos () {
             leftMargin = 0;
             topMargin = 0;
+            width = 1;
+            height = 1;
         }
         protected String getRecreationKey() {
-            return fixRecreationKey(leftMargin + SEP + topMargin + SEP);
+            return fixRecreationKey(leftMargin + SEP + topMargin + SEP +
+                    width + SEP + height + SEP);
         }
         protected void recoverFromRecreationKey(String key) {
             try {
                 String[] args = Util.split(key, SEP, 0);
                 leftMargin = Integer.parseInt(args[0]);
                 topMargin = Integer.parseInt(args[1]);
+                width = Integer.parseInt(args[2]);
+                height = Integer.parseInt(args[3]);
             } catch (Exception e) {
                 Log.e(LOG_TAG, "Pos: recoverFromRecreationKey: illegal key: " + key);
                 e.printStackTrace();
@@ -147,14 +183,14 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     public void resetPosition() {
         setPosition(0, 0);
     }
-    protected void setPosition(int leftMargin, int topMargin) {
+    public void setPosition(int leftMargin, int topMargin) {
         setPosition(leftMargin, topMargin, false);
     }
     /**
      * @param relative
      * false if absolute margin, true if changing margin for that value
      */
-    protected void setPosition(int leftMargin, int topMargin, boolean relative) {
+    public void setPosition(int leftMargin, int topMargin, boolean relative) {
         if (relative) {
             pos.leftMargin += leftMargin;
             pos.topMargin += topMargin;
@@ -165,7 +201,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         updatePosition();
     }
 
-    protected void updatePosition() {
+    private void updatePosition() {
         View view = getView();
         if (view == null) {
             if (DEBUG) Log.d(LOG_TAG, "updatePosition: view is null");
@@ -194,6 +230,32 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         }
     }
 
+    public void setPosWidth(int width) {
+        pos.width = width;
+        resize(false);
+    }
+    public void setPosHeight(int height) {
+        pos.height = height;
+        resize(false);
+    }
+    public void setPosMeasures(int width, int height) {
+        pos.width = width;
+        pos.height = height;
+        resize(false);
+    }
+
+    public int getPosX() {
+        return pos.leftMargin;
+    }
+    public int getPosY() {
+        return pos.topMargin;
+    }
+    public int getPosWidth() {
+        return pos.width;
+    }
+    public int getPosHeight() {
+        return pos.height;
+    }
 
     // Drag and Drop touch events
 
@@ -245,6 +307,9 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                         case R.id.action_edit:
                             editActionEdit();
                             return true;
+                        case R.id.action_resize:
+                            editActionResize();
+                            return true;
                         case R.id.action_move:
                             editActionMove();
                             return true;
@@ -263,6 +328,33 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                 }
             };
     protected abstract void editActionEdit();
+    private void editActionResize() {
+        if (resizeFrame == null) {
+            resizeFrame = new ResizeFrame(getActivity(), this);
+            getParent().addResizeFrame(resizeFrame);
+            resizeFrame.snapToFragment();
+            ModuleFragment c = Util.getPrimeContainer(this);
+            if (c instanceof PageContainerFragment) {
+                resizeOverlay = new TouchOverlay(getActivity(), resizeFrame);
+                ((PageContainerFragment) c).addResizeOverlay(resizeOverlay);
+            } else {
+                Log.w(LOG_TAG, "Could not add resizeOverlay");
+            }
+        }
+    }
+    public void finishResize() {
+        if (resizeFrame != null) {
+            getParent().removeResizeFrame(resizeFrame);
+            resizeFrame = null;
+            ModuleFragment c = Util.getPrimeContainer(this);
+            if (c instanceof PageContainerFragment) {
+                ((PageContainerFragment) c).removeResizeOverlay(resizeOverlay);
+                resizeOverlay = null;
+            } else {
+                Log.w(LOG_TAG, "Could not remove resizeOverlay");
+            }
+        }
+    }
     protected void editActionMove() {
         new SelectContainerDialog().setValues(Util.getPage(this), this)
                 .setMode(SelectContainerDialog.Mode.MOVE_FRAGMENT)
@@ -292,6 +384,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
             case MotionEvent.ACTION_DOWN:
                 if (dragModeEnabled && (!(this instanceof Container) || containerDragEnabled)) {
                     if (DragManager.startDrag(this)) {
+                        finishResize();
                         if (DEBUG) Log.v(LOG_TAG, "start drag: " + getClass());
                         v.invalidate();
                         v.startDrag(null, new DragShadowBuilder(v), null, 0);
@@ -445,6 +538,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         if (getActivity() != null && getView() != null) {
             getView().setBackgroundColor(Color.TRANSPARENT);
         }
+        finishResize();
     }
     public void onStartDrag(){
         setAlpha(0.2f);

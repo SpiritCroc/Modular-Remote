@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             "de.spiritcroc.modular_remote.extra.EXTRA_SELECT_PAGE_WITHOUT_WARNING";
 
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
-    private static ViewPager viewPager;
+    private static CustomViewPager viewPager;
     private PagerTabStrip pagerTabStrip;
     private SharedPreferences sharedPreferences;
     private TcpConnectionManager tcpConnectionManager;
@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private AppWidgetManager appWidgetManager;
     private AppWidgetHost appWidgetHost;
     private Container addWidgetContainer;
-    private double addWidgetWidth, addWidgetHeight;
     private DialogFragment addWidgetListener;
     private int previousRingerMode;
     private boolean changedRingerMode = false;
@@ -191,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         if (DEBUG) Log.v(LOG_TAG, "savedFragments: " + savedFragments);
 
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager = (CustomViewPager) findViewById(R.id.view_pager);
 
         restoreContentFromRecreationKey(savedFragments);
         pages.get(0).setMenuEnabled(true);
@@ -278,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     }
     private void resizeContent() {
         for (int i = 0; i < pages.size(); i++) {
-            pages.get(i).resize();
+            pages.get(i).resize(true);
         }
 
     }
@@ -627,10 +626,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
     }
 
-    public void addWidget(Container container, double width, double height) {
+    public void addWidget(Container container) {
         addWidgetContainer = container;
-        addWidgetWidth = width;
-        addWidgetHeight = height;
         int appWidgetId = appWidgetHost.allocateAppWidgetId();
         Intent pickIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK)
                 .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -673,8 +670,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         Bundle extras = data.getExtras();
         int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
         if (addWidgetContainer != null) {
-            addWidgetContainer.addFragment(WidgetContainerFragment
-                    .newInstance(appWidgetId, addWidgetWidth, addWidgetHeight), false);
+            addWidgetContainer.addFragment(WidgetContainerFragment.newInstance(appWidgetId), false);
             if (addWidgetListener != null) {
                 addWidgetListener.dismiss();
                 addWidgetListener = null;
@@ -755,5 +751,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             connectionMgrMenuItem.setVisible(unlocked &&
                     tcpConnectionManager.getConnectionSuggestions().length != 0);
         }
+    }
+
+    public void setViewPagerEnabled(boolean enabled) {
+        viewPager.setScrollEnabled(enabled);
     }
 }

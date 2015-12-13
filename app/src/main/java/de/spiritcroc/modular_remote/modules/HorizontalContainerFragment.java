@@ -18,7 +18,6 @@
 
 package de.spiritcroc.modular_remote.modules;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,67 +25,39 @@ import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import de.spiritcroc.modular_remote.CustomHorizontalScrollView;
-import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
+import de.spiritcroc.modular_remote.ResizeFrame;
 import de.spiritcroc.modular_remote.Util;
-import de.spiritcroc.modular_remote.dialogs.AddHorizontalContainerDialog;
 
 public class HorizontalContainerFragment extends ModuleFragment implements Container {
-    private static final String ARG_WIDTH = "width";
-    private static final String ARG_HEIGHT = "height";
     private static final String LOG_TAG = HorizontalContainerFragment.class.getSimpleName();
 
-    private double width, height;//if width == -1, then match_parent
-    private LinearLayout baseLayout;
     private RelativeLayout containerLayout;
     private CustomHorizontalScrollView scrollView;
     private String recreationKey;
     private ArrayList<ModuleFragment> fragments;
-    private Container parent;
     private boolean menuEnabled = false;
-    private boolean created = false;
 
     public HorizontalContainerFragment() {
         fragments = new ArrayList<>();
     }
 
-    public static HorizontalContainerFragment newInstance(double width, double height) {
+    public static HorizontalContainerFragment newInstance() {
         HorizontalContainerFragment fragment = new HorizontalContainerFragment();
         Bundle args = new Bundle();
-        args.putDouble(ARG_WIDTH, width);
-        args.putDouble(ARG_HEIGHT, height);
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (created) {
-            // Prevent overwriting attributes that are already set
-            return;
-        } else {
-            created = true;
-        }
-
-        if (getArguments() != null) {
-            width = getArguments().getDouble(ARG_WIDTH);
-            height = getArguments().getDouble(ARG_HEIGHT);
-        } else {
-            Log.e(LOG_TAG, "onCreate: getArguments()==null");
-            width = height = 1;
-        }
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,12 +66,11 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
         scrollView = (CustomHorizontalScrollView) view.findViewById(R.id.scroll_view);
         scrollView.setOnDragListener(this);
         scrollView.setWrapFragment(this);
-        baseLayout = (LinearLayout) view.findViewById(R.id.base_layout);
         containerLayout = (RelativeLayout) view.findViewById(R.id.container);
         setDragView(scrollView);
         containerLayout.setId(Util.generateViewId());
-        setValues(width, height);
         updatePosition(view);
+        resize(view);
 
         fragments.clear();
         restoreContentFromRecreationKey();
@@ -140,8 +110,7 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     @Override
     public String getRecreationKey() {
         String separator = Util.getSeparator(this);
-        String key = HORIZONTAL_CONTAINER + SEP + pos.getRecreationKey() + SEP +
-                width + SEP + height + SEP + separator;
+        String key = HORIZONTAL_CONTAINER + SEP + pos.getRecreationKey() + SEP + separator;
         for (int i = 0; i < fragments.size(); i++) {
             ModuleFragment fragment = fragments.get(i);
             key += fragment.getRecreationKey() + separator;
@@ -151,9 +120,7 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     public static HorizontalContainerFragment recoverFromRecreationKey(String key) {
         try {
             String[] args = Util.split(key, SEP, 0);
-            double width = Double.parseDouble(args[2]);
-            double height = Double.parseDouble(args[3]);
-            HorizontalContainerFragment fragment = newInstance(width, height);
+            HorizontalContainerFragment fragment = newInstance();
             fragment.setRecreationKey(key);
             fragment.recoverPos(args[1]);
             return fragment;
@@ -180,17 +147,10 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     }
     @Override
     public ModuleFragment copy(){
-        HorizontalContainerFragment fragment = newInstance(width, height);
+        HorizontalContainerFragment fragment = newInstance();
         fragment.setRecreationKey(getRecreationKey());
+        fragment.setPosMeasures(pos.width, pos.height);
         return fragment;
-    }
-    @Override
-    public Container getParent() {
-        return parent;
-    }
-    @Override
-    public void setParent(Container parent) {
-        this.parent = parent;
     }
     @Override
     public int getDepth() {
@@ -270,40 +230,12 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
         return fragments.size();
     }
 
-    public double getArgWidth() {
-        return width;
-    }
-    public double getArgHeight() {
-        return height;
-    }
-    public void setValues(double width, double height) {
-        if (width != -1 && width <= 0) {//width == -1 → match_parent
-            width = 1;
-        }
-        if (height <= 0) {
-            height = 1;
-        }
-        this.width = width;
-        this.height = height;
-        resize(false);
-    }
     @Override
-    public void resize() {
-        resize(true);
-    }
-    private void resize(boolean resizeContent) {
-        updatePosition();
-        Activity activity = getActivity();
-        if (activity instanceof MainActivity) {
-            View containerView = ((MainActivity) activity).getViewContainer();
-            Util.resizeLayoutWidth(containerView, baseLayout, width);
-            Util.resizeLayoutHeight(containerView, baseLayout, height);
-        } else {
-            Log.w(LOG_TAG, "Can't resize: !(activity instanceof MainActivity)");
-        }
+    public void resize(boolean resizeContent) {
+        super.resize(resizeContent);
         if (resizeContent) {
             for (ModuleFragment fragment : fragments) {
-                fragment.resize();
+                fragment.resize(true);
             }
         }
     }
@@ -403,9 +335,22 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
     }
 
     @Override
+    protected void prepareEditMenu(Menu menu) {
+        super.prepareEditMenu(menu);
+        menu.findItem(R.id.action_edit).setVisible(false);
+    }
+
+    @Override
     protected void editActionEdit() {
-        new AddHorizontalContainerDialog()
-                .setEditFragment(this)
-                .show(getFragmentManager(), "AddHorizontalContainerDialog");
+        // No settings
+    }
+
+    @Override
+    public void addResizeFrame(ResizeFrame resizeFrame) {
+        containerLayout.addView(resizeFrame);
+    }
+    @Override
+    public void removeResizeFrame(ResizeFrame resizeFrame) {
+        containerLayout.removeView(resizeFrame);
     }
 }
