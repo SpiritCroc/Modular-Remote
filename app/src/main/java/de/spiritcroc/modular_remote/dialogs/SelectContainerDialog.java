@@ -24,9 +24,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Spannable;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
@@ -55,10 +56,27 @@ public class SelectContainerDialog extends CustomDialogFragment {
         if ((mode == Mode.MOVE_FRAGMENT || mode == Mode.COPY_FRAGMENT ||
                 mode == Mode.MOVE_FRAGMENTS || mode == Mode.COPY_FRAGMENTS) &&
                 getActivity() instanceof MainActivity) {
-            containers = ((MainActivity) getActivity())
-                    .getAllContainers();
+            containers = ((MainActivity) getActivity()).getAllContainers();
         } else {
             containers = page.getAllContainers();
+        }
+        if (mode == Mode.MOVE_FRAGMENT) {
+            // Hide oldParent, addFragment and children from list
+            ArrayList<Container> containerList = new ArrayList<>();
+            List<Container> excludedContainers = new ArrayList<>();
+            Container oldParent = addFragment.getParent();
+            if (oldParent != null) {
+                excludedContainers.add(oldParent);
+            }
+            if (addFragment instanceof Container) {
+                excludedContainers.addAll(Arrays.asList(((Container) addFragment).getAllContainers()));
+            }
+            for (Container container : containers) {
+                if (!excludedContainers.contains(container)) {
+                    containerList.add(container);
+                }
+            }
+            containers = containerList.toArray(new Container[containerList.size()]);
         }
         if (containers.length == 1) {// No selection needed if only one container available
             addElementToContainer(0);
