@@ -232,8 +232,9 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         menu.setGroupVisible(R.id.action_container, this instanceof Container);
         if (getActivity() instanceof MainActivity) {
             // Hide move action if only one container available
-            menu.findItem(R.id.action_move).setVisible(
-                    ((MainActivity) getActivity()).getAllContainers().length > 1);
+            int containerCount = ((MainActivity) getActivity()).getAllContainers().length;
+            menu.findItem(R.id.action_move).setVisible(containerCount > 2 ||
+                    (!(this instanceof Container) && containerCount > 1));
         }
     }
     private PopupMenu.OnMenuItemClickListener editMenuItemClickListener =
