@@ -632,7 +632,11 @@ public class PageContainerFragment extends ModuleFragment implements Container,
                 }
                 @Override
                 public void update(final TcpInformation information) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    Activity activity = getActivity();
+                    if (activity == null) {
+                        return;
+                    }
+                    activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             updateTcpActionBar(information);
