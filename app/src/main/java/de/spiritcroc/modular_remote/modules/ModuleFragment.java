@@ -46,6 +46,7 @@ import de.spiritcroc.modular_remote.ResizeFrame;
 import de.spiritcroc.modular_remote.TouchOverlay;
 import de.spiritcroc.modular_remote.Util;
 import de.spiritcroc.modular_remote.dialogs.AddFragmentDialog;
+import de.spiritcroc.modular_remote.dialogs.RemoveContainerDialog;
 import de.spiritcroc.modular_remote.dialogs.SelectContainerDialog;
 
 public abstract class ModuleFragment extends Fragment implements View.OnTouchListener,
@@ -366,7 +367,12 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                 .show(getFragmentManager(), "SelectContainerDialog");
     }
     protected void editActionRemove() {
-        getParent().removeFragment(this, true);
+        if (this instanceof Container && ((Container) this).getAllFragments().length > 1) {
+            new RemoveContainerDialog().setFragment(this)
+                    .show(getFragmentManager(), "RemoveContainerDialog");
+        } else {
+            getParent().removeFragment(this, true);
+        }
     }
     protected void editActionAddFragment() {
         if (this instanceof Container) {

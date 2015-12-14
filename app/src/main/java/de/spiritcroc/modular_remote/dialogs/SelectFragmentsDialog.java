@@ -315,9 +315,8 @@ public class SelectFragmentsDialog extends DialogFragment {
             if (selectedModuleFragments.get(0) instanceof PageContainerFragment) {
                 if (pageRemovalAllowed) {
                     dismiss();
-                    new ConfirmRemovePageDialog()
-                            .setPage((PageContainerFragment) selectedModuleFragments.get(0))
-                            .show(getFragmentManager(), "ConfirmRemovePageDialog");
+                    new RemoveContainerDialog().setFragment(selectedModuleFragments.get(0))
+                            .show(getFragmentManager(), "RemoveContainerDialog");
                 } else {
                     Toast.makeText(getActivity(),
                             R.string.
