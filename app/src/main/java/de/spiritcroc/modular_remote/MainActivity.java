@@ -504,6 +504,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             // Don't toast in case the page can not be selected
             intent.putExtra(EXTRA_SELECT_PAGE_WITHOUT_WARNING, true);
         }
+        saveFragments();
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
