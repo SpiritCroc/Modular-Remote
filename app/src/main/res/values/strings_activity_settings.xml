@@ -81,8 +81,6 @@
         <item quantity="one">The width of your screen will get divided into %d unit in order to set up the size for your fragments</item>
         <item quantity="other">The width of your screen will get divided into %d units in order to set up the size for your fragments</item>
     </plurals>
-    <string name="pref_use_block_size_height">Use block size height</string>
-    <string name="pref_use_block_size_height_summary">Use a different block size for the height than for the width. Makes your units fit your screen instead of having square units</string>
     <string name="pref_block_size_height">Block size height</string>
     <plurals name="pref_block_size_height_summary">
         <item quantity="one">The height of your screen will get divided into %d unit</item>
