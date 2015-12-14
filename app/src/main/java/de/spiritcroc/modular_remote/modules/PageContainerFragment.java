@@ -425,6 +425,7 @@ public class PageContainerFragment extends ModuleFragment implements Container,
                 newInstance(name, actionBarModeSettings.copy(), useHardwareButtons, ip, type,
                         volumeUpCommand, volumeDownCommand);
         fragment.init(getActivity(), true).setRecreationKey(getRecreationKey());
+        fragment.parent = parent;
         return fragment;
     }
     public int getDepth() {

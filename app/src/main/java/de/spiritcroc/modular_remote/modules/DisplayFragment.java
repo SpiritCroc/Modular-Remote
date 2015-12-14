@@ -331,6 +331,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
                 newInstance(ip, type, modeSettings.copy(), clickCommand, doubleClickCommand,
                 longClickCommand, horizontalTextGravity, buttonMode);
         fragment.setPosMeasures(pos.width, pos.height);
+        fragment.parent = parent;
         return fragment;
     }
 

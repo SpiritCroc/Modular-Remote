@@ -161,7 +161,9 @@ public class WidgetContainerFragment extends ModuleFragment {
         sharedPreferences.edit().putInt(widgetAmountKey, amount).apply();
         if (DEBUG) Log.v(LOG_TAG, "New amount for " + appWidgetId + ": " + amount);
 
-        return newInstance(appWidgetId);
+        ModuleFragment fragment = newInstance(appWidgetId);
+        fragment.parent = parent;
+        return fragment;
     }
     private void addWidget() {
         Activity activity = getActivity();

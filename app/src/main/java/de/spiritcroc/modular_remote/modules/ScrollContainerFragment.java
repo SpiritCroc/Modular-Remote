@@ -146,6 +146,7 @@ public class ScrollContainerFragment extends ModuleFragment implements Container
         ScrollContainerFragment fragment = newInstance();
         fragment.setRecreationKey(getRecreationKey());
         fragment.setPosMeasures(pos.width, pos.height);
+        fragment.parent = parent;
         return fragment;
     }
     @Override

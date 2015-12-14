@@ -210,7 +210,9 @@ public class SpinnerFragment extends ModuleFragment implements AdapterView.OnIte
     }
     @Override
     public ModuleFragment copy() {
-        return newInstance(ip, type, menu);
+        ModuleFragment fragment =  newInstance(ip, type, menu);
+        fragment.parent = parent;
+        return fragment;
     }
     public int getMenu() {
         return menu;

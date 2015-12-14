@@ -490,6 +490,7 @@ public abstract class Util {
             new SelectContainerDialog().setValues(page, fragment)
                     .show(activity.getFragmentManager(), "SelectContainerDialog");
         } else {
+            fragment.prepareDepthChange();
             container.addFragment(fragment, false);
             if (activity instanceof MainActivity) {
                 // Scroll to newly added fragment

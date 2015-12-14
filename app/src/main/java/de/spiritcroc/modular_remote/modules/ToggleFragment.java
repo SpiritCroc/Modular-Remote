@@ -244,8 +244,10 @@ public class ToggleFragment extends ModuleFragment
     }
     @Override
     public ModuleFragment copy() {
-        return newInstance(ip,  type, toggleOnCommand, toggleOffCommand, toggleOnResponse,
-                toggleOffResponse, toggleOnLabel, toggleOffLabel, defaultState);
+        ModuleFragment fragment = newInstance(ip,  type, toggleOnCommand, toggleOffCommand,
+                toggleOnResponse, toggleOffResponse, toggleOnLabel, toggleOffLabel, defaultState);
+        fragment.parent = parent;
+        return fragment;
     }
 
     public int getDefaultState() {

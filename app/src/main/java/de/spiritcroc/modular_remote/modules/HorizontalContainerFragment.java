@@ -150,6 +150,7 @@ public class HorizontalContainerFragment extends ModuleFragment implements Conta
         HorizontalContainerFragment fragment = newInstance();
         fragment.setRecreationKey(getRecreationKey());
         fragment.setPosMeasures(pos.width, pos.height);
+        fragment.parent = parent;
         return fragment;
     }
     @Override

@@ -173,7 +173,9 @@ public class WebViewFragment extends ModuleFragment {
     }
     @Override
     public ModuleFragment copy() {
-        return newInstance(address, javaScriptEnabled, allowExternalLinks);
+        ModuleFragment fragment = newInstance(address, javaScriptEnabled, allowExternalLinks);
+        fragment.parent = parent;
+        return fragment;
     }
 
     private class CustomWebViewClient extends WebViewClient {

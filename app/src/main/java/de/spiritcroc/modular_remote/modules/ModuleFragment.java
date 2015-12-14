@@ -496,10 +496,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                                         Container oldC = insertFragment.getParent();
                                         oldC.removeFragment(insertFragment, false);
                                         oldC.onContentMoved();
-                                        insertFragment.oldDepth =
-                                                insertFragment instanceof Container ?
-                                                        ((Container) insertFragment).getDepth() :
-                                                        insertFragment.getParent().getDepth() + 1;
+                                        insertFragment.prepareDepthChange();
                                         container.addFragment(insertFragment, true);
                                     }
                                 }
@@ -524,6 +521,13 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                 Log.e(LOG_TAG, "Unknown action type received by OnDragListener.");
                 return false;
 
+        }
+    }
+    public void prepareDepthChange() {
+        // Depth can't change if there is no parent yet
+        if (parent != null) {
+            oldDepth = (this instanceof Container ? ((Container) this).getDepth() :
+                    getParent().getDepth() + 1);
         }
     }
     public void onStartDragMode() {
