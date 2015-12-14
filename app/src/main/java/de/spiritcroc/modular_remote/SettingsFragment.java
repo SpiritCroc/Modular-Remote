@@ -37,7 +37,7 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     private ListPreference ringerModePreference;
     private EditTextPreference blockSizePreference;
-    private EditTextPreference blochSizeHeightPreference;
+    private EditTextPreference blockSizeHeightPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class SettingsFragment extends CustomPreferenceFragment
 
         ringerModePreference = (ListPreference) findPreference(Preferences.KEY_CHANGE_RINGER_MODE);
         blockSizePreference = (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE);
-        blochSizeHeightPreference =
+        blockSizeHeightPreference =
                 (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_HEIGHT);
 
         PreferenceCategory appAppearancePreference =
@@ -119,8 +119,8 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     private void setBlochSizeHeightSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_BLOCK_SIZE_HEIGHT, blochSizeHeightPreference.getText(), 6);
-        blochSizeHeightPreference.setSummary(getResources().getQuantityString(
+                Preferences.KEY_BLOCK_SIZE_HEIGHT, blockSizeHeightPreference.getText(), 6);
+        blockSizeHeightPreference.setSummary(getResources().getQuantityString(
                 R.plurals.pref_block_size_height_summary, value, value));
     }
 }
