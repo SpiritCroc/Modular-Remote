@@ -27,11 +27,6 @@
             android:entries="@array/pref_change_ringer_mode_array"
             android:entryValues="@array/pref_change_ringer_mode_array_values"
             android:defaultValue="@string/pref_ringer_mode_keep_value"/>
-        <EditTextPreference
-            android:key="pref_offscreen_page_limit"
-            android:title="@string/pref_offscreen_page_limit"
-            android:numeric="integer|signed"
-            android:defaultValue="2"/>
         </PreferenceCategory>
     <PreferenceScreen
         android:key="pref_advanced_settings"

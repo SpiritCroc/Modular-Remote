@@ -25,6 +25,7 @@ import android.preference.EditTextPreference;
 public class SettingsAdvancedFragment extends CustomPreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private EditTextPreference offscreenPageLimitPreference;
     private EditTextPreference timeUpdateIntervalPreference;
     private EditTextPreference checkConnectivityIntervalPreference;
     private EditTextPreference doubleClickTimeoutPreference;
@@ -34,6 +35,8 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences_advanced);
 
+        offscreenPageLimitPreference =
+                (EditTextPreference) findPreference(Preferences.KEY_OFFSCREEN_PAGE_LIMIT);
         timeUpdateIntervalPreference =
                 (EditTextPreference) findPreference(Preferences.KEY_TIME_UPDATE_INTERVAL);
         checkConnectivityIntervalPreference =
@@ -43,6 +46,7 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
     }
 
     private void init() {
+        setOffscreenPageLimitSummary();
         setTimeUpdateIntervalSummary();
         setCheckConnectivityIntervalSummary();
         setDoubleClickTimeoutSummary();
@@ -64,12 +68,26 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Preferences.KEY_TIME_UPDATE_INTERVAL.equals(key)) {
+        if (Preferences.KEY_OFFSCREEN_PAGE_LIMIT.equals(key)) {
+            setOffscreenPageLimitSummary();
+        } else if (Preferences.KEY_TIME_UPDATE_INTERVAL.equals(key)) {
             setTimeUpdateIntervalSummary();
         } else if (Preferences.KEY_CHECK_CONNECTIVITY_INTERVAL.equals(key)) {
             setCheckConnectivityIntervalSummary();
         } else if (Preferences.KEY_DOUBLE_CLICK_TIMEOUT.equals(key)) {
             setDoubleClickTimeoutSummary();
+        }
+    }
+
+    private void setOffscreenPageLimitSummary() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.KEY_OFFSCREEN_PAGE_LIMIT, offscreenPageLimitPreference.getText(), 2);
+        if (value < 0) {
+            offscreenPageLimitPreference
+                    .setSummary(getString(R.string.pref_offscreen_page_limit_never));
+        } else {
+            offscreenPageLimitPreference.setSummary(getResources().getQuantityString(
+                    R.plurals.pref_offscreen_page_limit, value, value));
         }
     }
 

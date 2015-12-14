@@ -36,7 +36,6 @@ public class SettingsFragment extends CustomPreferenceFragment
     private static final String KEY_MORE_SPACE_SETTINGS = "pref_more_space";
 
     private ListPreference ringerModePreference;
-    private EditTextPreference offscreenPageLimitPreference;
     private EditTextPreference blockSizePreference;
     private EditTextPreference blochSizeHeightPreference;
 
@@ -46,8 +45,6 @@ public class SettingsFragment extends CustomPreferenceFragment
         addPreferencesFromResource(R.xml.preferences);
 
         ringerModePreference = (ListPreference) findPreference(Preferences.KEY_CHANGE_RINGER_MODE);
-        offscreenPageLimitPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_OFFSCREEN_PAGE_LIMIT);
         blockSizePreference = (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE);
         blochSizeHeightPreference =
                 (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_HEIGHT);
@@ -69,7 +66,6 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     private void init() {
         setRingerModeSummary();
-        setOffscreenPageLimitSummary();
         setBlockSizeSummary();
         setBlochSizeHeightSummary();
     }
@@ -92,8 +88,6 @@ public class SettingsFragment extends CustomPreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Preferences.KEY_CHANGE_RINGER_MODE.equals(key)) {
             setRingerModeSummary();
-        } else if (Preferences.KEY_OFFSCREEN_PAGE_LIMIT.equals(key)) {
-            setOffscreenPageLimitSummary();
         } else if (Preferences.KEY_BLOCK_SIZE.equals(key)) {
             setBlockSizeSummary();
         } else if (Preferences.KEY_BLOCK_SIZE_HEIGHT.equals(key)) {
@@ -113,18 +107,6 @@ public class SettingsFragment extends CustomPreferenceFragment
             String[] summaries =
                     resources.getStringArray(R.array.pref_change_ringer_mode_array_summaries);
             ringerModePreference.setSummary(summaries[index]);
-        }
-    }
-
-    private void setOffscreenPageLimitSummary() {
-        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_OFFSCREEN_PAGE_LIMIT, offscreenPageLimitPreference.getText(), 2);
-        if (value < 0) {
-            offscreenPageLimitPreference
-                    .setSummary(getString(R.string.pref_offscreen_page_limit_never));
-        } else {
-            offscreenPageLimitPreference.setSummary(getResources().getQuantityString(
-                    R.plurals.pref_offscreen_page_limit, value, value));
         }
     }
 

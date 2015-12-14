@@ -2,6 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/pref_advanced_settings">
     <EditTextPreference
+        android:key="pref_offscreen_page_limit"
+        android:title="@string/pref_offscreen_page_limit"
+        android:numeric="integer|signed"
+        android:defaultValue="2"/>
+    <EditTextPreference
         android:key="pref_time_update_interval"
         android:title="@string/pref_time_update_interval"
         android:numeric="integer"

@@ -24,10 +24,10 @@
     <string name="pref_app_behaviour">App behaviour</string>
     <string name="pref_offscreen_page_limit">Offscreen page limit</string>
     <plurals name="pref_offscreen_page_limit">
-        <item quantity="one">A page will get inactive when you are more than %d page away</item>
-        <item quantity="other">A page will get inactive when you are more than %d pages away</item>
+        <item quantity="one">A page will get inactive when you are more than %d page away (relevant for keeping WebViews alive)</item>
+        <item quantity="other">A page will get inactive when you are more than %d pages away (relevant for keeping WebViews alive)</item>
     </plurals>
-    <string name="pref_offscreen_page_limit_never">Pages will never get inactive</string>
+    <string name="pref_offscreen_page_limit_never">Pages will never get inactive (relevant for keeping WebViews alive)</string>
     <string name="pref_time_update_interval">Time update interval</string>
     <plurals name="pref_time_update_interval">
         <item quantity="one">Clock displays will update every millisecond. This low value might increase your CPU usage and decrease your battery life!</item>
