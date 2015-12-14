@@ -26,7 +26,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.util.Linkify;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -47,8 +47,8 @@ public class GreetingDialog extends DialogFragment {
         int padding = getResources().getDimensionPixelSize(R.dimen.dialog_content_padding);
         view.setPadding(padding, padding, padding, padding);
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        view.setAutoLinkMask(Linkify.ALL);
         view.setText(R.string.dialog_greeting_message);
+        view.setMovementMethod(LinkMovementMethod.getInstance());
         builder.setTitle(R.string.dialog_greeting)
                 .setView(Util.scrollView(view))
                 .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {

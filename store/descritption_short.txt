@@ -1,1 +1,1 @@
-Create your own remote to control your TCP devices (and more)!
+Create your own remote to control your devices using TCP (and more)!
