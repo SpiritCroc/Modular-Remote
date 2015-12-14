@@ -20,9 +20,12 @@ package de.spiritcroc.modular_remote.modules;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.DragEvent;
@@ -41,6 +44,7 @@ import java.util.Random;
 
 import de.spiritcroc.modular_remote.DragManager;
 import de.spiritcroc.modular_remote.MainActivity;
+import de.spiritcroc.modular_remote.Preferences;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.ResizeFrame;
 import de.spiritcroc.modular_remote.TouchOverlay;
@@ -117,6 +121,15 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
 
     protected final static int MENU_ORDER = 50;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        pos.init(sharedPreferences);
+    }
+
     /**
      * Resize if block unit size changed
      * @param updateContent
@@ -155,8 +168,18 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         protected Pos () {
             leftMargin = 0;
             topMargin = 0;
-            width = 1;
-            height = 1;
+            width = -1;
+            height = -1;
+        }
+        protected void init(SharedPreferences sharedPreferences) {
+            if (width <= 0) {
+                width = Util.getPreferenceInt(sharedPreferences,
+                        Preferences.KEY_FRAGMENT_DEFAULT_WIDTH, 2);
+            }
+            if (height <= 0) {
+                height = Util.getPreferenceInt(sharedPreferences,
+                        Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT, 1);
+            }
         }
         protected String getRecreationKey() {
             return fixRecreationKey(leftMargin + SEP + topMargin + SEP +

@@ -103,4 +103,8 @@
         <item quantity="one">The app will check every %d millisecond whether the connected TCP devices are still available. This low value might increase your CPU usage and decrease your battery life!</item>
         <item quantity="other">The app will check every %d milliseconds whether the connected TCP devices are still available. Low values might increase your CPU usage and decrease your battery life!</item>
     </plurals>
+    <string name="pref_fragment_default_width">Default width</string>
+    <string name="pref_fragment_default_width_summary">Width when adding new modules is %d</string>
+    <string name="pref_fragment_default_height">Default height</string>
+    <string name="pref_fragment_default_height_summary">Height when adding new modules is %d</string>
 </resources>

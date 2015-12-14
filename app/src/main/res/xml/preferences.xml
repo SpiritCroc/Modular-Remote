@@ -55,5 +55,15 @@
             android:title="@string/pref_block_size_height"
             android:numeric="integer"
             android:defaultValue="6"/>
+        <EditTextPreference
+            android:key="pref_fragment_default_width"
+            android:title="@string/pref_fragment_default_width"
+            android:numeric="integer"
+            android:defaultValue="2"/>
+        <EditTextPreference
+            android:key="pref_fragment_default_height"
+            android:title="@string/pref_fragment_default_height"
+            android:numeric="integer"
+            android:defaultValue="1"/>
     </PreferenceCategory>
 </PreferenceScreen>

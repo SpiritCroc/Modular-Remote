@@ -35,5 +35,7 @@ public final class Preferences {
             KEY_LAST_PAGE_ID = "last_page_id",
             KEY_DOUBLE_CLICK_TIMEOUT = "pref_double_click_timeout",
             KEY_CHECK_CONNECTIVITY_INTERVAL = "pref_check_connectivity_interval",
-            KEY_SEEN_GREETING_VERSION = "seen_greeting_version";
+            KEY_SEEN_GREETING_VERSION = "seen_greeting_version",
+            KEY_FRAGMENT_DEFAULT_WIDTH = "pref_fragment_default_width",
+            KEY_FRAGMENT_DEFAULT_HEIGHT = "pref_fragment_default_height";
 }

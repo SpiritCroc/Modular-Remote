@@ -38,6 +38,8 @@ public class SettingsFragment extends CustomPreferenceFragment
     private ListPreference ringerModePreference;
     private EditTextPreference blockSizePreference;
     private EditTextPreference blockSizeHeightPreference;
+    private EditTextPreference fragmentDefaultWidthPreference;
+    private EditTextPreference fragmentDefaultHeightPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,10 @@ public class SettingsFragment extends CustomPreferenceFragment
         blockSizePreference = (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE);
         blockSizeHeightPreference =
                 (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_HEIGHT);
+        fragmentDefaultWidthPreference =
+                (EditTextPreference) findPreference(Preferences.KEY_FRAGMENT_DEFAULT_WIDTH);
+        fragmentDefaultHeightPreference =
+                (EditTextPreference) findPreference(Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT);
 
         PreferenceCategory appAppearancePreference =
                 (PreferenceCategory) findPreference(KEY_APP_APPEARANCE);
@@ -68,6 +74,8 @@ public class SettingsFragment extends CustomPreferenceFragment
         setRingerModeSummary();
         setBlockSizeSummary();
         setBlochSizeHeightSummary();
+        setFragmentDefaultWidthPreference();
+        setFragmentDefaultHeightPreference();
     }
 
     @Override
@@ -92,6 +100,10 @@ public class SettingsFragment extends CustomPreferenceFragment
             setBlockSizeSummary();
         } else if (Preferences.KEY_BLOCK_SIZE_HEIGHT.equals(key)) {
             setBlochSizeHeightSummary();
+        } else if (Preferences.KEY_FRAGMENT_DEFAULT_WIDTH.equals(key)) {
+            setFragmentDefaultWidthPreference();
+        } else if (Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT.equals(key)) {
+            setFragmentDefaultHeightPreference();
         }
 
     }
@@ -122,5 +134,21 @@ public class SettingsFragment extends CustomPreferenceFragment
                 Preferences.KEY_BLOCK_SIZE_HEIGHT, blockSizeHeightPreference.getText(), 6);
         blockSizeHeightPreference.setSummary(getResources().getQuantityString(
                 R.plurals.pref_block_size_height_summary, value, value));
+    }
+
+    private void setFragmentDefaultWidthPreference() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.KEY_FRAGMENT_DEFAULT_WIDTH,
+                fragmentDefaultWidthPreference.getText(), 2);
+        fragmentDefaultWidthPreference.setSummary(
+                getString(R.string.pref_fragment_default_width_summary, value));
+    }
+
+    private void setFragmentDefaultHeightPreference() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT,
+                fragmentDefaultHeightPreference.getText(), 1);
+        fragmentDefaultHeightPreference.setSummary(
+                getString(R.string.pref_fragment_default_height_summary, value));
     }
 }
