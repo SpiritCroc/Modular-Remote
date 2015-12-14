@@ -37,14 +37,11 @@ import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.modules.Container;
 import de.spiritcroc.modular_remote.modules.DisplayFragment;
-import de.spiritcroc.modular_remote.modules.HorizontalContainerFragment;
 import de.spiritcroc.modular_remote.modules.SpinnerFragment;
 import de.spiritcroc.modular_remote.modules.ToggleFragment;
 import de.spiritcroc.modular_remote.modules.WebViewFragment;
 import de.spiritcroc.modular_remote.modules.ModuleFragment;
 import de.spiritcroc.modular_remote.modules.PageContainerFragment;
-import de.spiritcroc.modular_remote.modules.ScrollContainerFragment;
-import de.spiritcroc.modular_remote.modules.WidgetContainerFragment;
 
 public class SelectFragmentsDialog extends DialogFragment {
     private static final String LOG_TAG = SelectFragmentsDialog.class.getSimpleName();
@@ -315,13 +312,6 @@ public class SelectFragmentsDialog extends DialogFragment {
     private View.OnClickListener removeListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Activity activity = getActivity();
-            if (!(activity instanceof MainActivity)) {
-                dismiss();
-                Log.e(LOG_TAG, "!(activity instanceof MainActivity)");
-                return;
-            }
-            MainActivity mainActivity = (MainActivity) activity;
             if (selectedModuleFragments.get(0) instanceof PageContainerFragment) {
                 if (pageRemovalAllowed) {
                     dismiss();
