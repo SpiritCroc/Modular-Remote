@@ -73,7 +73,7 @@ public class SettingsFragment extends CustomPreferenceFragment
     private void init() {
         setRingerModeSummary();
         setBlockSizeSummary();
-        setBlochSizeHeightSummary();
+        setBlockSizeHeightSummary();
         setFragmentDefaultWidthPreference();
         setFragmentDefaultHeightPreference();
     }
@@ -99,7 +99,7 @@ public class SettingsFragment extends CustomPreferenceFragment
         } else if (Preferences.KEY_BLOCK_SIZE.equals(key)) {
             setBlockSizeSummary();
         } else if (Preferences.KEY_BLOCK_SIZE_HEIGHT.equals(key)) {
-            setBlochSizeHeightSummary();
+            setBlockSizeHeightSummary();
         } else if (Preferences.KEY_FRAGMENT_DEFAULT_WIDTH.equals(key)) {
             setFragmentDefaultWidthPreference();
         } else if (Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT.equals(key)) {
@@ -129,7 +129,7 @@ public class SettingsFragment extends CustomPreferenceFragment
                 R.plurals.pref_block_size_summary, value, value));
     }
 
-    private void setBlochSizeHeightSummary() {
+    private void setBlockSizeHeightSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
                 Preferences.KEY_BLOCK_SIZE_HEIGHT, blockSizeHeightPreference.getText(), 6);
         blockSizeHeightPreference.setSummary(getResources().getQuantityString(
