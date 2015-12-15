@@ -60,7 +60,7 @@ public class TcpInformation {
         booleanAvailable = true;
     }
     public TcpInformation(@NonNull String responseClassifier, @Nullable String stringValue,
-                          @NonNull String rawResponse) {
+                          String rawResponse) {
         this.type = InformationType.CLASSIFIED_RESPONSE;
         this.responseClassifier = responseClassifier;
         this.stringValue = stringValue;
