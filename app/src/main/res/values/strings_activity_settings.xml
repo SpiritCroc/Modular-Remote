@@ -76,15 +76,15 @@
     <string name="pref_ringer_mode_vibrate_summary">Ringer mode while app is open: Vibrate</string>
     <string name="pref_ringer_mode_vibrate_if_not_muted_summary">Ringer mode while app is open and not already muted: Vibrate</string>
     <string name="pref_ringer_mode_keep_summary">Ringer mode will not be changed</string>
-    <string name="pref_block_size">Block size</string>
+    <string name="pref_block_size">Grid columns</string>
     <plurals name="pref_block_size_summary">
-        <item quantity="one">The width of your screen will get divided into %d unit in order to set up the size for your fragments</item>
-        <item quantity="other">The width of your screen will get divided into %d units in order to set up the size for your fragments</item>
+        <item quantity="one">The width of your screen will get divided into %d column to position your fragments</item>
+        <item quantity="other">The width of your screen will get divided into %d columns to position your fragments</item>
     </plurals>
-    <string name="pref_block_size_height">Block size height</string>
+    <string name="pref_block_size_height">Grid rows</string>
     <plurals name="pref_block_size_height_summary">
-        <item quantity="one">The height of your screen will get divided into %d unit</item>
-        <item quantity="other">The height of your screen will get divided into %d units</item>
+        <item quantity="one">The height of your screen will get divided into %d row to position your fragments</item>
+        <item quantity="other">The height of your screen will get divided into %d rows to position your fragments</item>
     </plurals>
     <string name="pref_advanced_settings">Advanced settings</string>
     <string name="pref_advanced_settings_summary">Settings for advanced users</string>
