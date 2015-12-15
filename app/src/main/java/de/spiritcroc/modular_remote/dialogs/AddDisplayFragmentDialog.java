@@ -24,6 +24,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,7 +33,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,8 +62,8 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
     private EditText editStaticText;
     private String ip, command = "", command2 = "", command3 = "", informationType = "";
     private Display.ViewMode mode;
-    private Spinner receiverTypeSpinner, informationTypeSpinner,
-            horizontalTextGravitySpinner, addStaticTextSpinner;
+    private Spinner receiverTypeSpinner, informationTypeSpinner, horizontalTextGravitySpinner;
+    private TextView addStaticTextView;
     private LinearLayout tcpDisplayLayout, staticDisplayLayout, clockDisplayLayout, tcpLayout;
     private String[] typeValues, informationTypeValues, displayModeValues, addStaticTextValues;
     private int[] horizontalTextGravityValues;
@@ -189,21 +193,26 @@ public class AddDisplayFragmentDialog extends CustomDialogFragment implements Re
         horizontalTextGravitySpinner.setAdapter(ArrayAdapter.createFromResource(activity,
                 R.array.horizontal_text_gravities, R.layout.support_simple_spinner_dropdown_item));
 
-        addStaticTextSpinner = (Spinner) view.findViewById(R.id.add_static_text_spinner);
+        addStaticTextView = (TextView) view.findViewById(R.id.add_static_text_view);
         addStaticTextValues = getResources().getStringArray(R.array.button_label_spinner_chars);
-        addStaticTextSpinner.setAdapter(ArrayAdapter.createFromResource(activity,
-                R.array.button_label_spinner_chars, R.layout.support_simple_spinner_dropdown_item));
-        addStaticTextSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        addStaticTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    editStaticText.setText(editStaticText.getText() +
-                            addStaticTextValues[position]);
-                    addStaticTextSpinner.setSelection(0);
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getActivity(), addStaticTextView);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        String text = editStaticText.getText() + item.getTitle().toString();
+                        editStaticText.setText(text);
+                        return true;
+                    }
+                });
+                Menu menu = popupMenu.getMenu();
+                for (String text: addStaticTextValues) {
+                    menu.add(text);
                 }
+                popupMenu.show();
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         String positiveButtonText;

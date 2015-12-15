@@ -53,11 +53,14 @@
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
                 android:hint="@string/dialog_static_text_summary"/>
-            <Spinner
-                android:id="@+id/add_static_text_spinner"
+            <Button
+                android:id="@+id/add_static_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:text="@string/button_label_spinner_chars_add"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textColor="?android:attr/textColorPrimary"/>
         </LinearLayout>
     </LinearLayout>
 

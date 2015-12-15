@@ -267,9 +267,8 @@
     <string name="toast_container_edit_scroll">Scrollable containers can now scroll!</string>
     <string name="toast_container_edit_drag">Scrollable containers can be moved!</string>
 
-    <!-- There are some unicode characters that you might want to use on a remote, but they are not included in most keyboards-->
+    <!-- There are some unicode characters that you might want to use on a remote, but are not included on most keyboards-->
     <string-array name="button_label_spinner_chars" translatable="false">
-        <item>@string/button_label_spinner_chars_add</item><!--The first entry will not be added if selected-->
         <item>▲</item>
         <item>▼</item>
         <item>◀</item>
