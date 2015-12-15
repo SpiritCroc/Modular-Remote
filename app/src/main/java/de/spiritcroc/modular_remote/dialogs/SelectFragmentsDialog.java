@@ -290,17 +290,7 @@ public class SelectFragmentsDialog extends DialogFragment {
         @Override
         public void onClick(View v) {
             if (selectedModuleFragments.get(0) instanceof PageContainerFragment) {
-                PageContainerFragment fragment =
-                        (PageContainerFragment) selectedModuleFragments.get(0);
-                Activity activity = getActivity();
-                dismiss();
-                if (!(activity instanceof MainActivity)) {
-                    Log.e(LOG_TAG, "!(activity instanceof MainActivity)");
-                    return;
-                }
-                MainActivity mainActivity = (MainActivity) activity;
-                mainActivity.removePage(fragment, false);
-                mainActivity.addPage(fragment);
+                new SortPagesDialog().show(getFragmentManager(), "SortPagesDialog");
             } else {
                 new SelectContainerDialog().setValues(page, selectedModuleFragments)
                         .setMode(SelectContainerDialog.Mode.MOVE_FRAGMENTS)

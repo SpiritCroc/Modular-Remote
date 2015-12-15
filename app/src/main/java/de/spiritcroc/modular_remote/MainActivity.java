@@ -51,6 +51,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import de.spiritcroc.modular_remote.dialogs.AboutDialog;
 import de.spiritcroc.modular_remote.dialogs.AddFragmentDialog;
@@ -498,9 +499,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         if (callOnRemove) {
             page.onRemove();
         }
+        restart(pos);
+    }
+
+    private void restart(int selectPagePos) {
         Intent intent = getIntent();
-        if (pos >= 0 && pages.size() > pos) {
-            intent.putExtra(EXTRA_SELECT_PAGE_ID, pages.get(pos).getPageId());
+        if (selectPagePos >= 0 && pages.size() > selectPagePos) {
+            intent.putExtra(EXTRA_SELECT_PAGE_ID, pages.get(selectPagePos).getPageId());
             // Don't toast in case the page can not be selected
             intent.putExtra(EXTRA_SELECT_PAGE_WITHOUT_WARNING, true);
         }
@@ -704,6 +709,29 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             list.addAll(Arrays.asList(addition));
         }
         return list.toArray(new Container[list.size()]);
+    }
+
+    public PageContainerFragment[] getPages() {
+        return pages.toArray(new PageContainerFragment[pages.size()]);
+    }
+
+    public void orderPages(List<Integer> order) {
+        ArrayList<PageContainerFragment> pages = new ArrayList<>();
+        for (int i = 0; i < this.pages.size(); i++) {
+            int index = order.indexOf(i);
+            if (index < 0 || index >= this.pages.size()) {
+                Log.e(LOG_TAG, "orderPages: illegal index " + index + " for page " + i);
+                return;
+            }
+            pages.add(this.pages.get(index));
+        }
+        if (pages.equals(this.pages)) {
+            return;
+        }
+        PageContainerFragment currentPage = this.pages.get(viewPager.getCurrentItem());
+        this.pages = pages;
+        notifyDataSetChanged();
+        restart(pages.indexOf(currentPage));
     }
 
     // Required for the correct fragment size, as configured in the block unit preference

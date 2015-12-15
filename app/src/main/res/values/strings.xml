@@ -129,6 +129,7 @@
     <string name="dialog_display_functionality">Display functionality:</string>
     <string name="dialog_apply">Apply</string>
     <string name="dialog_sort_fragments">Sort modules (drag &amp; drop)</string>
+    <string name="dialog_sort_pages">Sort pages (drag &amp; drop)</string>
     <string name="dialog_greeting">Welcome</string>
     <string name="dialog_greeting_message">This app is still in its alpha state. This means:
         \n- You should not expect a fully tested and bug-free app.
