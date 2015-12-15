@@ -86,7 +86,8 @@ public class EditConnectionDialog extends DialogFragment {
             }
         }
 
-        Button hideSubmenuItemsButton = (Button) view.findViewById(R.id.hide_submenu_elements_button);
+        Button hideSubmenuItemsButton =
+                (Button) view.findViewById(R.id.hide_submenu_elements_button);
         hideSubmenuItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
