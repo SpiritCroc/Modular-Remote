@@ -22,6 +22,12 @@
     android:layout_height="match_parent"
     android:theme="@style/DialogTheme">
 
+    <Button
+        android:id="@+id/button_reconnect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_reconnect"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

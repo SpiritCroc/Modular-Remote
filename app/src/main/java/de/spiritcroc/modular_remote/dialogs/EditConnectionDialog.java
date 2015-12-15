@@ -98,6 +98,14 @@ public class EditConnectionDialog extends DialogFragment {
         dynamicButtonsLayout = (LinearLayout) view.findViewById(R.id.dynamic_buttons_layout);
         addTypeSpecificButtons();
 
+        Button reconnectButton = (Button) view.findViewById(R.id.button_reconnect);
+        reconnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                connection.reset();
+            }
+        });
+
         final AlertDialog alertDialog = builder.setTitle(R.string.dialog_edit_connection)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

@@ -160,6 +160,7 @@
     <string name="dialog_ignore">Ignore</string>
     <string name="dialog_change">Change</string>
     <string name="dialog_remove_container">Remove %1$s?</string>
+    <string name="dialog_reconnect">Reconnect</string>
 
     <string name="horizontal_text_gravity_center">Center</string>
     <string name="horizontal_text_gravity_left">Left</string>
