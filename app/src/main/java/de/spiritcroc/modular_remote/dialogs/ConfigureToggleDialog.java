@@ -136,8 +136,8 @@ public class ConfigureToggleDialog extends DialogFragment implements CommandInte
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-                    editLabel.setText(editLabel.getText() +
-                            addTextValues[position]);
+                    String text = editLabel.getText() + addTextValues[position];
+                    editLabel.setText(text);
                     addTextSpinner.setSelection(0);
                 }
             }
