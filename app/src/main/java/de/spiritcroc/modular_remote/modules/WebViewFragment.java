@@ -112,9 +112,9 @@ public class WebViewFragment extends ModuleFragment {
         if (menuEnabled) {
             String shortenSearchingFor = "//", menuReloadEntry;
             if (address.contains(shortenSearchingFor)){
-                menuReloadEntry = getString(R.string.action_reload_web_view) + " " +
+                menuReloadEntry = getString(R.string.action_reload_web_view,
                         address.substring(address.indexOf(shortenSearchingFor) +
-                                shortenSearchingFor.length());
+                                shortenSearchingFor.length()));
             } else {
                 menuReloadEntry = getString(R.string.action_reload_web_view) + " " + address;
             }

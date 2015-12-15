@@ -28,8 +28,8 @@
     <string name="action_add_fragment">Add module</string>
     <string name="action_container_edit_mode_drag">Drag containers</string>
     <string name="action_container_edit_mode_scroll">Scroll containers</string>
-    <string name="action_reconnect_receiver">Reconnect TCP device</string>
-    <string name="action_reload_web_view">Reload site</string>
+    <string name="action_reconnect_receiver">Reconnect %1$s</string>
+    <string name="action_reload_web_view">Reload site %1$s</string>
     <string name="action_edit_page_content">Edit modules</string>
     <string name="action_fragment_settings">Module settings</string>
     <string name="action_connection_manager">Connection manager</string>

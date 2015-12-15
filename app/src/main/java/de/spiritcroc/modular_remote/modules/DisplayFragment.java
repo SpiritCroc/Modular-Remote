@@ -173,7 +173,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
     public void onPrepareOptionsMenu(Menu menu) {
         if (modeSettings instanceof TcpDisplaySettings) {
             if (menuEnabled && !connection.isConnected()) {
-                String menuResetEntry = getString(R.string.action_reconnect_receiver)+ " " + ip;
+                String menuResetEntry = getString(R.string.action_reconnect_receiver, ip);
                 boolean first = true;
                 for (int i = 0; i < menu.size(); i++) {
                     if (menu.getItem(i).getTitle().equals(menuResetEntry)) {
