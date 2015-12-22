@@ -1192,9 +1192,10 @@ public class TcpConnectionManager {
         }
         String searchingFor = COMMAND_CHAIN_READABLE_SEPARATOR;
         int index = command.indexOf(searchingFor);
-        if (index >= 0) {
+        while (index >= 0) {
             // Remove unneeded stuff (already given by classifier)
             command = command.substring(index + searchingFor.length());
+            index = command.indexOf(searchingFor);
         }
         if (path.get(path.size() - 1) == -1) {
             String enhanced = enhancedResponse(applicationContext, connection, classifier.value,
