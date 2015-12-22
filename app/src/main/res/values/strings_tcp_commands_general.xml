@@ -124,6 +124,18 @@
     <string name="command_front_height_right">Front Height Right</string>
     <string name="command_front_wide_left">Front Wide Left</string>
     <string name="command_front_wide_right">Front Wide Right</string>
+    <string name="response_ch_level_front_left">Channel level: Front left</string>
+    <string name="response_ch_level_front_right">Channel level: Front right</string>
+    <string name="response_ch_level_center">Channel level: Center</string>
+    <string name="response_ch_level_surround_left">Channel level: Surround Left</string>
+    <string name="response_ch_level_surround_right">Channel level: Surround Right</string>
+    <string name="response_ch_level_surround_back_left">Channel level: Surround Back Left</string>
+    <string name="response_ch_level_surround_back_right">Channel level: Surround Back Right</string>
+    <string name="response_ch_level_subwoofer">Channel level: Subwoofer</string>
+    <string name="response_ch_level_front_height_left">Channel level: Front Height Left</string>
+    <string name="response_ch_level_front_height_right">Channel level: Front Height Right</string>
+    <string name="response_ch_level_front_wide_left">Channel level: Front Wide Left</string>
+    <string name="response_ch_level_front_wide_right">Channel level: Front Wide Right</string>
 
     <string name="response_raw">Raw</string>
     <string name="response_connectivity">Connectivity</string>

@@ -1290,49 +1290,6 @@
         <item>0</item>
     </integer-array>
 
-    <string-array name="pioneer_tcp_commands_submenu_19" translatable="false"><!--difference to 18: enhanced response; testMe-->
-        <item>@string/command_front_left</item>
-        <item>@string/command_front_right</item>
-        <item>@string/command_center</item>
-        <item>@string/command_surround_left</item>
-        <item>@string/command_surround_right</item>
-        <item>@string/command_surround_back_left</item>
-        <item>@string/command_surround_back_right</item>
-        <item>@string/command_subwoofer</item>
-        <item>@string/command_front_height_left</item>
-        <item>@string/command_front_height_right</item>
-        <item>@string/command_front_wide_left</item>
-        <item>@string/command_front_wide_right</item>
-    </string-array>
-    <string-array name="pioneer_tcp_commands_submenu_19_values" translatable="false">
-        <item>L__</item>
-        <item>R__</item>
-        <item>C__</item>
-        <item>SL_</item>
-        <item>SR_</item>
-        <item>SBL</item>
-        <item>SBR</item>
-        <item>SW_</item>
-        <item>LH_</item>
-        <item>RH_</item>
-        <item>LW_</item>
-        <item>RW_</item>
-    </string-array>
-    <integer-array name="pioneer_tcp_commands_submenu_19_has_submenu" translatable="false">
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-        <item>-1</item>
-    </integer-array>
-
     <string-array name="pioneer_tcp_commands_submenu_20" translatable="false">
         <item>@string/command_and_volume_off</item>
         <item>@string/command_on</item>
@@ -1433,7 +1390,18 @@
         <item>@string/command_phase_control</item>
         <item>@string/command_virtual_sb</item>
         <item>@string/command_virtual_height</item>
-        <item>@string/command_ch_level</item>
+        <item>@string/response_ch_level_front_left</item>
+        <item>@string/response_ch_level_front_right</item>
+        <item>@string/response_ch_level_center</item>
+        <item>@string/response_ch_level_surround_left</item>
+        <item>@string/response_ch_level_surround_right</item>
+        <item>@string/response_ch_level_surround_back_left</item>
+        <item>@string/response_ch_level_surround_back_right</item>
+        <item>@string/response_ch_level_subwoofer</item>
+        <item>@string/response_ch_level_front_height_left</item>
+        <item>@string/response_ch_level_front_height_right</item>
+        <item>@string/response_ch_level_front_wide_left</item>
+        <item>@string/response_ch_level_front_wide_right</item>
         <item>@string/command_speakers</item>
         <item>@string/command_hdmi_audio</item>
         <item>@string/command_pqls</item>
@@ -1455,7 +1423,18 @@
         <item>IS·</item>
         <item>VSB·</item>
         <item>VHT·</item>
-        <item>CLV·····</item>
+        <item>CLVL__··</item>
+        <item>CLVR__··</item>
+        <item>CLVC__··</item>
+        <item>CLVSL_··</item>
+        <item>CLVSR_··</item>
+        <item>CLVSBL··</item>
+        <item>CLVSBR··</item>
+        <item>CLVSW_··</item>
+        <item>CLVLH_··</item>
+        <item>CLVRH_··</item>
+        <item>CLVLW_··</item>
+        <item>CLVRW_··</item>
         <item>SPK·</item>
         <item>HA·</item>
         <item>PQ·</item>
@@ -1477,7 +1456,18 @@
         <item>9</item>
         <item>10</item>
         <item>10</item>
-        <item>19</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
         <item>11</item>
         <item>16</item>
         <item>17</item>

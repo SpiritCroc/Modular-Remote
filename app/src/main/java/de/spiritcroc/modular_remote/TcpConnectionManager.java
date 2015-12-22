@@ -1386,8 +1386,8 @@ public class TcpConnectionManager {
                         return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_17);
                     case 18:
                         return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_18);
-                    case 19:
-                        return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_19);
+                    //case 19:
+                    //    return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_19);
                     case 20:
                         return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_20);
                     case 21:
@@ -1468,9 +1468,9 @@ public class TcpConnectionManager {
                     case 18:
                         return resources.getStringArray(
                                 R.array.pioneer_tcp_commands_submenu_18_values);
-                    case 19:
-                        return resources.getStringArray(
-                                R.array.pioneer_tcp_commands_submenu_19_values);
+                    //case 19:
+                    //    return resources.getStringArray(
+                    //            R.array.pioneer_tcp_commands_submenu_19_values);
                     case 20:
                         return resources.getStringArray(
                                 R.array.pioneer_tcp_commands_submenu_20_values);
@@ -1570,9 +1570,9 @@ public class TcpConnectionManager {
                     case 18:
                         return resources.getIntArray(
                                 R.array.pioneer_tcp_commands_submenu_18_has_submenu);
-                    case 19:
-                        return resources.getIntArray(
-                                R.array.pioneer_tcp_commands_submenu_19_has_submenu);
+                    //case 19:
+                    //    return resources.getIntArray(
+                    //            R.array.pioneer_tcp_commands_submenu_19_has_submenu);
                     case 20:
                         return resources.getIntArray(
                                 R.array.pioneer_tcp_commands_submenu_20_has_submenu);
