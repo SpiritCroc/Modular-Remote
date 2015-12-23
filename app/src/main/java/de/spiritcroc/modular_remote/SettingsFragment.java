@@ -36,8 +36,11 @@ public class SettingsFragment extends CustomPreferenceFragment
     private static final String KEY_MORE_SPACE_SETTINGS = "pref_more_space";
 
     private ListPreference ringerModePreference;
+    private ListPreference orientationPreference;
     private EditTextPreference blockSizePreference;
     private EditTextPreference blockSizeHeightPreference;
+    private EditTextPreference blockSizeLandscapePreference;
+    private EditTextPreference blockSizeHeightLandscapePreference;
     private EditTextPreference fragmentDefaultWidthPreference;
     private EditTextPreference fragmentDefaultHeightPreference;
 
@@ -47,7 +50,12 @@ public class SettingsFragment extends CustomPreferenceFragment
         addPreferencesFromResource(R.xml.preferences);
 
         ringerModePreference = (ListPreference) findPreference(Preferences.KEY_CHANGE_RINGER_MODE);
+        orientationPreference = (ListPreference) findPreference(Preferences.KEY_ORIENTATION);
         blockSizePreference = (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE);
+        blockSizeLandscapePreference =
+                (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_LANDSCAPE);
+        blockSizeHeightLandscapePreference =
+                (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE);
         blockSizeHeightPreference =
                 (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_HEIGHT);
         fragmentDefaultWidthPreference =
@@ -70,8 +78,11 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     private void init() {
         setRingerModeSummary();
+        setOrientationSummary();
         setBlockSizeSummary();
         setBlockSizeHeightSummary();
+        setBlockSizeLandscapeSummary();
+        setBlockSizeHeightLandscapeSummary();
         setFragmentDefaultWidthPreference();
         setFragmentDefaultHeightPreference();
     }
@@ -94,10 +105,16 @@ public class SettingsFragment extends CustomPreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Preferences.KEY_CHANGE_RINGER_MODE.equals(key)) {
             setRingerModeSummary();
+        } else if (Preferences.KEY_ORIENTATION.equals(key)) {
+            setOrientationSummary();
         } else if (Preferences.KEY_BLOCK_SIZE.equals(key)) {
             setBlockSizeSummary();
         } else if (Preferences.KEY_BLOCK_SIZE_HEIGHT.equals(key)) {
             setBlockSizeHeightSummary();
+        } else if (Preferences.KEY_BLOCK_SIZE_LANDSCAPE.equals(key)) {
+            setBlockSizeLandscapeSummary();
+        } else if (Preferences.KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE.equals(key)) {
+            setBlockSizeHeightLandscapeSummary();
         } else if (Preferences.KEY_FRAGMENT_DEFAULT_WIDTH.equals(key)) {
             setFragmentDefaultWidthPreference();
         } else if (Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT.equals(key)) {
@@ -120,6 +137,42 @@ public class SettingsFragment extends CustomPreferenceFragment
         }
     }
 
+    private void setOrientationSummary() {
+        String value = orientationPreference.getValue();
+        Resources resources = getResources();
+        String[] values = resources.getStringArray(R.array.pref_orientation_array_values);
+        int index = Arrays.asList(values).indexOf(value);
+        if (index < 0) {
+            orientationPreference.setSummary("");
+        } else {
+            String[] summaries =
+                    resources.getStringArray(R.array.pref_orientation_array);
+            orientationPreference.setSummary(summaries[index]);
+        }
+        // Enable/disable dependent preferences
+        boolean enablePortrait, enableLandscape;
+        switch (value) {
+            case Preferences.ORIENTATION_PORTRAIT_ONLY:
+            case Preferences.ORIENTATION_SHARE_LAYOUT:
+                enablePortrait = true;
+                enableLandscape = false;
+                break;
+            case Preferences.ORIENTATION_LANDSCAPE_ONLY:
+                enablePortrait = false;
+                enableLandscape = true;
+                break;
+            default:
+                enablePortrait = true;
+                enableLandscape = true;
+                break;
+
+        }
+        blockSizePreference.setEnabled(enablePortrait);
+        blockSizeHeightPreference.setEnabled(enablePortrait);
+        blockSizeLandscapePreference.setEnabled(enableLandscape);
+        blockSizeHeightLandscapePreference.setEnabled(enableLandscape);
+    }
+
     private void setBlockSizeSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
                 Preferences.KEY_BLOCK_SIZE, blockSizePreference.getText(), 4);
@@ -131,6 +184,20 @@ public class SettingsFragment extends CustomPreferenceFragment
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
                 Preferences.KEY_BLOCK_SIZE_HEIGHT, blockSizeHeightPreference.getText(), 6);
         blockSizeHeightPreference.setSummary(getResources().getQuantityString(
+                R.plurals.pref_block_size_height_summary, value, value));
+    }
+
+    private void setBlockSizeLandscapeSummary() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.KEY_BLOCK_SIZE, blockSizeLandscapePreference.getText(), 6);
+        blockSizeLandscapePreference.setSummary(getResources().getQuantityString(
+                R.plurals.pref_block_size_summary, value, value));
+    }
+
+    private void setBlockSizeHeightLandscapeSummary() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.KEY_BLOCK_SIZE_HEIGHT, blockSizeHeightLandscapePreference.getText(), 4);
+        blockSizeHeightLandscapePreference.setSummary(getResources().getQuantityString(
                 R.plurals.pref_block_size_height_summary, value, value));
     }
 

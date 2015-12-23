@@ -289,4 +289,6 @@
         <item>⟳</item>
     </string-array>
     <string name="button_label_spinner_chars_add">Add…</string>
+
+    <string name="redundant_page_name_landscape">%1$s (landscape)</string>
 </resources>

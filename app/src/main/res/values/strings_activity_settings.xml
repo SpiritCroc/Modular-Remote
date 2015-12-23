@@ -76,16 +76,18 @@
     <string name="pref_ringer_mode_vibrate_summary">Ringer mode while app is open: Vibrate</string>
     <string name="pref_ringer_mode_vibrate_if_not_muted_summary">Ringer mode while app is open and not already muted: Vibrate</string>
     <string name="pref_ringer_mode_keep_summary">Ringer mode will not be changed</string>
-    <string name="pref_block_size">Grid columns</string>
+    <string name="pref_block_size">Portrait grid columns</string>
     <plurals name="pref_block_size_summary">
         <item quantity="one">The width of your screen will get divided into %d column to position your fragments</item>
         <item quantity="other">The width of your screen will get divided into %d columns to position your fragments</item>
     </plurals>
-    <string name="pref_block_size_height">Grid rows</string>
+    <string name="pref_block_size_height">Portrait grid rows</string>
     <plurals name="pref_block_size_height_summary">
         <item quantity="one">The height of your screen will get divided into %d row to position your fragments</item>
         <item quantity="other">The height of your screen will get divided into %d rows to position your fragments</item>
     </plurals>
+    <string name="pref_block_size_landscape">Landscape grid columns</string>
+    <string name="pref_block_size_height_landscape">Landscape grid rows</string>
     <string name="pref_advanced_settings">Advanced settings</string>
     <string name="pref_advanced_settings_summary">Settings for advanced users</string>
 
@@ -107,4 +109,25 @@
     <string name="pref_fragment_default_width_summary">Width when adding new modules is %d</string>
     <string name="pref_fragment_default_height">Default height</string>
     <string name="pref_fragment_default_height_summary">Height when adding new modules is %d</string>
+    <string name="pref_orientation">Orientation</string>
+    <string name="pref_orientation_share_layout">Same setup for all orientations</string>
+    <string name="pref_orientation_separate_layout">Separate setup for each orientation</string>
+    <string name="pref_orientation_portrait_only">Portrait only</string>
+    <string name="pref_orientation_landscape_only">Landscape only</string>
+    <string name="pref_orientation_share_layout_value" translatable="false">share</string>
+    <string name="pref_orientation_separate_layout_value" translatable="false">separate</string>
+    <string name="pref_orientation_portrait_only_value" translatable="false">portrait</string>
+    <string name="pref_orientation_landscape_only_value" translatable="false">landscape</string>
+    <string-array name="pref_orientation_array" translatable="false">
+        <item>@string/pref_orientation_share_layout</item>
+        <item>@string/pref_orientation_separate_layout</item>
+        <item>@string/pref_orientation_portrait_only</item>
+        <item>@string/pref_orientation_landscape_only</item>
+    </string-array>
+    <string-array name="pref_orientation_array_values" translatable="false">
+        <item>@string/pref_orientation_share_layout_value</item>
+        <item>@string/pref_orientation_separate_layout_value</item>
+        <item>@string/pref_orientation_portrait_only_value</item>
+        <item>@string/pref_orientation_landscape_only_value</item>
+    </string-array>
 </resources>

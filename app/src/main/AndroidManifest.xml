@@ -31,7 +31,7 @@
         <activity
             android:name="de.spiritcroc.modular_remote.MainActivity"
             android:label="@string/app_launcher_name"
-            android:screenOrientation="sensorPortrait">
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

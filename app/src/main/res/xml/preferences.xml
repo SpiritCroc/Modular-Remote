@@ -45,6 +45,12 @@
             android:title="@string/pref_more_space"
             android:summary="@string/pref_more_space_summary"
             android:fragment="de.spiritcroc.modular_remote.SettingsMoreSpaceFragment"/>
+        <ListPreference
+            android:key="pref_orientation"
+            android:title="@string/pref_orientation"
+            android:entries="@array/pref_orientation_array"
+            android:entryValues="@array/pref_orientation_array_values"
+            android:defaultValue="@string/pref_orientation_share_layout_value"/>
         <EditTextPreference
             android:key="pref_block_size"
             android:title="@string/pref_block_size"
@@ -53,6 +59,16 @@
         <EditTextPreference
             android:key="pref_block_size_height"
             android:title="@string/pref_block_size_height"
+            android:numeric="integer"
+            android:defaultValue="6"/>
+        <EditTextPreference
+            android:key="pref_block_size_landscape"
+            android:title="@string/pref_block_size_landscape"
+            android:numeric="integer"
+            android:defaultValue="4"/>
+        <EditTextPreference
+            android:key="pref_block_size_height_landscape"
+            android:title="@string/pref_block_size_height_landscape"
             android:numeric="integer"
             android:defaultValue="6"/>
         <EditTextPreference

@@ -23,6 +23,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -155,6 +156,15 @@ public abstract class Util {
         }
     }
 
+    /**
+     * Loads the current x value
+     * @return
+     * Whether the x value has changed since last checking it
+     */
+    public static boolean newX(View view) {
+        int previous = bufferedX;
+        return getX(view, true) != previous;
+    }
     private static int bufferedX = -1;
     private static int getX(View view, boolean force) {
         if (!force && bufferedX != -1) {
@@ -241,7 +251,7 @@ public abstract class Util {
 
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(containerView.getContext());
-        int blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE, 4);
+        int blockUnits = getBlockUnits(preferences, false, containerView);
         if (blockUnits <= 0) {
             blockUnits = 4;
         }
@@ -261,7 +271,7 @@ public abstract class Util {
             return 0;
         }
 
-        int blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT, 6);
+        int blockUnits = getBlockUnits(preferences, true, containerView);
         if (blockUnits <= 0) {
             blockUnits = 6;
         }
@@ -277,14 +287,39 @@ public abstract class Util {
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(containerView.getContext());
         int blockUnits, screenSize;
+        blockUnits = getBlockUnits(preferences, yDir, containerView);
         if (yDir) {
-            blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT, 6);
             screenSize = getY(containerView);
         } else {
-            blockUnits = getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE, 4);
             screenSize = getX(containerView);
         }
         return (int) Math.round(d/screenSize*blockUnits);
+    }
+
+    private static int getBlockUnits(SharedPreferences preferences, boolean y, View v) {
+        boolean landscape = v.getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE;
+        return getBlockUnits(preferences, y, landscape);
+    }
+    private static int getBlockUnits(SharedPreferences preferences, boolean y, boolean landscape) {
+        if (Preferences.ORIENTATION_SHARE_LAYOUT.equals(preferences.getString(
+                Preferences.KEY_ORIENTATION, Preferences.ORIENTATION_SHARE_LAYOUT))) {
+            landscape = false;
+        }
+        if (y) {
+            if (landscape) {
+                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE,
+                        4);
+            } else {
+                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT, 6);
+            }
+        } else {
+            if (landscape) {
+                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_LANDSCAPE, 6);
+            } else {
+                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE, 4);
+            }
+        }
     }
 
     /**

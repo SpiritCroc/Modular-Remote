@@ -20,6 +20,7 @@ package de.spiritcroc.modular_remote;
 
 public final class Preferences {
     public static final String KEY_SAVED_FRAGMENTS = "saved_fragments",
+            KEY_SAVED_FRAGMENTS_LANDSCAPE = "saved_fragments_landscape",
             KEY_WIDGET_CONTAINER_AMOUNT_ = "widget_container_amount_",// += appWidgetId
             KEY_SAVED_CONNECTIONS = "saved_connections",
             KEY_OFFSCREEN_PAGE_LIMIT = "pref_offscreen_page_limit",
@@ -32,10 +33,18 @@ public final class Preferences {
             KEY_CHANGE_RINGER_MODE = "pref_change_ringer_mode",
             KEY_BLOCK_SIZE = "pref_block_size",
             KEY_BLOCK_SIZE_HEIGHT = "pref_block_size_height",
+            KEY_BLOCK_SIZE_LANDSCAPE = "pref_block_size_landscape",
+            KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE = "pref_block_size_height_landscape",
             KEY_LAST_PAGE_ID = "last_page_id",
             KEY_DOUBLE_CLICK_TIMEOUT = "pref_double_click_timeout",
             KEY_CHECK_CONNECTIVITY_INTERVAL = "pref_check_connectivity_interval",
             KEY_SEEN_GREETING_VERSION = "seen_greeting_version",
             KEY_FRAGMENT_DEFAULT_WIDTH = "pref_fragment_default_width",
             KEY_FRAGMENT_DEFAULT_HEIGHT = "pref_fragment_default_height";
+
+    public static final String KEY_ORIENTATION = "pref_orientation";
+    public static final String ORIENTATION_SHARE_LAYOUT = "share";
+    public static final String ORIENTATION_SEPARATE_LAYOUT = "separate";
+    public static final String ORIENTATION_PORTRAIT_ONLY = "portrait";
+    public static final String ORIENTATION_LANDSCAPE_ONLY = "landscape";
 }

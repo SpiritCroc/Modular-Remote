@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Inspired by the AOSP Browser
@@ -45,6 +46,8 @@ public class ShortcutActivity extends Activity implements OnClickListener,
     // changes the value, I  have to update this string:
     private static final String INSTALL_SHORTCUT = "com.android.launcher.action.INSTALL_SHORTCUT";
 
+    int firstLandscape = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +59,23 @@ public class ShortcutActivity extends Activity implements OnClickListener,
         pageListView.setOnItemClickListener(this);
         pageIDs = new ArrayList<>();
         try {
-            pageNames = MainActivity.getPageNamesFromRecreationKey(PreferenceManager
-                    .getDefaultSharedPreferences(this)
-                    .getString(Preferences.KEY_SAVED_FRAGMENTS, ""), pageIDs);
+            String[] pageNamesPortrait = MainActivity.getPageNamesFromRecreationKey(
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .getString(Preferences.KEY_SAVED_FRAGMENTS, ""), pageIDs);
+            String[] pageNamesLandscape = MainActivity.getPageNamesFromRecreationKey(
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .getString(Preferences.KEY_SAVED_FRAGMENTS_LANDSCAPE, ""), pageIDs);
+            ArrayList<String> pageNameList = new ArrayList<>();
+            pageNameList.addAll(Arrays.asList(pageNamesPortrait));
+            firstLandscape = pageNameList.size();
+            for (String name: pageNamesLandscape) {
+                if (pageNameList.contains(name)) {
+                    pageNameList.add(getString(R.string.redundant_page_name_landscape, name));
+                } else {
+                    pageNameList.add(name);
+                }
+            }
+            pageNames = pageNameList.toArray(new String[pageNameList.size()]);
             pageListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                     pageNames));
         } catch (Exception e) {
@@ -85,6 +102,10 @@ public class ShortcutActivity extends Activity implements OnClickListener,
             Intent shortcutIntent = new Intent(getApplicationContext(), MainActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             shortcutIntent.putExtra(MainActivity.EXTRA_SELECT_PAGE_ID, pageIDs.get(position));
+            int orientation = (firstLandscape >= 0 && firstLandscape <= position) ?
+                    MainActivity.FORCE_ORIENTATION_LANDSCAPE :
+                    MainActivity.FORCE_ORIENTATION_PORTRAIT;
+            shortcutIntent.putExtra(MainActivity.EXTRA_FORCE_ORIENTATION, orientation);
             intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
             intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, pageNames[position]);
             intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,

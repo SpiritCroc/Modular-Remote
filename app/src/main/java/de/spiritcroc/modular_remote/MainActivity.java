@@ -29,6 +29,8 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
@@ -73,6 +75,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             "de.spiritcroc.modular_remote.extra.SELECT_PAGE_ID";
     private static final String EXTRA_SELECT_PAGE_WITHOUT_WARNING =
             "de.spiritcroc.modular_remote.extra.EXTRA_SELECT_PAGE_WITHOUT_WARNING";
+    // Force orientation when using launcher shortcuts
+    public static final String EXTRA_FORCE_ORIENTATION =
+            "de.spiritcroc.modular_remote.extra.FORCE_ORIENTATION";
+    public static final int FORCE_ORIENTATION_PORTRAIT = 1;
+    public static final int FORCE_ORIENTATION_LANDSCAPE = 2;
 
     private CustomFragmentPagerAdapter fragmentPagerAdapter;
     private static CustomViewPager viewPager;
@@ -94,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private int volumeButtonSettingsShortcutCount = 0;
     private Handler resetVolumeButtonSettingsShortcutHandler = new Handler();
     private MenuItem editModeMenuItem, connectionMgrMenuItem;
+    private boolean discardSavedInstance = false;
+    private int forceOrientation = -1;
 
     private ActionMode actionMode;
     private boolean editModeContainerDrag = true;// If false: editModeContainerScroll
@@ -191,11 +200,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         pages = new ArrayList<>();
 
-        String savedFragments = sharedPreferences.getString(Preferences.KEY_SAVED_FRAGMENTS, "");
+        String savedFragments = sharedPreferences.getString(getSavedFragmentsKey(), "");
         if (DEBUG) Log.v(LOG_TAG, "savedFragments: " + savedFragments);
 
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
         viewPager = (CustomViewPager) findViewById(R.id.view_pager);
+
+        forceOrientation = getIntent().getIntExtra(EXTRA_FORCE_ORIENTATION, -1);
 
         restoreContentFromRecreationKey(savedFragments);
         pages.get(0).setMenuEnabled(true);
@@ -207,7 +218,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (Util.newY(viewPager)) {
+                boolean newY = Util.newY(viewPager);
+                boolean newX = Util.newX(viewPager);
+                if (newY || newX) {
                     viewPager.post(new Runnable() {
                         @Override
                         public void run() {
@@ -378,6 +391,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             changedRingerMode = true;
         }
 
+        if (forceOrientation == FORCE_ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else if (forceOrientation == FORCE_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            String orientation = sharedPreferences.getString(Preferences.KEY_ORIENTATION,
+                    Preferences.ORIENTATION_SHARE_LAYOUT);
+            if (Preferences.ORIENTATION_PORTRAIT_ONLY.equals(orientation)) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            } else if (Preferences.ORIENTATION_LANDSCAPE_ONLY.equals(orientation)) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            }
+        }
+
         resizeContent();
 
         setLockedModeVisibilities();
@@ -410,6 +439,26 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (discardSavedInstance) {
+            outState.clear();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration configuration) {
+        super.onConfigurationChanged(configuration);
+
+        if (!Preferences.ORIENTATION_SHARE_LAYOUT.equals(sharedPreferences.getString(
+                Preferences.KEY_ORIENTATION, Preferences.ORIENTATION_SHARE_LAYOUT))) {
+            // Restart for new setup; don't recreate old fragments
+            discardSavedInstance = true;
+            restart(null);
         }
     }
 
@@ -502,6 +551,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         restart(pos);
     }
 
+    private void restart(Intent intent) {
+        if (intent == null) {
+            intent = getIntent();
+        }
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
     private void restart(int selectPagePos) {
         Intent intent = getIntent();
         if (selectPagePos >= 0 && pages.size() > selectPagePos) {
@@ -510,10 +568,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             intent.putExtra(EXTRA_SELECT_PAGE_WITHOUT_WARNING, true);
         }
         saveFragments();
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
+        restart(intent);
     }
 
     public void scrollToPage(PageContainerFragment page) {
@@ -527,6 +582,18 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         saveFragments();
         saveConnections();
     }
+    private String getSavedFragmentsKey() {
+        String orientationPref = sharedPreferences.getString(Preferences.KEY_ORIENTATION,
+                Preferences.ORIENTATION_SHARE_LAYOUT);
+        boolean landscape = getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE &&
+                !Preferences.ORIENTATION_SHARE_LAYOUT.equals(orientationPref);
+        if (landscape) {
+            return Preferences.KEY_SAVED_FRAGMENTS_LANDSCAPE;
+        } else {
+            return Preferences.KEY_SAVED_FRAGMENTS;
+        }
+    }
     private void saveFragments() {
         String key = ModuleFragment.ROOT + separator + Util.RECREATION_KEY_VERSION + separator;
         for (int i = 0; i < pages.size(); i++) {
@@ -535,7 +602,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
         if (DEBUG) Log.v(LOG_TAG, "saveFragments: " + key);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Preferences.KEY_SAVED_FRAGMENTS, key);
+        editor.putString(getSavedFragmentsKey(), key);
         editor.apply();
     }
     private void saveConnections() {
@@ -573,10 +640,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                     false, null, null, null, null));
         }
 
-        // Select page if shortcut used:
+        // Select page if shortcut used and page is on current orientation:
         Intent intent = getIntent();
         long pageId = intent.getLongExtra(EXTRA_SELECT_PAGE_ID, -1);
-        if (pageId != -1) {
+        boolean landscape = getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE;
+        if (pageId != -1 && ((landscape && forceOrientation == FORCE_ORIENTATION_LANDSCAPE) ||
+                        (!landscape && forceOrientation == FORCE_ORIENTATION_PORTRAIT))) {
             for (int i = 0; i < pages.size(); i++) {
                 if (pages.get(i).getPageId() == pageId) {
                     shortcutPage = i;
