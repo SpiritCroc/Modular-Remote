@@ -5,7 +5,6 @@ WIP:
 x   - pioneer: complete strings_tcp_commands
 
 Fixes/Improvements:
-    - no connection to ip "" (dummy connection to avoid null-pointers?)
     - if trying to add fragment to page that is null (can happen with wrong recreationKey), make error message (instead of crash?)
 
 Upgrades / New stuff:
@@ -14,7 +13,6 @@ no coding required:
     - better featured image for play store (http://android-developers.blogspot.de/2011/10/android-market-featured-image.html)
     - more screenshots
     - feature video
-    - better icon
 
 module upgrades:
     - button: type general: home, optionsMenu, open device volume dialog, display off, fullscreen on/off, navbar on/off, pagetabs on/off (last three also as response for toggle?)
@@ -40,8 +38,6 @@ UI upgrades:
             super.show(manager, tag);
             getFragmentManager().beginTransaction().addToBackStack(null).commit();//Issue: dialogs are never shown again despite being in back stack
         }
-    - add landscape mode (configuration independent from portrait mode, pref in settings to only use one or both, solution for launcher shortcuts required)
-        on first change: dialog: you changed orientation …bla… empty …bla… /OK /Show again next time
     - immersive mode:
         when showing systemUI elements in immersive mode, hide elements again on click somewhere else
         when showing systemUI elements in immersive mode, do not allow clicks on other UI elements (prevent sending commands by accident)
@@ -52,7 +48,6 @@ UI upgrades:
         fix: possible not hiding actionBar after adding page
         fix: viewPager sometimes not updating on systemUI visibility changed
     - global padding settings, activity margin setting
-    - Possibility to sort pages via SortFragmentsDialog (Entry in OptionsMenu?) BEWARE THE REMOVAL!
     - CustomHorizontalScrollView + CustomScrollView: make snap depending on children measured size (inspiration by ChameleonOS app sidebar)
 
 other upgrades:
@@ -61,7 +56,6 @@ other upgrades:
     - possibility to specify port (just add a :portNumber to ip, e.g. :23; → read, if not given: use default)
     - first start:
         explanation how remote works
-        set up block size values depending on screen size
 
 New modules:
     - ExpandableContainer:
