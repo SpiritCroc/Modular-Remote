@@ -312,6 +312,10 @@ public class TcpConnectionManager {
 
         public void run() {
             resetNow = false;
+            if (isHidden()) {
+                // No connection required
+                return;
+            }
             try {
                 socket = new Socket(tcpIp, 23);
                 connected = true;
