@@ -66,8 +66,6 @@ public class SettingsFragment extends CustomPreferenceFragment
             Preference hidePagerTabStrip = findPreference(Preferences.KEY_HIDE_PAGER_TAB_STRIP);
             appAppearancePreference.removePreference(hidePagerTabStrip);
         }
-
-        setRingerModeSummary();
     }
 
     private void init() {
