@@ -162,6 +162,9 @@
     <string name="dialog_change">Change</string>
     <string name="dialog_remove_container">Remove %1$s?</string>
     <string name="dialog_reconnect">Reconnect</string>
+    <string name="dialog_setup_grid_size_title">Setup grid size</string>
+    <string name="dialog_setup_grid_size_message">Your modules will be positioned and resized according to an underlying grid, which is created by dividing the screen into a specified amount of units that you can modify here. The higher the entered value, the preciser you can set up your remote. Further options can be found in the settings.</string>
+    <string name="dialog_setup_grid_size_suggest">Suggested: %1$d</string>
 
     <string name="horizontal_text_gravity_center">Center</string>
     <string name="horizontal_text_gravity_left">Left</string>

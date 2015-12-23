@@ -34,6 +34,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -320,6 +321,20 @@ public abstract class Util {
                 return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE, 4);
             }
         }
+    }
+
+    private static final double suggestedBlockSizeInInch = 0.18;
+    private static final int suggestMultipleOf = 2;
+    public static int suggestBlockSize(Activity activity, boolean yDir) {
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double size;
+        if (yDir) {
+            size = (double) dm.heightPixels / (double) dm.densityDpi;
+        } else {
+            size = (double) dm.widthPixels / (double) dm.densityDpi;
+        }
+        return ((int) (size / suggestedBlockSizeInInch / suggestMultipleOf)) * suggestMultipleOf;
     }
 
     /**

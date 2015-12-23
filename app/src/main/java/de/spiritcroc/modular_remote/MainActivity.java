@@ -61,6 +61,7 @@ import de.spiritcroc.modular_remote.dialogs.GreetingDialog;
 import de.spiritcroc.modular_remote.dialogs.OverlapWarningDialog;
 import de.spiritcroc.modular_remote.dialogs.SelectConnectionDialog;
 import de.spiritcroc.modular_remote.dialogs.SelectFragmentsDialog;
+import de.spiritcroc.modular_remote.dialogs.SetupGridSizeDialog;
 import de.spiritcroc.modular_remote.modules.Container;
 import de.spiritcroc.modular_remote.modules.ModuleFragment;
 import de.spiritcroc.modular_remote.modules.PageContainerFragment;
@@ -260,6 +261,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         if (sharedPreferences.getInt(Preferences.KEY_SEEN_GREETING_VERSION, 0) <
                 GreetingDialog.VERSION) {
             new GreetingDialog().show(getFragmentManager(), "GreetingDialog");
+        } else if (SetupGridSizeDialog.shouldShow(sharedPreferences)) {
+            new SetupGridSizeDialog()
+                    .show(getFragmentManager(), "SetupGridSizeDialog");
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |

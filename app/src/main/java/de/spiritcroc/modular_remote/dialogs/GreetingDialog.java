@@ -23,6 +23,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.util.Linkify;
@@ -53,8 +54,14 @@ public class GreetingDialog extends DialogFragment {
                 .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
+                        SharedPreferences preferences =
+                                PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        preferences.edit()
                                 .putInt(Preferences.KEY_SEEN_GREETING_VERSION, VERSION).apply();
+                        if (SetupGridSizeDialog.shouldShow(preferences)) {
+                            new SetupGridSizeDialog()
+                                    .show(getFragmentManager(), "SetupGridSizeDialog");
+                        }
                     }
                 });
 
