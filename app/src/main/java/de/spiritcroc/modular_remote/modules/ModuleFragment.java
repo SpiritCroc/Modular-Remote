@@ -174,11 +174,11 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
         protected void init(SharedPreferences sharedPreferences) {
             if (width <= 0) {
                 width = Util.getPreferenceInt(sharedPreferences,
-                        Preferences.KEY_FRAGMENT_DEFAULT_WIDTH, 2);
+                        Preferences.KEY_FRAGMENT_DEFAULT_WIDTH, 3);
             }
             if (height <= 0) {
                 height = Util.getPreferenceInt(sharedPreferences,
-                        Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT, 1);
+                        Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT, 2);
             }
         }
         protected String getRecreationKey() {

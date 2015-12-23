@@ -204,7 +204,7 @@ public class SettingsFragment extends CustomPreferenceFragment
     private void setFragmentDefaultWidthPreference() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
                 Preferences.KEY_FRAGMENT_DEFAULT_WIDTH,
-                fragmentDefaultWidthPreference.getText(), 2);
+                fragmentDefaultWidthPreference.getText(), 3);
         fragmentDefaultWidthPreference.setSummary(
                 getString(R.string.pref_fragment_default_width_summary, value));
     }
@@ -212,7 +212,7 @@ public class SettingsFragment extends CustomPreferenceFragment
     private void setFragmentDefaultHeightPreference() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
                 Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT,
-                fragmentDefaultHeightPreference.getText(), 1);
+                fragmentDefaultHeightPreference.getText(), 2);
         fragmentDefaultHeightPreference.setSummary(
                 getString(R.string.pref_fragment_default_height_summary, value));
     }

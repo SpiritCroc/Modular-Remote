@@ -75,11 +75,11 @@
             android:key="pref_fragment_default_width"
             android:title="@string/pref_fragment_default_width"
             android:numeric="integer"
-            android:defaultValue="2"/>
+            android:defaultValue="3"/>
         <EditTextPreference
             android:key="pref_fragment_default_height"
             android:title="@string/pref_fragment_default_height"
             android:numeric="integer"
-            android:defaultValue="1"/>
+            android:defaultValue="2"/>
     </PreferenceCategory>
 </PreferenceScreen>
