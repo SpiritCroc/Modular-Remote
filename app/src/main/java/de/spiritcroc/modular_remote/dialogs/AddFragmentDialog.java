@@ -102,6 +102,12 @@ public class AddFragmentDialog extends DialogFragment {
                                         .setOnDismissListener(updateListener)
                                         .show(getFragmentManager(), "AddDisplayFragmentDialog");
                                 break;
+                            case ModuleFragment.COMMAND_LINE_FRAGMENT:
+                                new AddCommandLineFragmentDialog().setPage(page)
+                                        .setContainer(container)
+                                        .setOnDismissListener(updateListener)
+                                        .show(getFragmentManager(), "AddCommandLineFragmentDialog");
+                                break;
                             case ModuleFragment.WEB_VIEW_FRAGMENT:
                                 new AddWebViewFragmentDialog().setPage(page).setContainer(container)
                                         .setOnDismissListener(updateListener)

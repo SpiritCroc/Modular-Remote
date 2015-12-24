@@ -118,6 +118,7 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
     public final static String DISPLAY_FRAGMENT = "display_fragment";
     public final static String SPINNER_FRAGMENT = "spinner_fragment";
     public final static String TOGGLE_FRAGMENT = "toggle_fragment";
+    public final static String COMMAND_LINE_FRAGMENT = "command_line_fragment";
 
     protected final static int MENU_ORDER = 50;
 

@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.spiritcroc.modular_remote.dialogs.SelectContainerDialog;
+import de.spiritcroc.modular_remote.modules.CommandLineFragment;
 import de.spiritcroc.modular_remote.modules.Container;
 import de.spiritcroc.modular_remote.modules.DisplayFragment;
 import de.spiritcroc.modular_remote.modules.HorizontalContainerFragment;
@@ -387,6 +388,8 @@ public abstract class Util {
                 fragment = SpinnerFragment.recoverFromRecreationKey(args[i]);
             } else if (ModuleFragment.TOGGLE_FRAGMENT.equals(subArgs[0])) {
                 fragment = ToggleFragment.recoverFromRecreationKey(args[i]);
+            } else if (ModuleFragment.COMMAND_LINE_FRAGMENT.equals(subArgs[0])) {
+                fragment = CommandLineFragment.recoverFromRecreationKey(args[i]);
             } else {
                 Log.w(LOG_TAG, "restoreContentFromRecreationKey: Could not find fragment with " +
                         "className " + subArgs[0]);

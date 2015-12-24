@@ -130,6 +130,9 @@
     <string name="dialog_apply">Apply</string>
     <string name="dialog_sort_fragments">Sort modules (drag &amp; drop)</string>
     <string name="dialog_sort_pages">Sort pages (drag &amp; drop)</string>
+    <string name="dialog_hint">Hint:</string>
+    <string name="dialog_hint_summary">Text displayed when nothing entered</string>
+
     <string name="dialog_greeting">Welcome</string>
     <string name="dialog_greeting_message">This app is still in its alpha state. This means:
         \n- You should not expect a fully tested and bug-free app.
@@ -192,6 +195,7 @@
     <string name="fragment_display">Display</string>
     <string name="fragment_spinner">Dropdown list</string>
     <string name="fragment_toggle">Toggle button</string>
+    <string name="fragment_command_line">Command line</string>
     <string name="fragment_web_view_value" translatable="false">web_view_fragment</string>
     <string name="fragment_scroll_container_value" translatable="false">scroll_container_fragment</string>
     <string name="fragment_page_container_value" translatable="false">page_container_fragment</string>
@@ -201,12 +205,14 @@
     <string name="fragment_display_value" translatable="false">display_fragment</string>
     <string name="fragment_spinner_value" translatable="false">spinner_fragment</string>
     <string name="fragment_toggle_value" translatable="false">toggle_fragment</string>
+    <string name="fragment_command_line_value" translatable="false">command_line_fragment</string>
     <string-array name="fragment_selection_array" translatable="false">
         <item>@string/fragment_page_container</item>
         <item>@string/fragment_button</item>
         <item>@string/fragment_toggle</item>
         <item>@string/fragment_spinner</item>
         <item>@string/fragment_display</item>
+        <item>@string/fragment_command_line</item>
         <item>@string/fragment_web_view</item>
         <item>@string/fragment_widget</item>
         <item>@string/fragment_scroll_container</item>
@@ -218,6 +224,7 @@
         <item>@string/fragment_toggle_value</item>
         <item>@string/fragment_spinner_value</item>
         <item>@string/fragment_display_value</item>
+        <item>@string/fragment_command_line_value</item>
         <item>@string/fragment_web_view_value</item>
         <item>@string/fragment_widget_value</item>
         <item>@string/fragment_scroll_container_value</item>
