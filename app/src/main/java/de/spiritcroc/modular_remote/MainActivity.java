@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             } else if (Preferences.ORIENTATION_LANDSCAPE_ONLY.equals(orientation)) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             } else {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
             }
         }
 
