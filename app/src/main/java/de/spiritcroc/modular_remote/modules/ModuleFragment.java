@@ -468,75 +468,70 @@ public abstract class ModuleFragment extends Fragment implements View.OnTouchLis
                 if (insertFragment != null) {
                     View view = insertFragment.getView();
                     if (view != null) {
-                        ViewGroup.LayoutParams lp = view.getLayoutParams();
-                        if (lp instanceof RelativeLayout.LayoutParams) {
-                            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) lp;
-                            float dropX = event.getX();
-                            float dropY = event.getY();
-                            if (DEBUG) {
-                                Log.d(LOG_TAG, "drop x " + dropX);
-                                Log.d(LOG_TAG, "drop y " + dropY);
-                            }
-                            View cView = Util.getPrimeContainer(this).getView();
-                            boolean dropOnItself = false;
-                            if (this == insertFragment) {
-                                dropOnItself = true;
-                            } else {
-                                Container c = getParent();
-                                while (c instanceof ModuleFragment) {
-                                    if (c == insertFragment) {
-                                        dropOnItself = true;
-                                        break;
-                                    } else {
-                                        c = ((ModuleFragment) c).getParent();
-                                    }
-                                }
-                            }
-                            // Add scroll values if necessary
-                            Container c = insertFragment != this && this instanceof Container ?
-                                    (Container) this : getParent();
-                            while (c instanceof ModuleFragment) {
-                                if (c.scrollsX()) {
-                                    dropX += c.getScrollX();
-                                }
-                                if (c.scrollsY()) {
-                                    dropY += c.getScrollY();
-                                }
-                                c = ((ModuleFragment) c).getParent();
-                            }
-                            int newX = Util.blockRound(cView, dropX - rlp.width / 2, false);
-                            int newY = Util.blockRound(cView, dropY - rlp.height / 2, true);
-                            if (dropOnItself) {
-                                insertFragment.setPosition(newX, newY, true);
-                            } else {
-                                if (this instanceof Container){
-                                    insertFragment.setPosition(newX, newY);
-                                } else {
-                                    // Overlapping fragments might be helpful while editing
-                                    insertFragment.setPosition(
-                                            pos.leftMargin + newX, pos.topMargin + newY);
-                                }
-                                if (insertFragment.getParent() != this) {
-                                    // Move fragment from old to this container
-                                    final Container container = this instanceof Container ?
-                                            (Container) this : getParent();
-                                    if (container == insertFragment) {
-                                        Log.w(LOG_TAG, "Can't add fragment to itself");
-                                    } else {
-                                        Container oldC = insertFragment.getParent();
-                                        oldC.removeFragment(insertFragment, false);
-                                        oldC.onContentMoved();
-                                        insertFragment.prepareDepthChange();
-                                        container.addFragment(insertFragment, true);
-                                    }
-                                }
-                            }
-                            insertFragment.getParent().onContentMoved();
-                            return true;
-                        } else {
-                            new Exception("Drop operation failed; layout is " + lp)
-                                    .printStackTrace();
+                        float dropX = event.getX();
+                        float dropY = event.getY();
+                        if (DEBUG) {
+                            Log.d(LOG_TAG, "drop x " + dropX);
+                            Log.d(LOG_TAG, "drop y " + dropY);
                         }
+                        View cView = Util.getPrimeContainer(this).getView();
+                        boolean dropOnItself = false;
+                        if (this == insertFragment) {
+                            dropOnItself = true;
+                        } else {
+                            Container c = getParent();
+                            while (c instanceof ModuleFragment) {
+                                if (c == insertFragment) {
+                                    dropOnItself = true;
+                                    break;
+                                } else {
+                                    c = ((ModuleFragment) c).getParent();
+                                }
+                            }
+                        }
+                        // Add scroll values if necessary
+                        Container c = insertFragment != this && this instanceof Container ?
+                                (Container) this : getParent();
+                        while (c instanceof ModuleFragment) {
+                            if (c.scrollsX()) {
+                                dropX += c.getScrollX();
+                            }
+                            if (c.scrollsY()) {
+                                dropY += c.getScrollY();
+                            }
+                            c = ((ModuleFragment) c).getParent();
+                        }
+                        int newX =
+                                Util.blockRound(cView, dropX - view.getMeasuredWidth() / 2, false);
+                        int newY =
+                                Util.blockRound(cView, dropY - view.getMeasuredHeight() / 2, true);
+                        if (dropOnItself) {
+                            insertFragment.setPosition(newX, newY, true);
+                        } else {
+                            if (this instanceof Container){
+                                insertFragment.setPosition(newX, newY);
+                            } else {
+                                // Overlapping fragments might be helpful while editing
+                                insertFragment.setPosition(
+                                        pos.leftMargin + newX, pos.topMargin + newY);
+                            }
+                            if (insertFragment.getParent() != this) {
+                                // Move fragment from old to this container
+                                final Container container = this instanceof Container ?
+                                        (Container) this : getParent();
+                                if (container == insertFragment) {
+                                    Log.w(LOG_TAG, "Can't add fragment to itself");
+                                } else {
+                                    Container oldC = insertFragment.getParent();
+                                    oldC.removeFragment(insertFragment, false);
+                                    oldC.onContentMoved();
+                                    insertFragment.prepareDepthChange();
+                                    container.addFragment(insertFragment, true);
+                                }
+                            }
+                        }
+                        insertFragment.getParent().onContentMoved();
+                        return true;
                     } else {
                         new Exception("Drop operation failed; view is null").printStackTrace();
                     }
