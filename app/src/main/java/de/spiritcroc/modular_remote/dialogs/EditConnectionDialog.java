@@ -38,6 +38,7 @@ import android.widget.Spinner;
 
 import java.util.Arrays;
 
+import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.TcpConnectionManager;
 import de.spiritcroc.modular_remote.TcpInformation;
@@ -147,6 +148,9 @@ public class EditConnectionDialog extends DialogFragment {
                                 }
                                 if (changed) {
                                     connection.setValues(editReceiverIp.getText().toString(), type);
+                                    if (activity instanceof MainActivity) {
+                                        ((MainActivity) activity).saveSettings();
+                                    }
                                 }
                                 dismiss();
                             }

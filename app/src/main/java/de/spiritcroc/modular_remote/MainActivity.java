@@ -582,7 +582,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
     }
 
-    private void saveSettings() {
+    public void saveSettings() {
         saveFragments();
         saveConnections();
     }
