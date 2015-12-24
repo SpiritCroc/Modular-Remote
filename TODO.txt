@@ -53,7 +53,6 @@ UI upgrades:
 other upgrades:
     - AddDisplayDialog: more characters in button_label_spinner_chars
         test on different APIs → don't show chars that are known to not show on certain APIs
-    - possibility to specify port (just add a :portNumber to ip, e.g. :23; → read, if not given: use default)
     - first start:
         explanation how remote works
 

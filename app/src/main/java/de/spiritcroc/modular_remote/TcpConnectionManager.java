@@ -220,7 +220,8 @@ public class TcpConnectionManager {
     }
 
     public class TcpConnection implements Runnable {
-        private volatile String tcpIp;
+        private volatile String tcpIp, ip;
+        private volatile int port;
         private volatile ArrayList<TcpInformation> informationBuffer = new ArrayList<>();
         private volatile ReceiverType type;
         private volatile ArrayList<CustomizedMenu> customizedMenus = new ArrayList<>();
@@ -251,8 +252,7 @@ public class TcpConnectionManager {
                     int interval = Util.getPreferenceInt(sharedPreferences,
                             Preferences.KEY_CHECK_CONNECTIVITY_INTERVAL, 3000);
                     try {
-                        connected = InetAddress.getByName(tcpIp).isReachable(
-                                Math.max(interval, 100));
+                        connected = InetAddress.getByName(ip).isReachable(Math.max(interval, 100));
                         Thread.sleep(interval);
                     } catch (IOException e) {
                         connected = false;
@@ -316,8 +316,20 @@ public class TcpConnectionManager {
                 // No connection required
                 return;
             }
+            ip = tcpIp;
+            port = 23;
+            if (tcpIp.contains(":")) {
+                try {
+                    int index = tcpIp.lastIndexOf(":");
+                    ip = tcpIp.substring(0, index);
+                    port = Integer.parseInt(tcpIp.substring(index + 1));
+                } catch (Exception e) {
+                    Log.i(LOG_TAG, tcpIp + ": illegal port");
+                }
+            }
             try {
-                socket = new Socket(tcpIp, 23);
+                if (DEBUG) Log.d(LOG_TAG, "Try to connect to ip " + ip + " at port " + port);
+                socket = new Socket(ip, port);
                 connected = true;
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
