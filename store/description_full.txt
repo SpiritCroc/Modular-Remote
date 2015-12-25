@@ -13,6 +13,7 @@ Available modules:
 - Toggle button
 - Dropdown list
 - Display
+- Command line
 - WebView
 - Widget
 - Scroll containers
