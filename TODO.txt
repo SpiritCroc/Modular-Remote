@@ -70,8 +70,7 @@ Functional upgrades:
     - option to keep screen on
 x   - CommandEditor: Create chained commands (→ submenu "custom"), per RECEIVER_TYPE basis
     - Pref: remember last page
-    - Option: save / load configuration
-        Saves pref saved_fragments + version number → increment if module params changed
+    - Settings: import/export fragments (portrait/landscape) → 4 preferences (allow fragment migration across different orientations)
 
 
 Stuff someone could add if they feel bored
