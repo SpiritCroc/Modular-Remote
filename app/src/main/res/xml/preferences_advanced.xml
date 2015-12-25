@@ -2,6 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/pref_advanced_settings">
     <EditTextPreference
+        android:key="pref_check_connectivity_interval"
+        android:title="@string/pref_check_connectivity_interval"
+        android:numeric="integer"
+        android:defaultValue="3000"/>
+    <EditTextPreference
         android:key="pref_offscreen_page_limit"
         android:title="@string/pref_offscreen_page_limit"
         android:numeric="integer|signed"
@@ -11,11 +16,6 @@
         android:title="@string/pref_time_update_interval"
         android:numeric="integer"
         android:defaultValue="500"/>
-    <EditTextPreference
-        android:key="pref_check_connectivity_interval"
-        android:title="@string/pref_check_connectivity_interval"
-        android:numeric="integer"
-        android:defaultValue="3000"/>
     <EditTextPreference
         android:key="pref_double_click_timeout"
         android:title="@string/pref_double_click_timeout"

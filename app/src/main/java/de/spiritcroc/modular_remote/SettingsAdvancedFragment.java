@@ -25,9 +25,9 @@ import android.preference.EditTextPreference;
 public class SettingsAdvancedFragment extends CustomPreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private EditTextPreference checkConnectivityIntervalPreference;
     private EditTextPreference offscreenPageLimitPreference;
     private EditTextPreference timeUpdateIntervalPreference;
-    private EditTextPreference checkConnectivityIntervalPreference;
     private EditTextPreference doubleClickTimeoutPreference;
 
     @Override
@@ -35,20 +35,20 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences_advanced);
 
+        checkConnectivityIntervalPreference =
+                (EditTextPreference) findPreference(Preferences.CHECK_CONNECTIVITY_INTERVAL);
         offscreenPageLimitPreference =
                 (EditTextPreference) findPreference(Preferences.OFFSCREEN_PAGE_LIMIT);
         timeUpdateIntervalPreference =
                 (EditTextPreference) findPreference(Preferences.TIME_UPDATE_INTERVAL);
-        checkConnectivityIntervalPreference =
-                (EditTextPreference) findPreference(Preferences.CHECK_CONNECTIVITY_INTERVAL);
         doubleClickTimeoutPreference =
                 (EditTextPreference) findPreference(Preferences.DOUBLE_CLICK_TIMEOUT);
     }
 
     private void init() {
+        setCheckConnectivityIntervalSummary();
         setOffscreenPageLimitSummary();
         setTimeUpdateIntervalSummary();
-        setCheckConnectivityIntervalSummary();
         setDoubleClickTimeoutSummary();
     }
 
@@ -68,15 +68,24 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Preferences.OFFSCREEN_PAGE_LIMIT.equals(key)) {
+        if (Preferences.CHECK_CONNECTIVITY_INTERVAL.equals(key)) {
+            setCheckConnectivityIntervalSummary();
+        } else if (Preferences.OFFSCREEN_PAGE_LIMIT.equals(key)) {
             setOffscreenPageLimitSummary();
         } else if (Preferences.TIME_UPDATE_INTERVAL.equals(key)) {
             setTimeUpdateIntervalSummary();
-        } else if (Preferences.CHECK_CONNECTIVITY_INTERVAL.equals(key)) {
-            setCheckConnectivityIntervalSummary();
         } else if (Preferences.DOUBLE_CLICK_TIMEOUT.equals(key)) {
             setDoubleClickTimeoutSummary();
         }
+    }
+
+    private void setCheckConnectivityIntervalSummary() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.CHECK_CONNECTIVITY_INTERVAL,
+                checkConnectivityIntervalPreference.getText(), 3000);
+        checkConnectivityIntervalPreference.setSummary(getResources()
+                .getQuantityString(R.plurals.pref_check_connectivity_interval_summary, value,
+                        value));
     }
 
     private void setOffscreenPageLimitSummary() {
@@ -96,15 +105,6 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
                 Preferences.TIME_UPDATE_INTERVAL, timeUpdateIntervalPreference.getText(), 500);
         timeUpdateIntervalPreference.setSummary(getResources()
                 .getQuantityString(R.plurals.pref_time_update_interval, value, value));
-    }
-
-    private void setCheckConnectivityIntervalSummary() {
-        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.CHECK_CONNECTIVITY_INTERVAL,
-                checkConnectivityIntervalPreference.getText(), 3000);
-        checkConnectivityIntervalPreference.setSummary(getResources()
-                .getQuantityString(R.plurals.pref_check_connectivity_interval_summary, value,
-                        value));
     }
 
     private void setDoubleClickTimeoutSummary() {
