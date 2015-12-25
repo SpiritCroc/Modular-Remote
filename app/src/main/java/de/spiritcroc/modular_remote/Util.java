@@ -305,21 +305,20 @@ public abstract class Util {
     }
     private static int getBlockUnits(SharedPreferences preferences, boolean y, boolean landscape) {
         if (Preferences.ORIENTATION_SHARE_LAYOUT.equals(preferences.getString(
-                Preferences.KEY_ORIENTATION, Preferences.ORIENTATION_SHARE_LAYOUT))) {
+                Preferences.ORIENTATION, Preferences.ORIENTATION_SHARE_LAYOUT))) {
             landscape = false;
         }
         if (y) {
             if (landscape) {
-                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE,
-                        4);
+                return getPreferenceInt(preferences, Preferences.BLOCK_SIZE_HEIGHT_LANDSCAPE, 4);
             } else {
-                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_HEIGHT, 6);
+                return getPreferenceInt(preferences, Preferences.BLOCK_SIZE_HEIGHT, 6);
             }
         } else {
             if (landscape) {
-                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE_LANDSCAPE, 6);
+                return getPreferenceInt(preferences, Preferences.BLOCK_SIZE_LANDSCAPE, 6);
             } else {
-                return getPreferenceInt(preferences, Preferences.KEY_BLOCK_SIZE, 4);
+                return getPreferenceInt(preferences, Preferences.BLOCK_SIZE, 4);
             }
         }
     }
@@ -484,9 +483,9 @@ public abstract class Util {
     public static long getPageId(Context context) {
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
-        long lastId = sharedPreferences.getLong(Preferences.KEY_LAST_PAGE_ID, -1);
+        long lastId = sharedPreferences.getLong(Preferences.LAST_PAGE_ID, -1);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(Preferences.KEY_LAST_PAGE_ID, ++lastId).apply();
+        editor.putLong(Preferences.LAST_PAGE_ID, ++lastId).apply();
         return lastId;
     }
 

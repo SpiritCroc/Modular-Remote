@@ -250,7 +250,7 @@ public class TcpConnectionManager {
             public void run() {
                 while (connected) {
                     int interval = Util.getPreferenceInt(sharedPreferences,
-                            Preferences.KEY_CHECK_CONNECTIVITY_INTERVAL, 3000);
+                            Preferences.CHECK_CONNECTIVITY_INTERVAL, 3000);
                     try {
                         connected = InetAddress.getByName(ip).isReachable(Math.max(interval, 100));
                         Thread.sleep(interval);

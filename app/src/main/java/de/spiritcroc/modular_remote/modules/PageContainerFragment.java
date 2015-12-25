@@ -157,7 +157,7 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         } else if (actionBarModeSettings instanceof ClockSettings) {
             if (sharedPreferences != null) {
                 TimeSingleton.getInstance(Util.getPreferenceInt(sharedPreferences,
-                        Preferences.KEY_TIME_UPDATE_INTERVAL, 500)).registerListener(this);
+                        Preferences.TIME_UPDATE_INTERVAL, 500)).registerListener(this);
             }
         }
 

@@ -233,7 +233,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
                 cancelDoubleClickHandler.removeCallbacks(cancelDoubleClick);
                 try {
                     cancelDoubleClickHandler.postDelayed(cancelDoubleClick, Util.getPreferenceInt(
-                            sharedPreferences, Preferences.KEY_DOUBLE_CLICK_TIMEOUT, 500));
+                            sharedPreferences, Preferences.DOUBLE_CLICK_TIMEOUT, 500));
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "onClick: Got exception: " + e);
                 }
@@ -454,7 +454,7 @@ public class DisplayFragment extends ModuleFragment implements Display, TimeSing
             }
         } else if (modeSettings instanceof ClockSettings) {
             TimeSingleton.getInstance(Util.getPreferenceInt(sharedPreferences,
-                    Preferences.KEY_TIME_UPDATE_INTERVAL, 500)).registerListener(this);
+                    Preferences.TIME_UPDATE_INTERVAL, 500)).registerListener(this);
         }
     }
 

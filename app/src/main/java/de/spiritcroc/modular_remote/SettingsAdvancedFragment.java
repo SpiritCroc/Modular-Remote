@@ -36,13 +36,13 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
         addPreferencesFromResource(R.xml.preferences_advanced);
 
         offscreenPageLimitPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_OFFSCREEN_PAGE_LIMIT);
+                (EditTextPreference) findPreference(Preferences.OFFSCREEN_PAGE_LIMIT);
         timeUpdateIntervalPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_TIME_UPDATE_INTERVAL);
+                (EditTextPreference) findPreference(Preferences.TIME_UPDATE_INTERVAL);
         checkConnectivityIntervalPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_CHECK_CONNECTIVITY_INTERVAL);
+                (EditTextPreference) findPreference(Preferences.CHECK_CONNECTIVITY_INTERVAL);
         doubleClickTimeoutPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_DOUBLE_CLICK_TIMEOUT);
+                (EditTextPreference) findPreference(Preferences.DOUBLE_CLICK_TIMEOUT);
     }
 
     private void init() {
@@ -68,20 +68,20 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Preferences.KEY_OFFSCREEN_PAGE_LIMIT.equals(key)) {
+        if (Preferences.OFFSCREEN_PAGE_LIMIT.equals(key)) {
             setOffscreenPageLimitSummary();
-        } else if (Preferences.KEY_TIME_UPDATE_INTERVAL.equals(key)) {
+        } else if (Preferences.TIME_UPDATE_INTERVAL.equals(key)) {
             setTimeUpdateIntervalSummary();
-        } else if (Preferences.KEY_CHECK_CONNECTIVITY_INTERVAL.equals(key)) {
+        } else if (Preferences.CHECK_CONNECTIVITY_INTERVAL.equals(key)) {
             setCheckConnectivityIntervalSummary();
-        } else if (Preferences.KEY_DOUBLE_CLICK_TIMEOUT.equals(key)) {
+        } else if (Preferences.DOUBLE_CLICK_TIMEOUT.equals(key)) {
             setDoubleClickTimeoutSummary();
         }
     }
 
     private void setOffscreenPageLimitSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_OFFSCREEN_PAGE_LIMIT, offscreenPageLimitPreference.getText(), 2);
+                Preferences.OFFSCREEN_PAGE_LIMIT, offscreenPageLimitPreference.getText(), 2);
         if (value < 0) {
             offscreenPageLimitPreference
                     .setSummary(getString(R.string.pref_offscreen_page_limit_never));
@@ -93,14 +93,14 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
 
     private void setTimeUpdateIntervalSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_TIME_UPDATE_INTERVAL, timeUpdateIntervalPreference.getText(), 500);
+                Preferences.TIME_UPDATE_INTERVAL, timeUpdateIntervalPreference.getText(), 500);
         timeUpdateIntervalPreference.setSummary(getResources()
                 .getQuantityString(R.plurals.pref_time_update_interval, value, value));
     }
 
     private void setCheckConnectivityIntervalSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_CHECK_CONNECTIVITY_INTERVAL,
+                Preferences.CHECK_CONNECTIVITY_INTERVAL,
                 checkConnectivityIntervalPreference.getText(), 3000);
         checkConnectivityIntervalPreference.setSummary(getResources()
                 .getQuantityString(R.plurals.pref_check_connectivity_interval_summary, value,
@@ -109,7 +109,7 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
 
     private void setDoubleClickTimeoutSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_DOUBLE_CLICK_TIMEOUT, doubleClickTimeoutPreference.getText(), 500);
+                Preferences.DOUBLE_CLICK_TIMEOUT, doubleClickTimeoutPreference.getText(), 500);
         doubleClickTimeoutPreference.setSummary(getResources()
                 .getQuantityString(R.plurals.pref_double_click_timeout_summary, value, value));
         // Apply change

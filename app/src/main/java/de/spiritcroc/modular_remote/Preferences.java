@@ -19,32 +19,150 @@
 package de.spiritcroc.modular_remote;
 
 public final class Preferences {
-    public static final String KEY_SAVED_FRAGMENTS = "saved_fragments",
-            KEY_SAVED_FRAGMENTS_LANDSCAPE = "saved_fragments_landscape",
-            KEY_WIDGET_CONTAINER_AMOUNT_ = "widget_container_amount_",// += appWidgetId
-            KEY_SAVED_CONNECTIONS = "saved_connections",
-            KEY_OFFSCREEN_PAGE_LIMIT = "pref_offscreen_page_limit",
-            KEY_TIME_UPDATE_INTERVAL = "pref_time_update_interval",
-            KEY_FULLSCREEN = "pref_fullscreen",
-            KEY_HIDE_NAVIGATION_BAR = "pref_hide_navigation_bar",
-            KEY_HIDE_ACTION_BAR = "pref_hide_action_bar",
-            KEY_HIDE_PAGER_TAB_STRIP = "pref_hide_pager_tab_strip",
-            KEY_SYSTEM_UI_TIMEOUT = "pref_system_ui_timeout",
-            KEY_CHANGE_RINGER_MODE = "pref_change_ringer_mode",
-            KEY_BLOCK_SIZE = "pref_block_size",
-            KEY_BLOCK_SIZE_HEIGHT = "pref_block_size_height",
-            KEY_BLOCK_SIZE_LANDSCAPE = "pref_block_size_landscape",
-            KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE = "pref_block_size_height_landscape",
-            KEY_LAST_PAGE_ID = "last_page_id",
-            KEY_DOUBLE_CLICK_TIMEOUT = "pref_double_click_timeout",
-            KEY_CHECK_CONNECTIVITY_INTERVAL = "pref_check_connectivity_interval",
-            KEY_SEEN_GREETING_VERSION = "seen_greeting_version",
-            KEY_FRAGMENT_DEFAULT_WIDTH = "pref_fragment_default_width",
-            KEY_FRAGMENT_DEFAULT_HEIGHT = "pref_fragment_default_height";
 
-    public static final String KEY_ORIENTATION = "pref_orientation";
+    /**
+     * The recovery keys to recreate the fragments in portrait orientation
+     */
+    public static final String SAVED_FRAGMENTS = "saved_fragments";
+
+    /**
+     * The recovery keys to recreate the fragments in landscape orientation
+     */
+    public static final String SAVED_FRAGMENTS_LANDSCAPE = "saved_fragments_landscape";
+
+    /**
+     * The amount of widgets with the same appWidgetId.
+     * Saved in order to prevent the removal of the widget when there are several instances of the
+     * same widget (after copying it)
+     */
+    public static final String WIDGET_CONTAINER_AMOUNT_ = "widget_container_amount_";// += appWidgetId
+
+    /**
+     * Save connections in order to recreate them with the right settings (e.g. customized arrays),
+     * and also suggest the connection for new fragments, even if the connection is not required
+     */
+    public static final String SAVED_CONNECTIONS = "saved_connections";
+
+    /**
+     * How many pages of the viewPages will not get destroyed in each direction.
+     * Necessary e.g. for keeping WebViews alive
+     */
+    public static final String OFFSCREEN_PAGE_LIMIT = "pref_offscreen_page_limit";
+
+    /**
+     * The time interval in milliseconds in which displays in clock mode should be updated
+     */
+    public static final String TIME_UPDATE_INTERVAL = "pref_time_update_interval";
+
+    /**
+     * Whether to use fullscreen
+     */
+    public static final String FULLSCREEN = "pref_fullscreen";
+
+    /**
+     * Whether to hide the navigation bar
+     */
+    public static final String HIDE_NAVIGATION_BAR = "pref_hide_navigation_bar";
+
+    /**
+     * Whether to hide the action bar
+     */
+    public static final String HIDE_ACTION_BAR = "pref_hide_action_bar";
+
+    /**
+     * Whether to hide the pager tab strip
+     */
+    public static final String HIDE_PAGER_TAB_STRIP = "pref_hide_pager_tab_strip";
+
+    /**
+     * The time until fullscreen will re-appear after showing system ui elements (navbar, actionbar)
+     * in milliseconds
+     */
+    public static final String SYSTEM_UI_TIMEOUT = "pref_system_ui_timeout";
+
+    /**
+     * Whether and how to change the ringer mode while using the remote
+     */
+    public static final String CHANGE_RINGER_MODE = "pref_change_ringer_mode";
+
+    /**
+     * Amount of units in which the width of the screen should get divided in portrait mode
+     */
+    public static final String BLOCK_SIZE = "pref_block_size";
+
+    /**
+     * Amount of units in which the height of the screen should get divided in portrait mode
+     */
+    public static final String BLOCK_SIZE_HEIGHT = "pref_block_size_height";
+
+    /**
+     * Amount of units in which the width of the screen should get divided in landscape mode
+     */
+    public static final String BLOCK_SIZE_LANDSCAPE = "pref_block_size_landscape";
+
+    /**
+     * Amount of units in which the height of the screen should get divided in landscape mode
+     */
+    public static final String BLOCK_SIZE_HEIGHT_LANDSCAPE = "pref_block_size_height_landscape";
+
+    /**
+     * The default width of newly added fragments
+     */
+    public static final String FRAGMENT_DEFAULT_WIDTH = "pref_fragment_default_width";
+
+    /**
+     * The default height of newly added fragments
+     */
+    public static final String FRAGMENT_DEFAULT_HEIGHT = "pref_fragment_default_height";
+
+    /**
+     * ID of the last added page. Prevents to create pages with the same ID in order to have
+     * distinct launcher shortcuts
+     */
+    public static final String LAST_PAGE_ID = "last_page_id";
+
+    /**
+     * The time in milliseconds after which a click should be interpreted as a single click if there
+     * was no second click (double click)
+     */
+    public static final String DOUBLE_CLICK_TIMEOUT = "pref_double_click_timeout";
+
+    /**
+     * The time interval in milliseconds in which the connectivity should be checked in order to
+     * recognize when connection to controlled device was lost
+     */
+    public static final String CHECK_CONNECTIVITY_INTERVAL = "pref_check_connectivity_interval";
+
+    /**
+     * The latest version of GreetingsDialog that the user has seen
+     */
+    public static final String SEEN_GREETING_VERSION = "seen_greeting_version";
+
+    /**
+     * How orientation changes are handled
+     */
+    public static final String ORIENTATION = "pref_orientation";
+
+    /**
+     * Value for {@link #ORIENTATION}. When set, portrait and landscape orientation both use the
+     * fragments and block size settings from portrait orientation
+     */
     public static final String ORIENTATION_SHARE_LAYOUT = "share";
+
+    /**
+     * Value for {@link #ORIENTATION}. When set, portrait and landscape orientation each use their
+     * own fragments and block size settings
+     */
     public static final String ORIENTATION_SEPARATE_LAYOUT = "separate";
+
+    /**
+     * Value for {@link #ORIENTATION}. When set, the remote will only show in portrait orientation
+     */
     public static final String ORIENTATION_PORTRAIT_ONLY = "portrait";
+
+
+    /**
+     * Value for {@link #ORIENTATION}. When set, the remote will only show in landscape orientation
+     */
     public static final String ORIENTATION_LANDSCAPE_ONLY = "landscape";
 }

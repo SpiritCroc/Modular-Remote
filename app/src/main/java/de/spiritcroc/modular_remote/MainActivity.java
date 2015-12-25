@@ -232,10 +232,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             }
         });
 
-        fullscreen = sharedPreferences.getBoolean(Preferences.KEY_FULLSCREEN, false);
-        hideNavigationBar = sharedPreferences
-                .getBoolean(Preferences.KEY_HIDE_NAVIGATION_BAR, false);
-        hideActionBar = sharedPreferences.getBoolean(Preferences.KEY_HIDE_ACTION_BAR, false);
+        fullscreen = sharedPreferences.getBoolean(Preferences.FULLSCREEN, false);
+        hideNavigationBar = sharedPreferences.getBoolean(Preferences.HIDE_NAVIGATION_BAR, false);
+        hideActionBar = sharedPreferences.getBoolean(Preferences.HIDE_ACTION_BAR, false);
 
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(
@@ -256,9 +255,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         tcpConnectionManager = TcpConnectionManager.getInstance(getApplicationContext());
         tcpConnectionManager.recreateConnectionsFromRecreationKey(sharedPreferences.getString(
-                Preferences.KEY_SAVED_CONNECTIONS, ""));
+                Preferences.SAVED_CONNECTIONS, ""));
 
-        if (sharedPreferences.getInt(Preferences.KEY_SEEN_GREETING_VERSION, 0) <
+        if (sharedPreferences.getInt(Preferences.SEEN_GREETING_VERSION, 0) <
                 GreetingDialog.VERSION) {
             new GreetingDialog().show(getFragmentManager(), "GreetingDialog");
         } else if (SetupGridSizeDialog.shouldShow(sharedPreferences)) {
@@ -289,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private void delayedHide() {
         hideSystemUIHandler.removeCallbacks(hideSystemUIRunnable);
         hideSystemUIHandler.postDelayed(hideSystemUIRunnable, Util.getPreferenceInt(
-                sharedPreferences, Preferences.KEY_SYSTEM_UI_TIMEOUT, 3) * 1000);
+                sharedPreferences, Preferences.SYSTEM_UI_TIMEOUT, 3) * 1000);
     }
     public void hideSystemUI() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
@@ -356,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         viewPager.addOnPageChangeListener(this);
         onPageSelected(viewPager.getCurrentItem());
 
-        int tmp = Util.getPreferenceInt(sharedPreferences, Preferences.KEY_OFFSCREEN_PAGE_LIMIT, 2);
+        int tmp = Util.getPreferenceInt(sharedPreferences, Preferences.OFFSCREEN_PAGE_LIMIT, 2);
         if (tmp < 0) {
             neverDestroyPages = true;
             viewPager.setOffscreenPageLimit(pages.size());
@@ -365,21 +364,21 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             viewPager.setOffscreenPageLimit(tmp);
         }
 
-        fullscreen = sharedPreferences.getBoolean(Preferences.KEY_FULLSCREEN, false);
+        fullscreen = sharedPreferences.getBoolean(Preferences.FULLSCREEN, false);
         hideNavigationBar = sharedPreferences
-                .getBoolean(Preferences.KEY_HIDE_NAVIGATION_BAR, false);
-        hideActionBar = sharedPreferences.getBoolean(Preferences.KEY_HIDE_ACTION_BAR, false);
+                .getBoolean(Preferences.HIDE_NAVIGATION_BAR, false);
+        hideActionBar = sharedPreferences.getBoolean(Preferences.HIDE_ACTION_BAR, false);
 
 
         int pagerTabStripVisibility =
-                sharedPreferences.getBoolean(Preferences.KEY_HIDE_PAGER_TAB_STRIP, false) ?
+                sharedPreferences.getBoolean(Preferences.HIDE_PAGER_TAB_STRIP, false) ?
                         View.GONE : View.VISIBLE;
         if (pagerTabStrip.getVisibility() != pagerTabStripVisibility) {
             pagerTabStrip.setVisibility(pagerTabStripVisibility);
         }
 
         String ringerMode = sharedPreferences
-                .getString(Preferences.KEY_CHANGE_RINGER_MODE,
+                .getString(Preferences.CHANGE_RINGER_MODE,
                         getString(R.string.pref_ringer_mode_keep_value));
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         previousRingerMode = audioManager.getRingerMode();
@@ -400,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         } else if (forceOrientation == FORCE_ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
-            String orientation = sharedPreferences.getString(Preferences.KEY_ORIENTATION,
+            String orientation = sharedPreferences.getString(Preferences.ORIENTATION,
                     Preferences.ORIENTATION_SHARE_LAYOUT);
             if (Preferences.ORIENTATION_PORTRAIT_ONLY.equals(orientation)) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -459,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         super.onConfigurationChanged(configuration);
 
         if (!Preferences.ORIENTATION_SHARE_LAYOUT.equals(sharedPreferences.getString(
-                Preferences.KEY_ORIENTATION, Preferences.ORIENTATION_SHARE_LAYOUT))) {
+                Preferences.ORIENTATION, Preferences.ORIENTATION_SHARE_LAYOUT))) {
             // Restart for new setup; don't recreate old fragments
             discardSavedInstance = true;
             restart(null);
@@ -587,15 +586,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         saveConnections();
     }
     private String getSavedFragmentsKey() {
-        String orientationPref = sharedPreferences.getString(Preferences.KEY_ORIENTATION,
+        String orientationPref = sharedPreferences.getString(Preferences.ORIENTATION,
                 Preferences.ORIENTATION_SHARE_LAYOUT);
         boolean landscape = getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE &&
                 !Preferences.ORIENTATION_SHARE_LAYOUT.equals(orientationPref);
         if (landscape) {
-            return Preferences.KEY_SAVED_FRAGMENTS_LANDSCAPE;
+            return Preferences.SAVED_FRAGMENTS_LANDSCAPE;
         } else {
-            return Preferences.KEY_SAVED_FRAGMENTS;
+            return Preferences.SAVED_FRAGMENTS;
         }
     }
     private void saveFragments() {
@@ -612,7 +611,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private void saveConnections() {
         String key = tcpConnectionManager.getConnectionRecreationKey();
         if (DEBUG) Log.v(LOG_TAG, "saveConnections: " + key);
-        sharedPreferences.edit().putString(Preferences.KEY_SAVED_CONNECTIONS, key).apply();
+        sharedPreferences.edit().putString(Preferences.SAVED_CONNECTIONS, key).apply();
     }
 
     private void restoreContentFromRecreationKey(String key) {

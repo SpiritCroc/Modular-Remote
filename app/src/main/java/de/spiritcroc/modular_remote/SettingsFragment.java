@@ -49,19 +49,19 @@ public class SettingsFragment extends CustomPreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        ringerModePreference = (ListPreference) findPreference(Preferences.KEY_CHANGE_RINGER_MODE);
-        orientationPreference = (ListPreference) findPreference(Preferences.KEY_ORIENTATION);
-        blockSizePreference = (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE);
+        ringerModePreference = (ListPreference) findPreference(Preferences.CHANGE_RINGER_MODE);
+        orientationPreference = (ListPreference) findPreference(Preferences.ORIENTATION);
+        blockSizePreference = (EditTextPreference) findPreference(Preferences.BLOCK_SIZE);
         blockSizeLandscapePreference =
-                (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_LANDSCAPE);
+                (EditTextPreference) findPreference(Preferences.BLOCK_SIZE_LANDSCAPE);
         blockSizeHeightLandscapePreference =
-                (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE);
+                (EditTextPreference) findPreference(Preferences.BLOCK_SIZE_HEIGHT_LANDSCAPE);
         blockSizeHeightPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_BLOCK_SIZE_HEIGHT);
+                (EditTextPreference) findPreference(Preferences.BLOCK_SIZE_HEIGHT);
         fragmentDefaultWidthPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_FRAGMENT_DEFAULT_WIDTH);
+                (EditTextPreference) findPreference(Preferences.FRAGMENT_DEFAULT_WIDTH);
         fragmentDefaultHeightPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT);
+                (EditTextPreference) findPreference(Preferences.FRAGMENT_DEFAULT_HEIGHT);
 
         PreferenceCategory appAppearancePreference =
                 (PreferenceCategory) findPreference(KEY_APP_APPEARANCE);
@@ -71,7 +71,7 @@ public class SettingsFragment extends CustomPreferenceFragment
             appAppearancePreference.removePreference(moreSpacePreference);
         } else {
             // Hide pref to hide pager tab strip, as it is also included in preferences_more_space
-            Preference hidePagerTabStrip = findPreference(Preferences.KEY_HIDE_PAGER_TAB_STRIP);
+            Preference hidePagerTabStrip = findPreference(Preferences.HIDE_PAGER_TAB_STRIP);
             appAppearancePreference.removePreference(hidePagerTabStrip);
         }
     }
@@ -103,21 +103,21 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Preferences.KEY_CHANGE_RINGER_MODE.equals(key)) {
+        if (Preferences.CHANGE_RINGER_MODE.equals(key)) {
             setRingerModeSummary();
-        } else if (Preferences.KEY_ORIENTATION.equals(key)) {
+        } else if (Preferences.ORIENTATION.equals(key)) {
             setOrientationSummary();
-        } else if (Preferences.KEY_BLOCK_SIZE.equals(key)) {
+        } else if (Preferences.BLOCK_SIZE.equals(key)) {
             setBlockSizeSummary();
-        } else if (Preferences.KEY_BLOCK_SIZE_HEIGHT.equals(key)) {
+        } else if (Preferences.BLOCK_SIZE_HEIGHT.equals(key)) {
             setBlockSizeHeightSummary();
-        } else if (Preferences.KEY_BLOCK_SIZE_LANDSCAPE.equals(key)) {
+        } else if (Preferences.BLOCK_SIZE_LANDSCAPE.equals(key)) {
             setBlockSizeLandscapeSummary();
-        } else if (Preferences.KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE.equals(key)) {
+        } else if (Preferences.BLOCK_SIZE_HEIGHT_LANDSCAPE.equals(key)) {
             setBlockSizeHeightLandscapeSummary();
-        } else if (Preferences.KEY_FRAGMENT_DEFAULT_WIDTH.equals(key)) {
+        } else if (Preferences.FRAGMENT_DEFAULT_WIDTH.equals(key)) {
             setFragmentDefaultWidthPreference();
-        } else if (Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT.equals(key)) {
+        } else if (Preferences.FRAGMENT_DEFAULT_HEIGHT.equals(key)) {
             setFragmentDefaultHeightPreference();
         }
 
@@ -175,35 +175,35 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     private void setBlockSizeSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_BLOCK_SIZE, blockSizePreference.getText(), 4);
+                Preferences.BLOCK_SIZE, blockSizePreference.getText(), 4);
         blockSizePreference.setSummary(getResources().getQuantityString(
                 R.plurals.pref_block_size_summary, value, value));
     }
 
     private void setBlockSizeHeightSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_BLOCK_SIZE_HEIGHT, blockSizeHeightPreference.getText(), 6);
+                Preferences.BLOCK_SIZE_HEIGHT, blockSizeHeightPreference.getText(), 6);
         blockSizeHeightPreference.setSummary(getResources().getQuantityString(
                 R.plurals.pref_block_size_height_summary, value, value));
     }
 
     private void setBlockSizeLandscapeSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_BLOCK_SIZE, blockSizeLandscapePreference.getText(), 6);
+                Preferences.BLOCK_SIZE, blockSizeLandscapePreference.getText(), 6);
         blockSizeLandscapePreference.setSummary(getResources().getQuantityString(
                 R.plurals.pref_block_size_summary, value, value));
     }
 
     private void setBlockSizeHeightLandscapeSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_BLOCK_SIZE_HEIGHT, blockSizeHeightLandscapePreference.getText(), 4);
+                Preferences.BLOCK_SIZE_HEIGHT, blockSizeHeightLandscapePreference.getText(), 4);
         blockSizeHeightLandscapePreference.setSummary(getResources().getQuantityString(
                 R.plurals.pref_block_size_height_summary, value, value));
     }
 
     private void setFragmentDefaultWidthPreference() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_FRAGMENT_DEFAULT_WIDTH,
+                Preferences.FRAGMENT_DEFAULT_WIDTH,
                 fragmentDefaultWidthPreference.getText(), 3);
         fragmentDefaultWidthPreference.setSummary(
                 getString(R.string.pref_fragment_default_width_summary, value));
@@ -211,7 +211,7 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     private void setFragmentDefaultHeightPreference() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_FRAGMENT_DEFAULT_HEIGHT,
+                Preferences.FRAGMENT_DEFAULT_HEIGHT,
                 fragmentDefaultHeightPreference.getText(), 2);
         fragmentDefaultHeightPreference.setSummary(
                 getString(R.string.pref_fragment_default_height_summary, value));

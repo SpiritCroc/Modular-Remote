@@ -124,7 +124,7 @@ public class WidgetContainerFragment extends ModuleFragment {
     }
 
     private String getWidgetAmountPrefKey() {
-        return Preferences.KEY_WIDGET_CONTAINER_AMOUNT_ + appWidgetId;
+        return Preferences.WIDGET_CONTAINER_AMOUNT_ + appWidgetId;
     }
 
     @Override

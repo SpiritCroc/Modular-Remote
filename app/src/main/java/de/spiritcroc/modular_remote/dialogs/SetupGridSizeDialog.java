@@ -88,10 +88,10 @@ public class SetupGridSizeDialog extends DialogFragment {
                         }
                         PreferenceManager.getDefaultSharedPreferences(activity)
                                 .edit()
-                                .putString(Preferences.KEY_BLOCK_SIZE, ""  + x)
-                                .putString(Preferences.KEY_BLOCK_SIZE_HEIGHT, "" + y)
-                                .putString(Preferences.KEY_BLOCK_SIZE_LANDSCAPE, "" + y)
-                                .putString(Preferences.KEY_BLOCK_SIZE_HEIGHT_LANDSCAPE, "" + x)
+                                .putString(Preferences.BLOCK_SIZE, ""  + x)
+                                .putString(Preferences.BLOCK_SIZE_HEIGHT, "" + y)
+                                .putString(Preferences.BLOCK_SIZE_LANDSCAPE, "" + y)
+                                .putString(Preferences.BLOCK_SIZE_HEIGHT_LANDSCAPE, "" + x)
                                 .apply();
                     }
                 });
@@ -100,6 +100,6 @@ public class SetupGridSizeDialog extends DialogFragment {
     }
 
     public static boolean shouldShow(SharedPreferences preferences) {
-        return "".equals(preferences.getString(Preferences.KEY_BLOCK_SIZE, ""));
+        return "".equals(preferences.getString(Preferences.BLOCK_SIZE, ""));
     }
 }

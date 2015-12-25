@@ -56,8 +56,8 @@ public class GreetingDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences preferences =
                                 PreferenceManager.getDefaultSharedPreferences(getActivity());
-                        preferences.edit()
-                                .putInt(Preferences.KEY_SEEN_GREETING_VERSION, VERSION).apply();
+                        preferences.edit().putInt(Preferences.SEEN_GREETING_VERSION, VERSION)
+                                .apply();
                         if (SetupGridSizeDialog.shouldShow(preferences)) {
                             new SetupGridSizeDialog()
                                     .show(getFragmentManager(), "SetupGridSizeDialog");

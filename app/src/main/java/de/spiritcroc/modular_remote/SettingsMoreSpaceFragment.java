@@ -36,10 +36,10 @@ public class SettingsMoreSpaceFragment extends CustomPreferenceFragment
         addPreferencesFromResource(R.xml.preferences_more_space);
 
         systemUiTimeoutPreference =
-                (EditTextPreference) findPreference(Preferences.KEY_SYSTEM_UI_TIMEOUT);
-        fullscreenPreference = (CheckBoxPreference) findPreference(Preferences.KEY_FULLSCREEN);
+                (EditTextPreference) findPreference(Preferences.SYSTEM_UI_TIMEOUT);
+        fullscreenPreference = (CheckBoxPreference) findPreference(Preferences.FULLSCREEN);
         hideNavBarPreference =
-                (CheckBoxPreference) findPreference(Preferences.KEY_HIDE_NAVIGATION_BAR);
+                (CheckBoxPreference) findPreference(Preferences.HIDE_NAVIGATION_BAR);
     }
 
     private void init() {
@@ -63,18 +63,18 @@ public class SettingsMoreSpaceFragment extends CustomPreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Preferences.KEY_SYSTEM_UI_TIMEOUT.equals(key)) {
+        if (Preferences.SYSTEM_UI_TIMEOUT.equals(key)) {
             setSystemUiTimeoutSummary();
-        } else if (Preferences.KEY_FULLSCREEN.equals(key)) {
+        } else if (Preferences.FULLSCREEN.equals(key)) {
             setSystemUiTimeoutEnabled();
-        } else if (Preferences.KEY_HIDE_NAVIGATION_BAR.equals(key)) {
+        } else if (Preferences.HIDE_NAVIGATION_BAR.equals(key)) {
             setSystemUiTimeoutEnabled();
         }
     }
 
     private void setSystemUiTimeoutSummary() {
         int value = correctInteger(getPreferenceManager().getSharedPreferences(),
-                Preferences.KEY_SYSTEM_UI_TIMEOUT, systemUiTimeoutPreference.getText(), 3);
+                Preferences.SYSTEM_UI_TIMEOUT, systemUiTimeoutPreference.getText(), 3);
         systemUiTimeoutPreference.setSummary(getResources()
                 .getQuantityString(R.plurals.pref_system_ui_timeout, value, value));
     }

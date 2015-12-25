@@ -61,10 +61,10 @@ public class ShortcutActivity extends Activity implements OnClickListener,
         try {
             String[] pageNamesPortrait = MainActivity.getPageNamesFromRecreationKey(
                     PreferenceManager.getDefaultSharedPreferences(this)
-                            .getString(Preferences.KEY_SAVED_FRAGMENTS, ""), pageIDs);
+                            .getString(Preferences.SAVED_FRAGMENTS, ""), pageIDs);
             String[] pageNamesLandscape = MainActivity.getPageNamesFromRecreationKey(
                     PreferenceManager.getDefaultSharedPreferences(this)
-                            .getString(Preferences.KEY_SAVED_FRAGMENTS_LANDSCAPE, ""), pageIDs);
+                            .getString(Preferences.SAVED_FRAGMENTS_LANDSCAPE, ""), pageIDs);
             ArrayList<String> pageNameList = new ArrayList<>();
             pageNameList.addAll(Arrays.asList(pageNamesPortrait));
             firstLandscape = pageNameList.size();
