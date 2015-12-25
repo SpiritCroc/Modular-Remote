@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TcpConnectionManager {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String LOG_TAG = TcpConnectionManager.class.getSimpleName();
 
     public enum ReceiverType {UNSPECIFIED, PIONEER}
