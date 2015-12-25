@@ -654,7 +654,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         long pageId = intent.getLongExtra(EXTRA_SELECT_PAGE_ID, -1);
         boolean landscape = getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE;
-        if (pageId != -1 && ((landscape && forceOrientation == FORCE_ORIENTATION_LANDSCAPE) ||
+        if (pageId != -1 &&
+                (forceOrientation == -1 ||
+                        (landscape && forceOrientation == FORCE_ORIENTATION_LANDSCAPE) ||
                         (!landscape && forceOrientation == FORCE_ORIENTATION_PORTRAIT))) {
             for (int i = 0; i < pages.size(); i++) {
                 if (pages.get(i).getPageId() == pageId) {
