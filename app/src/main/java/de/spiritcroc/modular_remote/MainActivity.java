@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     // For launcher shortcut intents
     public static final String EXTRA_SELECT_PAGE_ID =
             "de.spiritcroc.modular_remote.extra.SELECT_PAGE_ID";
-    private static final String EXTRA_SELECT_PAGE_WITHOUT_WARNING =
-            "de.spiritcroc.modular_remote.extra.EXTRA_SELECT_PAGE_WITHOUT_WARNING";
+    private static final String EXTRA_RESTARTED_FROM_EDIT_MODE =
+            "de.spiritcroc.modular_remote.extra.RESTARTED_FROM_EDIT_MODE";
     // Force orientation when using launcher shortcuts
     public static final String EXTRA_FORCE_ORIENTATION =
             "de.spiritcroc.modular_remote.extra.FORCE_ORIENTATION";
@@ -277,6 +277,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                                     getFragmentManager().getBackStackEntryCount());
                         }
                     });
+        }
+
+        if (getIntent().getBooleanExtra(EXTRA_RESTARTED_FROM_EDIT_MODE, false)) {
+            enterEditMode();
         }
     }
     private Runnable hideSystemUIRunnable = new Runnable() {
@@ -570,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         if (selectPagePos >= 0 && pages.size() > selectPagePos) {
             intent.putExtra(EXTRA_SELECT_PAGE_ID, pages.get(selectPagePos).getPageId());
             // Don't toast in case the page can not be selected
-            intent.putExtra(EXTRA_SELECT_PAGE_WITHOUT_WARNING, true);
+            intent.putExtra(EXTRA_RESTARTED_FROM_EDIT_MODE, true);
         }
         saveFragments();
         restart(intent);
@@ -658,7 +662,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 }
             }
             if (shortcutPage == -1) {// Could not find page
-                if (!intent.getBooleanExtra(EXTRA_SELECT_PAGE_WITHOUT_WARNING, false))
+                if (!intent.getBooleanExtra(EXTRA_RESTARTED_FROM_EDIT_MODE, false))
                     Toast.makeText(this, R.string.error_page_not_available, Toast.LENGTH_LONG)
                             .show();
             }
