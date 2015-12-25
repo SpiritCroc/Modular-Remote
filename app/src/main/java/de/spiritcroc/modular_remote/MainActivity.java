@@ -352,6 +352,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         super.onResume();
         appWidgetHost.startListening();
 
+        tcpConnectionManager.refreshConnections();
+
         viewPager.addOnPageChangeListener(this);
         onPageSelected(viewPager.getCurrentItem());
 

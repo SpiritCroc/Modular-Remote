@@ -184,12 +184,9 @@ public class TcpConnectionManager {
         return null;
     }
 
-    public void resetUnconnectedConnections() {
+    public void refreshConnections() {
         for (int i = 0; i < tcpConnections.size(); i++) {
-            TcpConnection connection = tcpConnections.get(i);
-            if (!connection.isConnected()) {
-                connection.reset();
-            }
+            tcpConnections.get(i).refresh();
         }
     }
 
@@ -435,6 +432,15 @@ public class TcpConnectionManager {
                 }
             }
         };
+
+        /**
+         * Reconnect if necessary
+         */
+        public void refresh() {
+            if (!connected) {
+                reset();
+            }
+        }
         public synchronized void reset() {
             informationBuffer.clear();
             startRequestProgress = 0;
@@ -480,6 +486,7 @@ public class TcpConnectionManager {
         }
 
         public synchronized void sendRawCommand(String command) {
+            refresh();
             if (connected && socket != null && socket.isConnected() && out != null) {
                 try {
                     out.write(command + "\r");

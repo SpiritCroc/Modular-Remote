@@ -28,7 +28,7 @@ public class BReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
             TcpConnectionManager.getInstance(context.getApplicationContext())
-                    .resetUnconnectedConnections();
+                    .refreshConnections();
         }
     }
 }
