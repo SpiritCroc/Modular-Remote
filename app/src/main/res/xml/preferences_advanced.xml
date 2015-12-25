@@ -7,6 +7,16 @@
         android:numeric="integer"
         android:defaultValue="3000"/>
     <EditTextPreference
+        android:key="pref_reconnection_attempts"
+        android:title="@string/pref_reconnection_attempts"
+        android:numeric="integer"
+        android:defaultValue="2"/>
+    <EditTextPreference
+        android:key="pref_reconnection_interval"
+        android:title="@string/pref_reconnection_interval"
+        android:numeric="integer"
+        android:defaultValue="200"/>
+    <EditTextPreference
         android:key="pref_offscreen_page_limit"
         android:title="@string/pref_offscreen_page_limit"
         android:numeric="integer|signed"

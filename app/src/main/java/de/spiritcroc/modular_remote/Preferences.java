@@ -44,6 +44,17 @@ public final class Preferences {
     public static final String SAVED_CONNECTIONS = "saved_connections";
 
     /**
+     * Amount of attempts to reconnect to a device to which connection was lost
+     */
+    public static final String RECONNECTION_ATTEMPTS = "pref_reconnection_attempts";
+
+    /**
+     * Time interval in milliseconds, after which a new reconnection attempt should be started, if
+     * {@link #RECONNECTION_ATTEMPTS} > 1
+     */
+    public static final String RECONNECTION_INTERVAL = "pref_reconnection_interval";
+
+    /**
      * How many pages of the viewPages will not get destroyed in each direction.
      * Necessary e.g. for keeping WebViews alive
      */

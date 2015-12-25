@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TcpConnectionManager {
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final String LOG_TAG = TcpConnectionManager.class.getSimpleName();
 
     public enum ReceiverType {UNSPECIFIED, PIONEER}
@@ -226,7 +226,9 @@ public class TcpConnectionManager {
         private volatile ReceiverType type;
         private volatile ArrayList<CustomizedMenu> customizedMenus = new ArrayList<>();
         private volatile boolean resetNow = false, connected = false, sentRequest = false;
+        private volatile int reconnectionAttempts = 0;
         private Handler stopRequestHandler = new Handler();
+        private Handler reconnectHandler = new Handler ();
         private volatile ArrayList<TcpUpdateInterface> listeners = new ArrayList<>();
         private Socket socket;
         private BufferedReader in;
@@ -331,6 +333,7 @@ public class TcpConnectionManager {
                 if (DEBUG) Log.d(LOG_TAG, "Try to connect to ip " + ip + " at port " + port);
                 socket = new Socket(ip, port);
                 connected = true;
+                reconnectionAttempts = 0;
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 sendUpdateBroadcast(this, new TcpInformation(
@@ -397,6 +400,8 @@ public class TcpConnectionManager {
             sendUpdateBroadcast(this, new TcpInformation(
                     TcpInformation.InformationType.CONNECTIVITY_CHANGE, connected));
 
+            reconnect.run();
+
             close();
         }
         private synchronized void close() {
@@ -417,6 +422,19 @@ public class TcpConnectionManager {
                 e.printStackTrace();
             }
         }
+        private Runnable reconnect = new Runnable() {
+            @Override
+            public void run() {
+                reconnectHandler.removeCallbacks(this);
+                if (!connected && reconnectionAttempts < Util.getPreferenceInt(sharedPreferences,
+                        Preferences.RECONNECTION_ATTEMPTS, 2)) {
+                    reconnectionAttempts++;
+                    reset();
+                    reconnectHandler.postDelayed(this, Util.getPreferenceInt(sharedPreferences,
+                            Preferences.RECONNECTION_INTERVAL, 200));
+                }
+            }
+        };
         public synchronized void reset() {
             informationBuffer.clear();
             startRequestProgress = 0;

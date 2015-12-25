@@ -130,4 +130,14 @@
         <item>@string/pref_orientation_portrait_only_value</item>
         <item>@string/pref_orientation_landscape_only_value</item>
     </string-array>
+    <string name="pref_reconnection_attempts">Reconnection attempts</string>
+    <plurals name="pref_reconnection_attempts_summary">
+        <item quantity="one">Attempt to reconnect lost connections %d time</item>
+        <item quantity="other">Attempt to reconnect lost connections %d times</item>
+    </plurals>
+    <string name="pref_reconnection_interval">Reconnection interval</string>
+    <plurals name="pref_reconnection_interval_summary">
+        <item quantity="one">Attempt to reconnect lost connections every %d millisecond</item>
+        <item quantity="other">Attempt to reconnect lost connections every %d milliseconds</item>
+    </plurals>
 </resources>

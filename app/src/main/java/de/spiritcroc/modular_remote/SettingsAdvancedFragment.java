@@ -26,6 +26,8 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private EditTextPreference checkConnectivityIntervalPreference;
+    private EditTextPreference reconnectionAttemptsPreference;
+    private EditTextPreference reconnectionIntervalPreference;
     private EditTextPreference offscreenPageLimitPreference;
     private EditTextPreference timeUpdateIntervalPreference;
     private EditTextPreference doubleClickTimeoutPreference;
@@ -37,6 +39,10 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
 
         checkConnectivityIntervalPreference =
                 (EditTextPreference) findPreference(Preferences.CHECK_CONNECTIVITY_INTERVAL);
+        reconnectionAttemptsPreference =
+                (EditTextPreference) findPreference(Preferences.RECONNECTION_ATTEMPTS);
+        reconnectionIntervalPreference =
+                (EditTextPreference) findPreference(Preferences.RECONNECTION_INTERVAL);
         offscreenPageLimitPreference =
                 (EditTextPreference) findPreference(Preferences.OFFSCREEN_PAGE_LIMIT);
         timeUpdateIntervalPreference =
@@ -47,6 +53,8 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
 
     private void init() {
         setCheckConnectivityIntervalSummary();
+        setReconnectionAttemptsSummary();
+        setReconnectionIntervalSummary();
         setOffscreenPageLimitSummary();
         setTimeUpdateIntervalSummary();
         setDoubleClickTimeoutSummary();
@@ -70,6 +78,10 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Preferences.CHECK_CONNECTIVITY_INTERVAL.equals(key)) {
             setCheckConnectivityIntervalSummary();
+        } else if (Preferences.RECONNECTION_ATTEMPTS.equals(key)) {
+            setReconnectionAttemptsSummary();
+        } else if (Preferences.RECONNECTION_INTERVAL.equals(key)) {
+            setReconnectionIntervalSummary();
         } else if (Preferences.OFFSCREEN_PAGE_LIMIT.equals(key)) {
             setOffscreenPageLimitSummary();
         } else if (Preferences.TIME_UPDATE_INTERVAL.equals(key)) {
@@ -85,6 +97,25 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
                 checkConnectivityIntervalPreference.getText(), 3000);
         checkConnectivityIntervalPreference.setSummary(getResources()
                 .getQuantityString(R.plurals.pref_check_connectivity_interval_summary, value,
+                        value));
+    }
+
+    private void setReconnectionAttemptsSummary() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.RECONNECTION_ATTEMPTS,
+                reconnectionAttemptsPreference.getText(), 2);
+        reconnectionAttemptsPreference.setSummary(getResources()
+                .getQuantityString(R.plurals.pref_reconnection_attempts_summary, value,
+                        value));
+        reconnectionIntervalPreference.setEnabled(value > 1);
+    }
+
+    private void setReconnectionIntervalSummary() {
+        int value = correctInteger(getPreferenceManager().getSharedPreferences(),
+                Preferences.RECONNECTION_INTERVAL,
+                reconnectionIntervalPreference.getText(), 200);
+        reconnectionIntervalPreference.setSummary(getResources()
+                .getQuantityString(R.plurals.pref_reconnection_interval_summary, value,
                         value));
     }
 
