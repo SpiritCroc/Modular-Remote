@@ -272,7 +272,7 @@
     <string name="toast_volume_button_settings_shortcut">You entered the shortcut code to reach the settings!</string>
     <string name="toast_illegal_input">Illegal input!</string>
     <string name="toast_container_edit_scroll">Scrollable containers can now scroll!</string>
-    <string name="toast_container_edit_drag">Scrollable containers can be moved!</string>
+    <string name="toast_container_edit_drag">Scrollable containers can be dragged!</string>
 
     <!-- There are some unicode characters that you might want to use on a remote, but are not included on most keyboards-->
     <string-array name="button_label_spinner_chars" translatable="false">
