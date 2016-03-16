@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private ActionMode actionMode;
     private boolean editModeContainerDrag = true;// If false: editModeContainerScroll
+    private Toast editModeContainerDragMoveToast = null;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -137,18 +138,21 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                             .show(getFragmentManager(), "AddFragmentDialog");
                     return true;
                 case R.id.action_container_edit_mode:
+                    cancelEditContainerModeToast();
                     if (editModeContainerDrag) {
                         editModeContainerDrag = false;
                         item.setTitle(R.string.action_container_edit_mode_drag);
                         item.setIcon(R.drawable.ic_action_container_drag_24dp);
-                        Toast.makeText(MainActivity.this, R.string.toast_container_edit_scroll,
-                                Toast.LENGTH_SHORT).show();
+                        editModeContainerDragMoveToast = Toast.makeText(MainActivity.this,
+                                R.string.toast_container_edit_scroll, Toast.LENGTH_SHORT);
+                        editModeContainerDragMoveToast.show();
                     } else {
                         editModeContainerDrag = true;
                         item.setTitle(R.string.action_container_edit_mode_scroll);
                         item.setIcon(R.drawable.ic_action_container_scroll_24dp);
-                        Toast.makeText(MainActivity.this, R.string.toast_container_edit_drag,
-                                Toast.LENGTH_SHORT).show();
+                        editModeContainerDragMoveToast = Toast.makeText(MainActivity.this,
+                                R.string.toast_container_edit_drag, Toast.LENGTH_SHORT);
+                        editModeContainerDragMoveToast.show();
                     }
                     for (int i = 0; i < pages.size(); i++) {
                         pages.get(i).setContainerDragEnabled(editModeContainerDrag);
@@ -172,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                     return;
                 }
             }
+            cancelEditContainerModeToast();
             exitEditMode();
         }
     };
@@ -869,5 +874,12 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     public void setViewPagerEnabled(boolean enabled) {
         viewPager.setScrollEnabled(enabled);
+    }
+
+    private void cancelEditContainerModeToast() {
+        if (editModeContainerDragMoveToast != null) {
+            editModeContainerDragMoveToast.cancel();
+            editModeContainerDragMoveToast = null;
+        }
     }
 }
