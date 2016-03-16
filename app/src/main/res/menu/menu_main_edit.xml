@@ -24,13 +24,13 @@
     <item
         android:id="@+id/action_add_fragment"
         android:title="@string/action_add_fragment"
-        android:icon="@drawable/ic_add_white_36dp"/>
+        android:icon="@drawable/ic_add_white_24dp"/>
     <item
         android:id="@+id/action_container_edit_mode"
         android:title="@string/action_container_edit_mode_scroll"
-        android:icon="@drawable/ic_action_container_scroll"/>
+        android:icon="@drawable/ic_action_container_scroll_24dp"/>
     <item
         android:id="@+id/action_fragment_settings"
         android:title="@string/action_fragment_settings"
-        android:icon="@drawable/ic_tune_white_36dp"/>
+        android:icon="@drawable/ic_tune_white_24dp"/>
 </menu>

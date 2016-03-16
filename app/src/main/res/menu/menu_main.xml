@@ -25,7 +25,7 @@
     <item
         android:id="@+id/action_edit_page_content"
         android:title="@string/action_edit_page_content"
-        android:icon="@drawable/ic_create_white_36dp"
+        android:icon="@drawable/ic_create_white_24dp"
         android:orderInCategory="2"
         app:showAsAction="ifRoom" />
     <item

@@ -140,13 +140,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                     if (editModeContainerDrag) {
                         editModeContainerDrag = false;
                         item.setTitle(R.string.action_container_edit_mode_drag);
-                        item.setIcon(R.drawable.ic_action_container_drag);
+                        item.setIcon(R.drawable.ic_action_container_drag_24dp);
                         Toast.makeText(MainActivity.this, R.string.toast_container_edit_scroll,
                                 Toast.LENGTH_SHORT).show();
                     } else {
                         editModeContainerDrag = true;
                         item.setTitle(R.string.action_container_edit_mode_scroll);
-                        item.setIcon(R.drawable.ic_action_container_scroll);
+                        item.setIcon(R.drawable.ic_action_container_scroll_24dp);
                         Toast.makeText(MainActivity.this, R.string.toast_container_edit_drag,
                                 Toast.LENGTH_SHORT).show();
                     }
