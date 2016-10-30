@@ -22,6 +22,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.KeyguardManager;
+import android.app.NotificationManager;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
@@ -353,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         if (changedRingerMode) {
             changedRingerMode = false;
             AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setRingerMode(previousRingerMode);
+            setRingerMode(audioManager, previousRingerMode);
         }
     }
     @Override
@@ -394,14 +395,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         previousRingerMode = audioManager.getRingerMode();
         if (getString(R.string.pref_ringer_mode_mute_value).equals(ringerMode)) {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            setRingerMode(audioManager, AudioManager.RINGER_MODE_SILENT);
             changedRingerMode = true;
         } else if (getString(R.string.pref_ringer_mode_vibrate_value).equals(ringerMode)) {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+            setRingerMode(audioManager, AudioManager.RINGER_MODE_VIBRATE);
             changedRingerMode = true;
         } else if (getString(R.string.pref_ringer_mode_vibrate_if_not_muted_value)
                 .equals(ringerMode) && previousRingerMode != AudioManager.RINGER_MODE_SILENT) {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+            setRingerMode(audioManager, AudioManager.RINGER_MODE_VIBRATE);
             changedRingerMode = true;
         }
 
@@ -881,5 +882,20 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             editModeContainerDragMoveToast.cancel();
             editModeContainerDragMoveToast = null;
         }
+    }
+
+    private void setRingerMode(AudioManager audioManager, int ringerMode) {
+        //https://stackoverflow.com/questions/39151453/in-android-7-api-level-24-my-app-is-not-allowed-to-mute-phone-set-ringer-mode/39152607#39152607
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+            // Permission will be requested when changing the setting again
+            Log.w(LOG_TAG, "setRingerMode: discard change because of missing permission");
+        } else {
+            audioManager.setRingerMode(ringerMode);
+        }
+
     }
 }

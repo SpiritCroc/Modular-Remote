@@ -18,6 +18,9 @@
 
 package de.spiritcroc.modular_remote;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
@@ -77,7 +80,7 @@ public class SettingsFragment extends CustomPreferenceFragment
     }
 
     private void init() {
-        setRingerModeSummary();
+        setRingerModeSummary(true);
         setOrientationSummary();
         setBlockSizeSummary();
         setBlockSizeHeightSummary();
@@ -104,7 +107,7 @@ public class SettingsFragment extends CustomPreferenceFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Preferences.CHANGE_RINGER_MODE.equals(key)) {
-            setRingerModeSummary();
+            setRingerModeSummary(false);
         } else if (Preferences.ORIENTATION.equals(key)) {
             setOrientationSummary();
         } else if (Preferences.BLOCK_SIZE.equals(key)) {
@@ -123,8 +126,29 @@ public class SettingsFragment extends CustomPreferenceFragment
 
     }
 
-    private void setRingerModeSummary() {
+    private void setRingerModeSummary(boolean init) {
         String value = ringerModePreference.getValue();
+
+        // Make sure we have the required permission for changing ringer mode
+        final String VALUE_OFF = getString(R.string.pref_ringer_mode_keep_value);
+        if (!VALUE_OFF.equals(value)) {
+            NotificationManager notificationManager = (NotificationManager) getActivity()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                    && !notificationManager.isNotificationPolicyAccessGranted()) {
+                if (init) {
+                    // Pretend that the setting is off so we don't need the permission
+                    ringerModePreference.setValue(VALUE_OFF);
+                    value = VALUE_OFF;
+                } else {
+                    // Request the permission
+                    startActivity(new Intent(android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
+                }
+            }
+        }
+
         Resources resources = getResources();
         String[] values = resources.getStringArray(R.array.pref_change_ringer_mode_array_values);
         int index = Arrays.asList(values).indexOf(value);

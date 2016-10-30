@@ -21,6 +21,7 @@ package de.spiritcroc.modular_remote;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -486,6 +487,26 @@ public class TcpConnectionManager {
         }
 
         public synchronized void sendRawCommand(String command) {
+            if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+                // Don't run on UI thread
+                new Thread(new SendRawCommandRunnable(command)).start();
+            } else {
+                new SendRawCommandRunnable(command).run();
+            }
+        }
+
+        private class SendRawCommandRunnable implements Runnable {
+            String command;
+            public SendRawCommandRunnable(String command) {
+                this.command = command;
+            }
+            @Override
+            public void run() {
+                realSendRawCommand(command);
+            }
+        }
+
+        private synchronized void realSendRawCommand(String command) {
             refresh();
             if (connected && socket != null && socket.isConnected() && out != null) {
                 try {
