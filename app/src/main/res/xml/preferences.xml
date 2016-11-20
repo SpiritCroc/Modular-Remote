@@ -27,12 +27,12 @@
             android:entries="@array/pref_change_ringer_mode_array"
             android:entryValues="@array/pref_change_ringer_mode_array_values"
             android:defaultValue="@string/pref_ringer_mode_keep_value"/>
-        </PreferenceCategory>
-    <PreferenceScreen
-        android:key="pref_advanced_settings"
-        android:title="@string/pref_advanced_settings"
-        android:summary="@string/pref_advanced_settings_summary"
-        android:fragment="de.spiritcroc.modular_remote.SettingsAdvancedFragment"/>
+        <PreferenceScreen
+            android:key="pref_advanced_settings"
+            android:title="@string/pref_advanced_settings"
+            android:summary="@string/pref_advanced_settings_summary"
+            android:fragment="de.spiritcroc.modular_remote.SettingsAdvancedFragment"/>
+    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_app_appearance"
         android:key="pref_category_app_appearance">
