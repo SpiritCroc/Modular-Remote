@@ -35,6 +35,8 @@ import java.util.Arrays;
 public class SettingsFragment extends CustomPreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String KEY_APP_BEHAVIOUR = "pref_app_behaviour";
+    private static final String KEY_GLOBAL_ACTIONS_SETTINGS = "pref_global_actions";
     private static final String KEY_APP_APPEARANCE = "pref_category_app_appearance";
     private static final String KEY_MORE_SPACE_SETTINGS = "pref_more_space";
 
@@ -76,6 +78,12 @@ public class SettingsFragment extends CustomPreferenceFragment
             // Hide pref to hide pager tab strip, as it is also included in preferences_more_space
             Preference hidePagerTabStrip = findPreference(Preferences.HIDE_PAGER_TAB_STRIP);
             appAppearancePreference.removePreference(hidePagerTabStrip);
+        }
+        if (Build.VERSION.SDK_INT < 21) {
+            PreferenceCategory appBehaviourPreference =
+                    (PreferenceCategory) findPreference(KEY_APP_BEHAVIOUR);
+            Preference globalActionsPreference = findPreference(KEY_GLOBAL_ACTIONS_SETTINGS);
+            appBehaviourPreference.removePreference(globalActionsPreference);
         }
     }
 

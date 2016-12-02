@@ -140,4 +140,11 @@
         <item quantity="one">Attempt to reconnect lost connections every %d millisecond</item>
         <item quantity="other">Attempt to reconnect lost connections every %d milliseconds</item>
     </plurals>
+
+    <string name="pref_global_actions_title">Global actions (experimental)</string>
+    <string name="pref_global_actions_summary">Use media control keys</string>
+    <string name="pref_global_actions_enable_title">Enable global actions</string>
+    <string name="pref_global_actions_enable_summary">Allow to send some commands with the media keys also while using other apps</string>
+    <string name="pref_global_actions_volume_up">Global volume up action</string>
+    <string name="pref_global_actions_volume_down">Global volume down action</string>
 </resources>

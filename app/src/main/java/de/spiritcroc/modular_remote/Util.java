@@ -37,6 +37,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -664,6 +665,13 @@ public abstract class Util {
         } else {
             return applicationContext.getString(resId);
         }
+    }
+
+    public static int getStatusBarHeight(Activity activity) {
+        Rect rectangle = new Rect();
+        Window window = activity.getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
+        return rectangle.top;
     }
 
     /**

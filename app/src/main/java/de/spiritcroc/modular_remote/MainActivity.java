@@ -288,6 +288,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         if (getIntent().getBooleanExtra(EXTRA_RESTARTED_FROM_EDIT_MODE, false)) {
             enterEditMode();
         }
+
+        if (sharedPreferences.getBoolean(Preferences.GLOBAL_ACTIONS_ENABLE, false)) {
+            if (Build.VERSION.SDK_INT < 21) {
+                sharedPreferences.edit().remove(Preferences.GLOBAL_ACTIONS_ENABLE).apply();
+            } else {
+                GlobalActionHandler.enable(this);
+            }
+        }
     }
     private Runnable hideSystemUIRunnable = new Runnable() {
         @Override

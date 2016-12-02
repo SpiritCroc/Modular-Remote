@@ -20,13 +20,19 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/title_activity_settings">
     <PreferenceCategory
-        android:title="@string/pref_app_behaviour">
+        android:title="@string/pref_app_behaviour"
+        android:key="pref_app_behaviour">
         <ListPreference
             android:key="pref_change_ringer_mode"
             android:title="@string/pref_change_ringer_mode"
             android:entries="@array/pref_change_ringer_mode_array"
             android:entryValues="@array/pref_change_ringer_mode_array_values"
             android:defaultValue="@string/pref_ringer_mode_keep_value"/>
+        <PreferenceScreen
+            android:key="pref_global_actions"
+            android:title="@string/pref_global_actions_title"
+            android:summary="@string/pref_global_actions_summary"
+            android:fragment="de.spiritcroc.modular_remote.SettingsGlobalActionsFragment" />
         <PreferenceScreen
             android:key="pref_advanced_settings"
             android:title="@string/pref_advanced_settings"

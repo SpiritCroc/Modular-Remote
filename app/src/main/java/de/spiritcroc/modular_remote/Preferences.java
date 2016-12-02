@@ -176,4 +176,19 @@ public final class Preferences {
      * Value for {@link #ORIENTATION}. When set, the remote will only show in landscape orientation
      */
     public static final String ORIENTATION_LANDSCAPE_ONLY = "landscape";
+
+    /**
+     * Whether to enable a media session for global actions
+     */
+    public static final String GLOBAL_ACTIONS_ENABLE = "pref_global_actions_enable";
+
+    /**
+     * Volume up global action
+     */
+    public static final String GLOBAL_ACTION_VOLUME_UP = "pref_global_action_volume_up";
+
+    /**
+     * Volume down global action
+     */
+    public static final String GLOBAL_ACTION_VOLUME_DOWN = "pref_global_action_volume_down";
 }

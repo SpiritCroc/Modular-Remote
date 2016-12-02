@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/pref_global_actions_title">
+    <SwitchPreference
+        android:key="pref_global_actions_enable"
+        android:title="@string/pref_global_actions_enable_title"
+        android:summary="@string/pref_global_actions_enable_summary"
+        android:defaultValue="false" />
+    <Preference
+        android:key="pref_global_action_volume_up"
+        android:title="@string/pref_global_actions_volume_up" />
+    <Preference
+        android:key="pref_global_action_volume_down"
+        android:title="@string/pref_global_actions_volume_down" />
+</PreferenceScreen>
