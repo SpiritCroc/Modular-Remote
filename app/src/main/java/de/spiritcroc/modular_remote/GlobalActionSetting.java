@@ -104,6 +104,6 @@ public class GlobalActionSetting implements TcpConnectionManager.TcpUpdateInterf
     public void setConnectionValues(String ip, TcpConnectionManager.ReceiverType type) {
         this.ip = ip;
         this.type = type;
-        GlobalActionHandler.updateSetting(this);
+        // todo GlobalActionHandler.updateSetting(this);
     }
 }

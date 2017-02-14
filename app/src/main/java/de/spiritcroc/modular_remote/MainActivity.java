@@ -41,7 +41,6 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -68,7 +67,7 @@ import de.spiritcroc.modular_remote.modules.ModuleFragment;
 import de.spiritcroc.modular_remote.modules.PageContainerFragment;
 import de.spiritcroc.modular_remote.modules.WidgetContainerFragment;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG = false;
 

@@ -66,15 +66,15 @@ public class TcpConnectionManager {
     private SharedPreferences sharedPreferences;
     private Context applicationContext;
 
-    private TcpConnectionManager(Context applicationContext) {
+    private TcpConnectionManager(Context context) {
         tcpConnections = new ArrayList<>();
-        this.applicationContext = applicationContext;
+        this.applicationContext = context.getApplicationContext();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
 
     }
-    public static TcpConnectionManager getInstance(Context applicationContext) {
+    public static TcpConnectionManager getInstance(Context context) {
         if (instance == null)
-            instance = new TcpConnectionManager(applicationContext);
+            instance = new TcpConnectionManager(context);
         return instance;
     }
 

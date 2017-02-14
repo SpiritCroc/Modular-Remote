@@ -20,13 +20,13 @@ package de.spiritcroc.modular_remote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     private CustomPreferenceFragment preferenceFragment;
 
@@ -90,5 +90,11 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
         return new SettingsFragment();
+    }
+
+    @Override
+    protected void onGlobalKeyMessage(Message message) {
+        preferenceFragment.onGlobalKeyMessage(message);
+        super.onGlobalKeyMessage(message);
     }
 }

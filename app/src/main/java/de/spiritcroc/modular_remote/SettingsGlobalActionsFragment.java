@@ -21,6 +21,7 @@ package de.spiritcroc.modular_remote;
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.Preference;
 import android.preference.SwitchPreference;
 import android.text.TextUtils;
@@ -47,8 +48,6 @@ public class SettingsGlobalActionsFragment extends CustomPreferenceFragment
 
         volumeUpPreference.setOnPreferenceClickListener(this);
         volumeDownPreference.setOnPreferenceClickListener(this);
-
-        init();
     }
 
     private void init() {
@@ -103,16 +102,17 @@ public class SettingsGlobalActionsFragment extends CustomPreferenceFragment
     }
 
     private void initGlobalActionsEnabled() {
-        enablePreference.setChecked(GlobalActionHandler.isEnabled());
+        ((BaseActivity) getActivity()).sendGlobalKeyServiceMsg(Message.obtain(null, GlobalKeyService.ACTION_REQUEST_VOL_CTRL_ACTIVE));
     }
 
     private void setGlobalActionsEnabled(boolean enabled) {
+        // Keep old checked state for now; if switch successful, will be updated later
+        //enablePreference.setChecked(!enabled);
         if (enabled) {
-            GlobalActionHandler.enable(getActivity());
+            GlobalActionHandler.enable((BaseActivity) getActivity());
         } else {
-            GlobalActionHandler.disable();
+            GlobalActionHandler.disable((BaseActivity) getActivity());
         }
-        enablePreference.setChecked(GlobalActionHandler.isEnabled());
     }
 
     private void setGlobalActionSummary(Preference preference) {
@@ -132,6 +132,17 @@ public class SettingsGlobalActionsFragment extends CustomPreferenceFragment
                 .putString(key, settings.getRecreationKey())
                 .apply();
         setGlobalActionSummary(findPreference(key));
-        GlobalActionHandler.init(getActivity());
+        if (enablePreference.isChecked()) {
+            // Update values
+            GlobalActionHandler.enable((BaseActivity) getActivity());
+        }
+    }
+
+    @Override
+    protected void onGlobalKeyMessage(Message message) {
+        if (message.what == GlobalKeyService.RESPONSE_VOL_CTRL_ACTIVE) {
+            enablePreference.setChecked((Boolean) message.obj);
+        }
+        super.onGlobalKeyMessage(message);
     }
 }

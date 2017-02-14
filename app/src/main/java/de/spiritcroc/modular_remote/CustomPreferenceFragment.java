@@ -20,6 +20,7 @@ package de.spiritcroc.modular_remote;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -41,6 +42,8 @@ public abstract class CustomPreferenceFragment extends PreferenceFragment {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
     }
+
+    protected void onGlobalKeyMessage(Message message) {}
 
     // Util methods
 
