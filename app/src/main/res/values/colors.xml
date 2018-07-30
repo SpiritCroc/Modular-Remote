@@ -21,4 +21,6 @@
     <!-- Text colors -->
     <color name="text_title">#CE80cbc4</color>
     <color name="text_container_content">#9e9e9e</color>
+
+    <color name="ic_launcher_background">#303030</color>
 </resources>
