@@ -58,6 +58,15 @@
         <item>@string/command_key_off_ipod_network</item>
         <item>@string/command_zone_2_power</item>
         <item>@string/command_zone_3_power</item>
+        <item>@string/command_zone_2_input_change</item>
+        <item>@string/command_zone_3_input_change</item>
+        <item>@string/command_zone_2_volume</item>
+        <item>@string/command_zone_2_volume_set</item>
+        <item>@string/command_zone_3_volume</item>
+        <item>@string/command_zone_3_volume_set</item>
+        <item>@string/command_zone_2_mute</item>
+        <item>@string/command_zone_3_mute</item>
+        <!-- TODO missing? -->
     </string-array>
     <string-array name="pioneer_tcp_commands_values" translatable="false">
         <item>P·</item>
@@ -91,6 +100,14 @@
         <item>KOF</item>
         <item>AP·</item>
         <item>BP·</item>
+        <item>··ZS</item>
+        <item>··YS</item>
+        <item>Z·</item>
+        <item>··ZV</item>
+        <item>Y·</item>
+        <item>··YV</item>
+        <item>Z2M·</item>
+        <item>Z3M·</item>
     </string-array>
     <integer-array name="pioneer_tcp_commands_has_submenu" translatable="false">
         <item>1</item>
@@ -122,6 +139,14 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>22</item>
+        <item>22</item>
+        <item>2</item>
+        <item>-1</item>
+        <item>2</item>
+        <item>-1</item>
         <item>1</item>
         <item>1</item>
     </integer-array>
@@ -1374,6 +1399,58 @@
         <item>0</item>
     </integer-array>
 
+    <string-array name="pioneer_tcp_commands_submenu_23" translatable="false"><!--INPUT for zone 2/3, wichout cyclic HDMI (better for spinners)-->
+        <item>@string/command_input_dvd</item>
+        <item>@string/command_input_tv_sat</item>
+        <item>@string/command_input_dvr_bdr</item><!--todo-->
+        <item>@string/command_input_video_1</item>
+        <item>@string/command_input_video_2</item>
+        <item>@string/command_input_hmg</item>
+        <item>@string/command_input_ipod_usb</item>
+        <item>@string/command_input_xm_radio</item>
+        <item>@string/command_input_cd</item>
+        <item>@string/command_input_cd_r_tape</item>
+        <item>@string/command_input_tuner</item>
+        <item>@string/command_input_phono</item>
+        <item>@string/command_input_multi_ch_in</item>
+        <item>@string/command_input_adapter_port</item>
+        <item>@string/command_input_sirius</item>
+    </string-array>
+    <string-array name="pioneer_tcp_commands_submenu_23_values" translatable="false">
+        <item>04</item>
+        <item>05</item>
+        <item>15</item>
+        <item>10</item>
+        <item>14</item>
+        <item>26</item>
+        <item>17</item>
+        <item>18</item>
+        <item>01</item>
+        <item>03</item>
+        <item>02</item>
+        <item>00</item>
+        <item>12</item>
+        <item>33</item>
+        <item>27</item>
+    </string-array>
+    <integer-array name="pioneer_tcp_commands_submenu_23_has_submenu" translatable="false">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
 
     <!--Responses use the same submenu system as commands-->
     <!--has_submenu -1 means handle it from code-->
@@ -1405,7 +1482,16 @@
         <item>@string/command_speakers</item>
         <item>@string/command_hdmi_audio</item>
         <item>@string/command_pqls</item>
-        <!--todo more, also include in clear-able displays-->
+        <!--todo missing, also include in clear-able displays-->
+        <item>@string/command_zone_2_power</item>
+        <item>@string/command_zone_3_power</item>
+        <item>@string/command_zone_2_input</item>
+        <item>@string/command_zone_3_input</item>
+        <item>@string/command_zone_2_volume</item>
+        <item>@string/command_zone_3_volume</item>
+        <item>@string/command_zone_2_mute</item>
+        <item>@string/command_zone_3_mute</item>
+        <!-- todo missing -->
         <item>@string/response_display</item>
 
         <item>@string/response_input_name</item>
@@ -1439,6 +1525,15 @@
         <item>HA·</item>
         <item>PQ·</item>
 
+        <item>APR·</item>
+        <item>BPR·</item>
+        <item>Z2F··</item>
+        <item>Z3F··</item>
+        <item>ZV··</item>
+        <item>YV··</item>
+        <item>Z2MUT·</item>
+        <item>Z3MUT·</item>
+
         <item>FL…</item>
 
         <item>RGB…</item>
@@ -1471,6 +1566,15 @@
         <item>11</item>
         <item>16</item>
         <item>17</item>
+
+        <item>13</item>
+        <item>13</item>
+        <item>22</item>
+        <item>22</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>13</item>
+        <item>13</item>
 
         <item>-1</item>
 
@@ -1509,6 +1613,14 @@
         <item>"?HA"</item>
         <item>"?PQ"</item>
         <!--todo starting from KEY LOCK up to KEYBORD Operation-->
+        <item>"?AP"</item>
+        <item>"?BP"</item>
+        <item>"?ZS"</item>
+        <item>"?ZT"</item>
+        <item>"?ZV"</item>
+        <item>"?YV"</item>
+        <item>"?Z2M"</item>
+        <item>"?Z3M"</item>
         <item>"?FL"</item>
         <item>"?AST"</item>
         <item>"?VST"</item>
@@ -1536,6 +1648,14 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
         <item>6</item>
     </integer-array>
 
@@ -1560,16 +1680,24 @@
 
     <string-array name="pioneer_tcp_dropdown_menu_names" translatable="false"><!--commands + responses that have the same submenu; used for spinners-->
         <item>@string/command_input</item>
+        <item>@string/command_zone_2_input</item>
+        <item>@string/command_zone_3_input</item>
         <!--todo more-->
     </string-array>
     <string-array name="pioneer_tcp_dropdown_menu_command_values" translatable="false">
         <item>··FN</item>
+        <item>··ZS</item>
+        <item>··ZT</item>
     </string-array>
     <string-array name="pioneer_tcp_dropdown_menu_response_values" translatable="false">
         <item>FN··</item>
+        <item>Z2F··</item>
+        <item>Z3F··</item>
     </string-array>
     <integer-array name="pioneer_tcp_dropdown_menu_submenus" translatable="false">
         <item>6</item>
+        <item>23</item>
+        <item>23</item>
     </integer-array>
 
     <!--Customizable submenus with customizable_submenu_receive_names require specific code-->
@@ -1577,15 +1705,21 @@
         <item>@string/command_input_select</item>
         <!--item>@string/command_listening_mode_select</item todo allow hide listening mode items after enabling it for spinners-->
         <item>@string/command_input</item>
+        <item>@string/command_zone_n_input_select</item>
+        <item>@string/command_zone_n_input</item>
     </string-array>
     <integer-array name="pioneer_tcp_customizable_submenu_numbers" translatable="false">
         <item>3</item>
 
         <item>6</item>
+        <item>22</item>
+        <item>23</item>
     </integer-array>
     <integer-array name="pioneer_tcp_customizable_submenu_values" translatable="false">
         <item>@integer/customizable_submenu_receive_names</item>
 
+        <item>@integer/customizable_submenu_hide_items_receive_names</item>
+        <item>@integer/customizable_submenu_receive_names</item>
         <item>@integer/customizable_submenu_hide_items_receive_names</item>
     </integer-array>
 

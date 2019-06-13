@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TcpConnectionManager {
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = BuildConfig.DEBUG;
     private static final String LOG_TAG = TcpConnectionManager.class.getSimpleName();
 
     public enum ReceiverType {UNSPECIFIED, PIONEER}
@@ -677,7 +677,7 @@ public class TcpConnectionManager {
                 "\', data \'" + rawData + "\'\n";
         switch (type) {
             case PIONEER:
-                if (classifier.equals("VOL···")) {// Volume
+                if (classifier.equals("VOL···") || classifier.equals("ZV··") || classifier.equals("YV··")) {// Volume
                     int i = 0;
                     try {
                         i = Integer.parseInt(rawData);
@@ -716,22 +716,50 @@ public class TcpConnectionManager {
                 } else if (classifier.equals("RGB…")) {// Input name
                     String value = rawData.substring(0, 2);
 
-                    TcpConnection.CustomizedMenu inputMenu1 = connection.requireCustomizedMenu(3,
+                    TcpConnection.CustomizedMenu inputMenu3 = connection.requireCustomizedMenu(3,
                             context);
-                    for (int i = 0; i < inputMenu1.values.length; i++) {
-                        if (inputMenu1.values[i].equals(value)) {
-                            inputMenu1.names[i] = rawData.substring(3);
+                    for (int i = 0; i < inputMenu3.values.length; i++) {
+                        if (inputMenu3.values[i].equals(value)) {
+                            inputMenu3.names[i] = rawData.substring(3);
                         }
                     }
-                    TcpConnection.CustomizedMenu inputMenu2 = connection.requireCustomizedMenu(6,
+                    TcpConnection.CustomizedMenu inputMenu6 = connection.requireCustomizedMenu(6,
+                            context);
+                    TcpConnection.CustomizedMenu inputMenu22 = connection.requireCustomizedMenu(22,
+                            context);
+                    TcpConnection.CustomizedMenu inputMenu23 = connection.requireCustomizedMenu(23,
                             context);
 
                     TcpInformation buffer = connection.getBufferedInformation("FN··");
                     if (buffer != null && buffer.isStringAvailable()) {
-                        for (int i = 0; i < inputMenu2.values.length; i++) {
+                        for (int i = 0; i < inputMenu6.values.length; i++) {
                             // Update buffered information
-                            if (inputMenu2.values[i].equals(value)) {
-                                if (buffer.getStringValue().equals(inputMenu2.names[i])) {
+                            if (inputMenu6.values[i].equals(value)) {
+                                if (buffer.getStringValue().equals(inputMenu6.names[i])) {
+                                    buffer.overwriteStringValue(rawData.substring(3));
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    buffer = connection.getBufferedInformation("Z2F··");
+                    if (buffer != null && buffer.isStringAvailable()) {
+                        for (int i = 0; i < inputMenu23.values.length; i++) {
+                            // Update buffered information
+                            if (inputMenu23.values[i].equals(value)) {
+                                if (buffer.getStringValue().equals(inputMenu23.names[i])) {
+                                    buffer.overwriteStringValue(rawData.substring(3));
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    buffer = connection.getBufferedInformation("Z3F··");
+                    if (buffer != null && buffer.isStringAvailable()) {
+                        for (int i = 0; i < inputMenu23.values.length; i++) {
+                            // Update buffered information
+                            if (inputMenu23.values[i].equals(value)) {
+                                if (buffer.getStringValue().equals(inputMenu23.names[i])) {
                                     buffer.overwriteStringValue(rawData.substring(3));
                                 }
                                 break;
@@ -739,9 +767,19 @@ public class TcpConnectionManager {
                         }
                     }
 
-                    for (int i = 0; i < inputMenu2.values.length; i++) {
-                        if (inputMenu2.values[i].equals(value)) {
-                            inputMenu2.names[i] = rawData.substring(3);
+                    for (int i = 0; i < inputMenu6.values.length; i++) {
+                        if (inputMenu6.values[i].equals(value)) {
+                            inputMenu6.names[i] = rawData.substring(3);
+                        }
+                    }
+                    for (int i = 0; i < inputMenu22.values.length; i++) {
+                        if (inputMenu22.values[i].equals(value)) {
+                            inputMenu22.names[i] = rawData.substring(3);
+                        }
+                    }
+                    for (int i = 0; i < inputMenu23.values.length; i++) {
+                        if (inputMenu23.values[i].equals(value)) {
+                            inputMenu23.names[i] = rawData.substring(3);
                         }
                     }
                     result = "";
@@ -750,6 +788,10 @@ public class TcpConnectionManager {
                             new TcpInformation(TcpInformation.InformationType.UPDATE_MENU, 3));
                     sendUpdateBroadcast(connection,
                             new TcpInformation(TcpInformation.InformationType.UPDATE_MENU, 6));
+                    sendUpdateBroadcast(connection,
+                            new TcpInformation(TcpInformation.InformationType.UPDATE_MENU, 22));
+                    sendUpdateBroadcast(connection,
+                            new TcpInformation(TcpInformation.InformationType.UPDATE_MENU, 23));
                 }
                 break;
             default:
@@ -767,13 +809,13 @@ public class TcpConnectionManager {
                                               Util.StringReference raw) {
         switch (type) {
             case PIONEER:
-                if (classifier.equals("···VL")) {// Volume
+                if (classifier.equals("···VL") || classifier.equals("··ZV") || classifier.equals("··YV")) {// Volume
                     try {
                         String volume = "" + (int) (Double.parseDouble(raw.value) * 2 + 161);
                         while (volume.length() < 3) {
                             volume = "0" + volume;
                         }
-                        raw.value = volume + "VL";
+                        raw.value = volume + classifier.substring(3, 5);
                         return true;
                     } catch (Exception e) {
                         Log.w(LOG_TAG, "translateRawSubmenu: Got exception while trying to read " +
@@ -794,7 +836,7 @@ public class TcpConnectionManager {
                                                Util.StringReference summary) {
         switch (type) {
             case PIONEER:
-                if (classifier.equals("···VL")) { //Volume
+                if (classifier.equals("···VL") || classifier.equals("··ZV") || classifier.equals("··YV")) { //Volume
                     title.value = context.getString(R.string.dialog_title_enter_volume);
                     summary.value = context.getString(R.string.dialog_summary_enter_volume_db);
                 }
@@ -1115,7 +1157,7 @@ public class TcpConnectionManager {
             return;
         }
         if (commandValues.length != commandHasSubmenu.length) {
-            Log.w(LOG_TAG, "getAllPossibleCommands: Corrupt resource for receiver type (brand) " +
+            Log.e(LOG_TAG, "getAllPossibleCommands: Corrupt resource for receiver type (brand) " +
                     receiverType + "; commandValues.length != commandHasSubmenu.length");
             return;
         }
@@ -1180,12 +1222,12 @@ public class TcpConnectionManager {
             return command;
         }
         if (commandNames.length != commandValues.length) {
-            Log.w(LOG_TAG, "getCommandNameFromResource: Corrupt resource for receiver type " +
+            Log.e(LOG_TAG, "getCommandNameFromResource: Corrupt resource for receiver type " +
                     "(brand) " + receiverType + "; commandNames.length != commandValues.length " +
                     "menu " + menu + ")");
             return command;
         } else if (commandNames.length != commandHasSubMenu.length) {
-            Log.w(LOG_TAG, "getCommandNameFromResource: Corrupt resource for receiver type " +
+            Log.e(LOG_TAG, "getCommandNameFromResource: Corrupt resource for receiver type " +
                     "(brand) " + receiverType +
                     "; commandNames.length != commandHasSubMenu.length (menu " + menu + ")");
             return command;
@@ -1457,6 +1499,8 @@ public class TcpConnectionManager {
                         return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_21);
                     case 22:
                         return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_22);
+                    case 23:
+                        return resources.getStringArray(R.array.pioneer_tcp_commands_submenu_23);
                     case MENU_TCP_RESPONSES:
                         return resources.getStringArray(R.array.pioneer_tcp_responses);
                 }
@@ -1543,6 +1587,9 @@ public class TcpConnectionManager {
                     case 22:
                         return resources.getStringArray(
                                 R.array.pioneer_tcp_commands_submenu_22_values);
+                    case 23:
+                        return resources.getStringArray(
+                                R.array.pioneer_tcp_commands_submenu_23_values);
                     case MENU_TCP_RESPONSES:
                         return resources.getStringArray(R.array.pioneer_tcp_responses_values);
                     case MENU_START_REQUESTS:
@@ -1645,6 +1692,9 @@ public class TcpConnectionManager {
                     case 22:
                         return resources.getIntArray(
                                 R.array.pioneer_tcp_commands_submenu_22_has_submenu);
+                    case 23:
+                        return resources.getIntArray(
+                                R.array.pioneer_tcp_commands_submenu_23_has_submenu);
                     case MENU_TCP_RESPONSES:
                         return resources.getIntArray(R.array.pioneer_tcp_responses_has_submenu);
                     case MENU_START_REQUESTS:

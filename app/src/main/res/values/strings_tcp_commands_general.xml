@@ -75,6 +75,16 @@
     <string name="command_zone_3_power">Zone 3 power</string>
     <string name="command_zone_2_input_change">Zone 2 input change</string>
     <string name="command_zone_3_input_change">Zone 3 input change</string>
+    <string name="command_zone_2_volume">Zone 2 volume</string>
+    <string name="command_zone_2_volume_set">Zone 2 volume set</string>
+    <string name="command_zone_3_volume">Zone 3 volume</string>
+    <string name="command_zone_3_volume_set">Zone 3 volume set</string>
+    <string name="command_zone_2_mute">Zone 2 mute</string>
+    <string name="command_zone_3_mute">Zone 3 mute</string>
+    <string name="command_zone_2_input">Zone 2 input</string>
+    <string name="command_zone_3_input">Zone 3 input</string>
+    <string name="command_zone_n_input">Zone N input</string>
+    <string name="command_zone_n_input_select">Zone N input select</string>
 
     <string name="command_on">On</string>
     <string name="command_off">Off</string>

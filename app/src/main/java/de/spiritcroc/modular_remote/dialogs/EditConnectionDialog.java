@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import de.spiritcroc.modular_remote.MainActivity;
@@ -182,9 +183,10 @@ public class EditConnectionDialog extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         if (autoHideDetector == null) {
-                            autoHideDetector = new AutoHideDetector("FN··",
-                                    connection.requireCustomizedMenu(6, getActivity()), this);
-                            autoHideDetector.execute();
+                            autoHideDetector = new AutoHideDetector("FN··", this);
+                            autoHideDetector.execute(
+                                    connection.requireCustomizedMenu(6, getActivity()),
+                                    connection.requireCustomizedMenu(23, getActivity()));
                             hideInputButton.setText(R.string.dialog_detecting_inputs);
                         } else {
                             autoHideDetector.finish();
@@ -210,15 +212,16 @@ public class EditConnectionDialog extends DialogFragment {
         dynamicButtonsLayout.removeAllViews();
     }
 
-    private class AutoHideDetector extends AsyncTask<Void, Void, Void>
+    private class AutoHideDetector
+            extends AsyncTask<TcpConnectionManager.TcpConnection.CustomizedMenu, Void, Void>
             implements TcpConnectionManager.TcpUpdateInterface {
         private TcpInformation firstInformation;
         private volatile boolean finish = false, waitForReceive = false, success = false;
         private TcpConnectionManager tcpConnectionManager;
         private String responseClassifier;
-        private TcpConnectionManager.TcpConnection.CustomizedMenu customizedMenu;
         private AutoHideUpdateOnClickListener listener;
-        private boolean[] hidden;
+        private TcpConnectionManager.TcpConnection.CustomizedMenu[] customizedMenus;
+        private ArrayList<boolean[]> hiddens = new ArrayList<>();
 
         private Handler stopWaitingHandler = new Handler();
         private Runnable stopWaiting = new Runnable() {
@@ -229,10 +232,8 @@ public class EditConnectionDialog extends DialogFragment {
         };
 
         public AutoHideDetector(String responseClassifier,
-                                TcpConnectionManager.TcpConnection.CustomizedMenu menu,
                                 AutoHideUpdateOnClickListener listener) {
             this.responseClassifier = responseClassifier;
-            customizedMenu = menu;
             this.listener = listener;
         }
 
@@ -243,15 +244,19 @@ public class EditConnectionDialog extends DialogFragment {
             tcpConnectionManager.requireConnection(this);
         }
         @Override
-        protected  Void doInBackground(Void... nothing) {
+        protected  Void doInBackground(TcpConnectionManager.TcpConnection.CustomizedMenu... menus) {
+            this.customizedMenus = menus;
             // Show all in order to receive correct classified responses
-            for (int i = 0; i < customizedMenu.hidden.length; i++) {
-                customizedMenu.hidden[i] = false;
-            }
-            // Hide all (locally)
-            hidden = new boolean[customizedMenu.hidden.length];
-            for (int i = 0; i < hidden.length; i++) {
-                hidden[i] = true;
+            for (TcpConnectionManager.TcpConnection.CustomizedMenu customizedMenu: menus) {
+                for (int i = 0; i < customizedMenu.hidden.length; i++) {
+                    customizedMenu.hidden[i] = false;
+                }
+                // Hide all (locally)
+                boolean[] hidden = new boolean[customizedMenu.hidden.length];
+                for (int i = 0; i < hidden.length; i++) {
+                    hidden[i] = true;
+                }
+                hiddens.add(hidden);
             }
             /* Don't get buffered information in case it could not be classified
             firstInformation = connection.getBufferedInformation(responseClassifier);
@@ -263,18 +268,28 @@ public class EditConnectionDialog extends DialogFragment {
                 // Give up if no response after 5 seconds
                 stopWaitingHandler.postDelayed(stopWaiting, 5000);
                 connection.sendRawCommand("FU");
-                while(waitForReceive && !finish) {}
+                while(waitForReceive && !finish) {
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             return null;
         }
         @Override
         protected void onPostExecute(Void result) {
             tcpConnectionManager.stopUpdate(this);
-            customizedMenu.hidden = hidden;
+            for (int i = 0; i < customizedMenus.length; i++) {
+                customizedMenus[i].hidden = hiddens.get(i);
+            }
             listener.onFinish(success);
-            connection.updateListeners(new TcpInformation(
-                    TcpInformation.InformationType.UPDATE_MENU,
-                    customizedMenu.getMenuValue()));
+            for (TcpConnectionManager.TcpConnection.CustomizedMenu customizedMenu: customizedMenus) {
+                connection.updateListeners(new TcpInformation(
+                        TcpInformation.InformationType.UPDATE_MENU,
+                        customizedMenu.getMenuValue()));
+            }
             if (success) {
                 // Go back to previous input
                 connection.sendRawCommand("FD");
@@ -293,14 +308,16 @@ public class EditConnectionDialog extends DialogFragment {
                     } else {
                         waitForReceive = false;
                     }
-                    int index = Arrays.asList(customizedMenu.names).indexOf(
-                            information.getStringValue());
-                    if (index < 0) {
-                        Log.w(LOG_TAG, "Could not find input " + information.getStringValue());
-                        success = false;
-                        finish = true;
-                    } else {
-                        hidden[index] = false;
+                    for (int i = 0; i < customizedMenus.length; i++) {
+                        int index = Arrays.asList(customizedMenus[i].names).indexOf(
+                                information.getStringValue());
+                        if (index < 0) {
+                            Log.w(LOG_TAG, "Could not find input " + information.getStringValue());
+                            success = false;
+                            finish = true;
+                        } else {
+                            hiddens.get(i)[index] = false;
+                        }
                     }
                 }
             }
