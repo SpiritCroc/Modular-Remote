@@ -21,15 +21,17 @@ package de.spiritcroc.modular_remote.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import de.spiritcroc.modular_remote.BuildConfig;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
 
@@ -41,13 +43,15 @@ public class AboutDialog extends DialogFragment {
         Activity activity = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         View view = activity.getLayoutInflater().inflate(R.layout.dialog_about, null);
-        String text = getString(R.string.dialog_about_app_version) + ": ";
-        try {
-            text += activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0)
-                    .versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            text = "";
-            Log.w(LOG_TAG, "Got exception " + e);
+        String text;
+        if (BuildConfig.DEBUG) {
+            text = getString(R.string.dialog_about_app_debug_version,
+                    BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.GIT_DESCRIBE,
+                    SimpleDateFormat.getDateTimeInstance().format(
+                            new Date(BuildConfig.TIMESTAMP)));
+        } else {
+            text = getString(R.string.dialog_about_app_version, BuildConfig.VERSION_NAME,
+                    BuildConfig.VERSION_CODE);
         }
         ((TextView) view.findViewById(R.id.version_view)).setText(text);
         builder.setView(Util.scrollView(view))

@@ -143,7 +143,8 @@
         \nAlso take a look at the <a href="https://github.com/SpiritCroc/Modular-Remote/blob/master/TODO.txt">to-do list</a> (there should also be a section called \'no coding required\').\n
         \nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
 
-    <string name="dialog_about_app_version">Version</string>
+    <string name="dialog_about_app_version">Version %1$s (%2$d)</string>
+    <string name="dialog_about_app_debug_version">Debug version %1$s (%2$d)\n%3$s - %4$s</string>
     <string name="dialog_about_0">This app is published under the terms of the GNU General Public License, version 3.0.
         \nSource code:
         \nhttps://github.com/SpiritCroc/Modular-Remote\n
