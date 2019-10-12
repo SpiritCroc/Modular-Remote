@@ -19,15 +19,16 @@
 package de.spiritcroc.modular_remote.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,11 +38,11 @@ import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.modules.Container;
 import de.spiritcroc.modular_remote.modules.DisplayFragment;
+import de.spiritcroc.modular_remote.modules.ModuleFragment;
+import de.spiritcroc.modular_remote.modules.PageContainerFragment;
 import de.spiritcroc.modular_remote.modules.SpinnerFragment;
 import de.spiritcroc.modular_remote.modules.ToggleFragment;
 import de.spiritcroc.modular_remote.modules.WebViewFragment;
-import de.spiritcroc.modular_remote.modules.ModuleFragment;
-import de.spiritcroc.modular_remote.modules.PageContainerFragment;
 
 public class SelectFragmentsDialog extends DialogFragment {
     private static final String LOG_TAG = SelectFragmentsDialog.class.getSimpleName();

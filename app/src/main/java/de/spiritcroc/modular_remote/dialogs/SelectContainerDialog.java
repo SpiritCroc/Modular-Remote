@@ -18,12 +18,13 @@
 
 package de.spiritcroc.modular_remote.dialogs;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Spannable;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public class SelectContainerDialog extends CustomDialogFragment {
     private boolean addWidget = false;
     private int selection = 0;
     private Container[] containers;
-    private Activity activity;
+    private FragmentActivity activity;
     private Mode mode = Mode.ADD_FRAGMENT;
 
     @Override

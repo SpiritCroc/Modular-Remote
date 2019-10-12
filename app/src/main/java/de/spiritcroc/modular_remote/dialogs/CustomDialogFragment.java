@@ -18,8 +18,9 @@
 
 package de.spiritcroc.modular_remote.dialogs;
 
-import android.app.DialogFragment;
 import android.content.DialogInterface;
+
+import androidx.fragment.app.DialogFragment;
 
 public abstract class CustomDialogFragment extends DialogFragment {
     private OnDismissListener onDismissListener;

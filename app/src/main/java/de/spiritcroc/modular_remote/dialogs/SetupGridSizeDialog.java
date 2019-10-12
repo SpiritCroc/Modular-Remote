@@ -18,10 +18,7 @@
 
 package de.spiritcroc.modular_remote.dialogs;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,6 +26,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import de.spiritcroc.modular_remote.Preferences;
 import de.spiritcroc.modular_remote.R;
@@ -44,7 +45,7 @@ public class SetupGridSizeDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Activity activity = getActivity();
+        final FragmentActivity activity = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         View view = activity.getLayoutInflater().inflate(R.layout.dialog_setup_grid_size, null);
         suggestX = Util.suggestBlockSize(activity, false);

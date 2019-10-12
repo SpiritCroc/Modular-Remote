@@ -18,8 +18,9 @@
 
 package de.spiritcroc.modular_remote.modules;
 
-import android.support.annotation.Nullable;
 import android.text.Spannable;
+
+import androidx.annotation.Nullable;
 
 import de.spiritcroc.modular_remote.ResizeFrame;
 

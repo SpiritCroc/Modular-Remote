@@ -18,8 +18,6 @@
 
 package de.spiritcroc.modular_remote.dialogs;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -34,16 +32,19 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import de.spiritcroc.modular_remote.Display;
 import de.spiritcroc.modular_remote.MainActivity;
-import de.spiritcroc.modular_remote.modules.PageContainerFragment;
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.ReceiverIpSelectorUser;
 import de.spiritcroc.modular_remote.TcpConnectionManager;
 import de.spiritcroc.modular_remote.Util;
+import de.spiritcroc.modular_remote.modules.PageContainerFragment;
 
 public class AddPageDialog extends CustomDialogFragment implements ReceiverIpSelectorUser,
         CommandInterface {
@@ -62,7 +63,7 @@ public class AddPageDialog extends CustomDialogFragment implements ReceiverIpSel
     private String name, ip, commandUp = "", commandDown = "";
     private boolean useHardwareVolume;
     private TcpConnectionManager.ReceiverType type;
-    private Activity activity;
+    private FragmentActivity activity;
     private String[] typeValues;
     private ArrayList<Integer> commandUpSearchPath = new ArrayList<>();
     private ArrayList<Integer> commandDownSearchPath = new ArrayList<>();

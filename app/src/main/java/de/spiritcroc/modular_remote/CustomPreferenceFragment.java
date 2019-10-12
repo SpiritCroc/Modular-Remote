@@ -21,25 +21,23 @@ package de.spiritcroc.modular_remote;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Message;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-public abstract class CustomPreferenceFragment extends PreferenceFragment {
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+
+public abstract class CustomPreferenceFragment extends PreferenceFragmentCompat {
     private static final String LOG_TAG = CustomPreferenceFragment.class.getSimpleName();
 
     @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
-                                         @NonNull Preference preference) {
+    public boolean onPreferenceTreeClick(Preference preference) {
         Activity activity = getActivity();
         if (activity instanceof SettingsActivity) {
             return ((SettingsActivity) activity).onPreferenceClick(preference) ||
-                    super.onPreferenceTreeClick(preferenceScreen, preference);
+                    super.onPreferenceTreeClick(preference);
         } else {
             Log.w(LOG_TAG, "activity not instanceof SettingsActivity");
-            return super.onPreferenceTreeClick(preferenceScreen, preference);
+            return super.onPreferenceTreeClick(preference);
         }
     }
 

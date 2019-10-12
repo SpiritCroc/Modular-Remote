@@ -21,10 +21,11 @@ package de.spiritcroc.modular_remote;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.preference.Preference;
-import android.preference.PreferenceScreen;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -38,7 +39,7 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         String preferenceKey = getIntent().getStringExtra(EXTRA_PREFERENCE_FRAGMENT);
         preferenceFragment = getNewPreferenceFragment(preferenceKey);
-        getFragmentManager().beginTransaction().replace(android.R.id.content, preferenceFragment)
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, preferenceFragment)
                 .commit();
 
         ActionBar actionBar = getSupportActionBar();

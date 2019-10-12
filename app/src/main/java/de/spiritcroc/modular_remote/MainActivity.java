@@ -18,9 +18,6 @@
 
 package de.spiritcroc.modular_remote;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.KeyguardManager;
 import android.app.NotificationManager;
 import android.appwidget.AppWidgetHost;
@@ -34,13 +31,9 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -50,6 +43,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.PagerTabStrip;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -131,11 +132,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             switch (item.getItemId()) {
                 case R.id.action_fragment_settings:
                     new SelectFragmentsDialog().setPage(pages.get(viewPager.getCurrentItem()))
-                            .show(getFragmentManager(), "SelectFragmentDialog");
+                            .show(getSupportFragmentManager(), "SelectFragmentDialog");
                     return true;
                 case R.id.action_add_fragment:
                     new AddFragmentDialog().setPage(pages.get(viewPager.getCurrentItem()))
-                            .show(getFragmentManager(), "AddFragmentDialog");
+                            .show(getSupportFragmentManager(), "AddFragmentDialog");
                     return true;
                 case R.id.action_container_edit_mode:
                     cancelEditContainerModeToast();
@@ -172,7 +173,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             for (int i = 0; i < pages.size(); i++) {
                 if (Util.hasContainerOverlappingFragments(pages.get(i))) {
                     new OverlapWarningDialog().setCallback(MainActivity.this)
-                            .show(getFragmentManager(), "OverlapWarningDialog");
+                            .show(getSupportFragmentManager(), "OverlapWarningDialog");
                     return;
                 }
             }
@@ -217,7 +218,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         restoreContentFromRecreationKey(savedFragments);
         pages.get(0).setMenuEnabled(true);
 
-        fragmentPagerAdapter = new CustomFragmentPagerAdapter(this, getFragmentManager());
+        fragmentPagerAdapter = new CustomFragmentPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
 
         viewPager.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -264,17 +265,17 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
         if (sharedPreferences.getInt(Preferences.SEEN_GREETING_VERSION, 0) <
                 GreetingDialog.VERSION) {
-            new GreetingDialog().show(getFragmentManager(), "GreetingDialog");
+            new GreetingDialog().show(getSupportFragmentManager(), "GreetingDialog");
         } else if (SetupGridSizeDialog.shouldShow(sharedPreferences)) {
             new SetupGridSizeDialog()
-                    .show(getFragmentManager(), "SetupGridSizeDialog");
+                    .show(getSupportFragmentManager(), "SetupGridSizeDialog");
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 
         if (DEBUG) {
-            getFragmentManager().addOnBackStackChangedListener(
+            getSupportFragmentManager().addOnBackStackChangedListener(
                     new FragmentManager.OnBackStackChangedListener() {
                         @Override
                         public void onBackStackChanged() {
@@ -451,13 +452,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
                 return true;
             case R.id.action_about:
-                new AboutDialog().show(getFragmentManager(), "AboutDialog");
+                new AboutDialog().show(getSupportFragmentManager(), "AboutDialog");
                 return true;
             case R.id.action_edit_page_content:
                 enterEditMode();
                 return true;
             case R.id.action_connection_manager:
-                new SelectConnectionDialog().show(getFragmentManager(), "SelectConnectionDialog");
+                new SelectConnectionDialog().show(getSupportFragmentManager(), "SelectConnectionDialog");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -700,7 +701,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     public static class CustomFragmentPagerAdapter
-            extends android.support.v13.app.FragmentPagerAdapter {
+            extends androidx.fragment.app.FragmentPagerAdapter {
         MainActivity activity;
 
         public CustomFragmentPagerAdapter (MainActivity activity, FragmentManager fragmentManager) {

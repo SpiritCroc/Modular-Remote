@@ -19,18 +19,19 @@
 package de.spiritcroc.modular_remote;
 
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.PagerTitleStrip;
-import android.support.v4.view.ViewPager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.PagerTabStrip;
+import androidx.viewpager.widget.PagerTitleStrip;
+import androidx.viewpager.widget.ViewPager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -44,6 +45,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -326,7 +329,7 @@ public abstract class Util {
 
     private static final double suggestedBlockSizeInInch = 0.18;
     private static final int suggestMultipleOf = 2;
-    public static int suggestBlockSize(Activity activity, boolean yDir) {
+    public static int suggestBlockSize(FragmentActivity activity, boolean yDir) {
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         double size;
@@ -535,13 +538,13 @@ public abstract class Util {
         return recoverRecreationArgs(s.split(separator), minArgCount);
     }
 
-    public static void addFragmentToContainer(Activity activity,
+    public static void addFragmentToContainer(FragmentActivity activity,
                                               @NonNull ModuleFragment fragment,
                                               PageContainerFragment page,
                                               @Nullable Container container) {
         if (container == null) {
             new SelectContainerDialog().setValues(page, fragment)
-                    .show(activity.getFragmentManager(), "SelectContainerDialog");
+                    .show(activity.getSupportFragmentManager(), "SelectContainerDialog");
         } else {
             fragment.prepareDepthChange();
             container.addFragment(fragment, false);
@@ -559,12 +562,12 @@ public abstract class Util {
             }
         }
     }
-    public static void addWidgetToContainer(Activity activity, PageContainerFragment page,
+    public static void addWidgetToContainer(FragmentActivity activity, PageContainerFragment page,
                                             @Nullable Container container,
                                             @Nullable DialogFragment dismissDialog) {
         if (container == null) {
             new SelectContainerDialog().addWidget(page)
-                    .show(activity.getFragmentManager(), "SelectContainerDialog");
+                    .show(activity.getSupportFragmentManager(), "SelectContainerDialog");
         } else if (activity instanceof MainActivity) {
             ((MainActivity) activity).setAddWidgetListener(dismissDialog);
             ((MainActivity) activity).addWidget(container);
@@ -667,7 +670,7 @@ public abstract class Util {
         }
     }
 
-    public static int getStatusBarHeight(Activity activity) {
+    public static int getStatusBarHeight(FragmentActivity activity) {
         Rect rectangle = new Rect();
         Window window = activity.getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(rectangle);

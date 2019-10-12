@@ -18,7 +18,6 @@
 
 package de.spiritcroc.modular_remote;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -30,13 +29,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Inspired by the AOSP Browser
  */
-public class ShortcutActivity extends Activity implements OnClickListener,
+public class ShortcutActivity extends AppCompatActivity implements OnClickListener,
         AdapterView.OnItemClickListener {
     private String[] pageNames;
     private ArrayList<Long> pageIDs;

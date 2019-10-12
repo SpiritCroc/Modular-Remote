@@ -25,10 +25,11 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
+
+import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 
 import java.util.Arrays;
 
@@ -50,8 +51,7 @@ public class SettingsFragment extends CustomPreferenceFragment
     private EditTextPreference fragmentDefaultHeightPreference;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
 
         ringerModePreference = (ListPreference) findPreference(Preferences.CHANGE_RINGER_MODE);

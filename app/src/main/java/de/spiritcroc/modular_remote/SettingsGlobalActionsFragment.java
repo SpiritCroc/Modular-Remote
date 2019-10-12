@@ -22,9 +22,10 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
-import android.preference.Preference;
-import android.preference.SwitchPreference;
 import android.text.TextUtils;
+
+import androidx.preference.Preference;
+import androidx.preference.SwitchPreference;
 
 import de.spiritcroc.modular_remote.dialogs.GlobalActionDialog;
 
@@ -38,8 +39,7 @@ public class SettingsGlobalActionsFragment extends CustomPreferenceFragment
     private Preference volumeDownPreference;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_global_actions);
 
         enablePreference = (SwitchPreference) findPreference(Preferences.GLOBAL_ACTIONS_ENABLE);

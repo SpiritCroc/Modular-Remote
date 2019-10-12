@@ -18,20 +18,21 @@
 
 package de.spiritcroc.modular_remote.dialogs;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
+
+import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
 import de.spiritcroc.modular_remote.modules.Container;
 import de.spiritcroc.modular_remote.modules.PageContainerFragment;
-import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.modules.WebViewFragment;
 
 public class AddWebViewFragmentDialog extends CustomDialogFragment {
@@ -41,7 +42,7 @@ public class AddWebViewFragmentDialog extends CustomDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Activity activity = getActivity();
+        final FragmentActivity activity = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         final View view = activity.getLayoutInflater().inflate(R.layout.dialog_web_view_fragment,
                 null);

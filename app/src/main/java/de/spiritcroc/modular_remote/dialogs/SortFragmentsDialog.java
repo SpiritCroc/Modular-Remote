@@ -19,7 +19,6 @@
 package de.spiritcroc.modular_remote.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -27,6 +26,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.View;
 import android.widget.ArrayAdapter;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 

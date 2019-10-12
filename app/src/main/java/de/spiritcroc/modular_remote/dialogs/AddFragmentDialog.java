@@ -18,25 +18,26 @@
 
 package de.spiritcroc.modular_remote.dialogs;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
 import de.spiritcroc.modular_remote.modules.Container;
 import de.spiritcroc.modular_remote.modules.HorizontalContainerFragment;
 import de.spiritcroc.modular_remote.modules.ModuleFragment;
 import de.spiritcroc.modular_remote.modules.PageContainerFragment;
-import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.modules.ScrollContainerFragment;
 
 public class AddFragmentDialog extends DialogFragment {
@@ -50,7 +51,7 @@ public class AddFragmentDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Activity activity = getActivity();
+        final FragmentActivity activity = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         Resources resources = getResources();

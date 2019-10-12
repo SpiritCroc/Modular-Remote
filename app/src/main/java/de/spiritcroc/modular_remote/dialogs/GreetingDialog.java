@@ -19,9 +19,7 @@
 package de.spiritcroc.modular_remote.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,6 +27,9 @@ import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import de.spiritcroc.modular_remote.Preferences;
 import de.spiritcroc.modular_remote.R;

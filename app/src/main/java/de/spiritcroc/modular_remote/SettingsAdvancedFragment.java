@@ -20,7 +20,8 @@ package de.spiritcroc.modular_remote;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
+
+import androidx.preference.EditTextPreference;
 
 public class SettingsAdvancedFragment extends CustomPreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -33,8 +34,7 @@ public class SettingsAdvancedFragment extends CustomPreferenceFragment
     private EditTextPreference doubleClickTimeoutPreference;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_advanced);
 
         checkConnectivityIntervalPreference =
