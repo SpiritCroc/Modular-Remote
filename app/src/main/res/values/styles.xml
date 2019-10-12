@@ -22,9 +22,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
         <!-- No customization yet. -->
+        <item name="alertDialogStyle">@style/AlertDialogStyle</item>
     </style>
 
-    <!-- Theme for dialogs. -->
+    <style name="AlertDialogStyle" parent="@style/AlertDialog.AppCompat">
+        <item name="android:layout">@layout/abcd_alert_dialog_material</item>
+    </style>
+
+    <!-- Theme for views within dialogs. -->
     <style name="DialogTheme" parent="AppTheme">
         <item name="android:textViewStyle">@style/DialogTextViewTheme</item>
     </style>

@@ -21,4 +21,9 @@
     <dimen name="dialog_content_padding">4dp</dimen>
 
     <dimen name="resize_handle_margin">13dp</dimen>
+
+    <dimen name="abcd_dialog_list_padding_top_no_title">8dp</dimen>
+    <dimen name="abcd_dialog_list_padding_bottom_no_buttons">8dp</dimen>
+    <dimen name="abcd_dialog_padding_top_material">18dp</dimen>
+    <dimen name="abcd_dialog_title_divider_material">8dp</dimen>
 </resources>
