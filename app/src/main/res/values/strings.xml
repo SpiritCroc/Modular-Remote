@@ -135,10 +135,11 @@
 
     <string name="dialog_greeting">Welcome</string>
     <string name="dialog_greeting_message">This app is still in its beta state. This means:
-        \n- The app is not fully tested yet (bug reports are welcome)
+        \n- The app is not fully tested yet
+        \n- Experimental features have known bugs
         \n- Preset commands and responses are probably incomplete\n
-        \nYou can report bugs <a href="https://github.com/SpiritCroc/Modular-Remote/issues">here</a> or <a href="mailto:spiritcroc@gmail.com?subject=Modular Remote">email me</a>.\n
-        \nThis app is open source and requires contributions to grow! If you want to help with development, you can view the code <a href="https://github.com/SpiritCroc/Modular-Remote">here</a>.\n
+        \nYou can report bugs <a href="https://github.com/SpiritCroc/Modular-Remote/issues">here</a>.\n
+        \nThis app is open source! If you want to help with development, you can view the code <a href="https://github.com/SpiritCroc/Modular-Remote">here</a>.\n
         \nCoding is not the only way to help: In order to natively support more TCP devices, command lists are required to include in this app. A guide to supporting new devices can be found <a href="https://github.com/SpiritCroc/Modular-Remote/blob/master/guide_supporting_new_devices.md">here</a>.
         \nAlso take a look at the <a href="https://github.com/SpiritCroc/Modular-Remote/blob/master/TODO.txt">to-do list</a> (there should also be a section called \'no coding required\').\n
         \nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
