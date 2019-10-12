@@ -20,11 +20,13 @@ package de.spiritcroc.modular_remote;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.session.PlaybackState;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -35,6 +37,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
 import androidx.media.VolumeProviderCompat;
 
 import java.util.ArrayList;
@@ -82,6 +85,11 @@ public class GlobalKeyService extends Service {
     private static MediaSessionCompat mediaSession;
 
     private boolean volumeCtrlActive = false;
+
+    // Arbitrary but unique ID
+    private static final int NOTIFICATION_ID = R.string.notif_service_running_summary;
+
+    private static final String NOTIFICATION_CHANNEL_ID = NAME;
 
     @Override
     public void onCreate() {
@@ -204,7 +212,7 @@ public class GlobalKeyService extends Service {
                 mediaSession.release();
             }
 
-            cancelNotification();//todo not working?
+            cancelNotification();
         }
 
         messageVolCtrlActive();
@@ -304,21 +312,36 @@ public class GlobalKeyService extends Service {
     private void showNotification() {
         PendingIntent p = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
 
-        Notification notification = new Notification.Builder(this)
-                .setOngoing(true)//todo switch to squeezer style?
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.notification_channel_fg_name);
+            String description = getString(R.string.notification_channel_fg_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            channel.setImportance(NotificationManager.IMPORTANCE_MIN);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+
+        Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher)//todo icon
-                .setContentTitle(getText(R.string.notif_service_running))
-                .setContentText("todo")//todo
+                .setContentTitle(getText(R.string.notif_service_running_title))
+                .setContentText(getText(R.string.notif_service_running_summary))
                 .setContentIntent(p)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
                 .build();
 
 
-        notificationManager.notify(R.string.notif_service_running, notification);
-
-        startForeground(R.string.notif_service_running, notification);//todo: http://stackoverflow.com/questions/3856767/android-keeping-a-background-service-alive-preventing-process-death ?
+        startForeground(R.string.notif_service_running_title, notification);//todo: http://stackoverflow.com/questions/3856767/android-keeping-a-background-service-alive-preventing-process-death ?
     }
 
     private void cancelNotification() {
-        notificationManager.cancel(R.string.notif_service_running);
+        stopForeground(true);
     }
 }

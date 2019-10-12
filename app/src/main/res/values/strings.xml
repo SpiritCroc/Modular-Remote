@@ -299,5 +299,8 @@
 
     <string name="redundant_page_name_landscape">%1$s (landscape)</string>
 
-    <string name="notif_service_running">Running</string>
+    <string name="notif_service_running_title">Running</string>
+    <string name="notif_service_running_summary">Background service active</string>
+    <string name="notification_channel_fg_name">Service notification</string>
+    <string name="notification_channel_fg_description">Allows the app to stay active in the background</string>
 </resources>

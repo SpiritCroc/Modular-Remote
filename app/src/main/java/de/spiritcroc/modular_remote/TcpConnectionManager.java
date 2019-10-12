@@ -74,8 +74,11 @@ public class TcpConnectionManager {
 
     }
     public static TcpConnectionManager getInstance(Context context) {
-        if (instance == null)
+        if (instance == null) {
+            if (DEBUG) Log.d(LOG_TAG, "Getting new connection manager instance");
             instance = new TcpConnectionManager(context);
+        }
+        else if (DEBUG) Log.d(LOG_TAG, "Using old connection manager instance");
         return instance;
     }
 
@@ -518,8 +521,13 @@ public class TcpConnectionManager {
                     if (DEBUG) Log.d(LOG_TAG, tcpIp + ": Could not send string: \"" + command +
                             "\"; got exception: " + e);
                 }
-            } else Log.i(LOG_TAG, tcpIp + ": Could not send string: \"" + command +
-                    "\"; socket is not connected");
+            } else {
+                Log.i(LOG_TAG, tcpIp + ": Could not send string: \"" + command +
+                        "\"; socket is not connected");
+                if (DEBUG) Log.i(LOG_TAG, connected +
+                        "/" + (socket == null ? "null" : socket.isConnected()) +
+                        "/" + (out == null ? "null" : "out"));
+            }
         }
 
         public String getIp() {
