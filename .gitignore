@@ -1,8 +1,10 @@
 *.apk
 *.iml
+output.json
 .gradle
 /local.properties
 /.idea
+/projectFilesBackup
 .DS_Store
 /build
 /captures
