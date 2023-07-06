@@ -147,4 +147,7 @@
     <string name="pref_global_actions_enable_summary">Allow to send some commands with the media keys also while using other apps</string>
     <string name="pref_global_actions_volume_up">Global volume up action</string>
     <string name="pref_global_actions_volume_down">Global volume down action</string>
+
+    <string name="pref_show_on_secure_lockscreen">Show on lockscreen</string>
+    <string name="pref_show_on_secure_lockscreen_summary">Keep the app open for usage even when the device is locked</string>
 </resources>

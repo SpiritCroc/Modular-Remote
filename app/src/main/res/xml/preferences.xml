@@ -28,6 +28,11 @@
             android:entries="@array/pref_change_ringer_mode_array"
             android:entryValues="@array/pref_change_ringer_mode_array_values"
             android:defaultValue="@string/pref_ringer_mode_keep_value"/>
+        <CheckBoxPreference
+            android:key="pref_show_on_secure_lockscreen"
+            android:title="@string/pref_show_on_secure_lockscreen"
+            android:summary="@string/pref_show_on_secure_lockscreen_summary"
+            android:defaultValue="false"/>
         <PreferenceScreen
             android:key="pref_global_actions"
             android:title="@string/pref_global_actions_title"

@@ -191,4 +191,9 @@ public final class Preferences {
      * Volume down global action
      */
     public static final String GLOBAL_ACTION_VOLUME_DOWN = "pref_global_action_volume_down";
+
+    /**
+     * Whether to show on secure lockscreen
+     */
+    public static final String SHOW_ON_SECURE_LOCKSCREEN = "pref_show_on_secure_lockscreen";
 }

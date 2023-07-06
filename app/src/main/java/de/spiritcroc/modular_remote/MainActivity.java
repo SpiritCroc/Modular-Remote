@@ -271,9 +271,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     .show(getSupportFragmentManager(), "SetupGridSizeDialog");
         }
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-
         if (DEBUG) {
             getSupportFragmentManager().addOnBackStackChangedListener(
                     new FragmentManager.OnBackStackChangedListener() {
@@ -433,6 +430,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         resizeContent();
 
         setLockedModeVisibilities();
+
+        if (sharedPreferences.getBoolean(Preferences.SHOW_ON_SECURE_LOCKSCREEN, false)) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        }
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
