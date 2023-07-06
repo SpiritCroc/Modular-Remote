@@ -34,7 +34,8 @@
         <activity
             android:name="de.spiritcroc.modular_remote.MainActivity"
             android:label="@string/app_launcher_name"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,14 +49,16 @@
         <activity android:name="de.spiritcroc.modular_remote.ShortcutActivity"
             android:theme="@style/AppTheme"
             android:label="@string/page_shortcut"
-            android:icon="@mipmap/ic_launcher">
+            android:icon="@mipmap/ic_launcher"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <receiver android:name="de.spiritcroc.modular_remote.BReceiver">
+        <receiver android:name="de.spiritcroc.modular_remote.BReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
