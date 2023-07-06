@@ -861,8 +861,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     };
 
     public void setActionBarTitle(PageContainerFragment page, String title) {
-        if (page == pages.get(viewPager.getCurrentItem())) {
-            setActionBarTitle(title);
+        try {
+            if (page == pages.get(viewPager.getCurrentItem())) {
+                setActionBarTitle(title);
+            }
+        } catch (Exception e) {
+            // Catch case onResume, when time wants to update the actionbar
+            // for not properly initialized activity
         }
     }
     private void setActionBarTitle(String title) {
