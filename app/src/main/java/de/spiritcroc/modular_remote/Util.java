@@ -38,6 +38,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -229,10 +230,15 @@ public abstract class Util {
     }
     public static void resizeLayoutWidth(View containerView, LinearLayout layout, double size,
                                          int valueForNegativeSize) {
+        ViewGroup.LayoutParams params = layout.getLayoutParams();
+        if (params == null) {
+            Log.w(LOG_TAG, "Can't resize width: params = null");
+            return;
+        }
         if (size > 0) {
-            layout.getLayoutParams().width = getWidthFromBlockUnits(containerView, size, false);
+            params.width = getWidthFromBlockUnits(containerView, size, false);
         } else {
-            layout.getLayoutParams().width = valueForNegativeSize;
+            params.width = valueForNegativeSize;
         }
         layout.requestLayout();
     }
@@ -242,10 +248,15 @@ public abstract class Util {
     }
     public static void resizeLayoutHeight(View containerView, LinearLayout layout, double size,
                                           int valueForNegativeSize) {
+        ViewGroup.LayoutParams params = layout.getLayoutParams();
+        if (params == null) {
+            Log.w(LOG_TAG, "Can't resize height: params = null");
+            return;
+        }
         if (size > 0) {
-            layout.getLayoutParams().height = getHeightFromBlockUnits(containerView, size, false);
+            params.height = getHeightFromBlockUnits(containerView, size, false);
         } else {
-            layout.getLayoutParams().height = valueForNegativeSize;
+            params.height = valueForNegativeSize;
         }
         layout.requestLayout();
     }

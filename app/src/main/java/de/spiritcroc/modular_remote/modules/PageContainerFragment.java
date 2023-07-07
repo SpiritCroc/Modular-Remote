@@ -34,12 +34,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import de.spiritcroc.modular_remote.BuildConfig;
 import de.spiritcroc.modular_remote.Display;
 import de.spiritcroc.modular_remote.MainActivity;
 import de.spiritcroc.modular_remote.Preferences;
@@ -60,6 +62,8 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     private static final String ARG_TYPE = "type";
     private static final String ARG_VOLUME_UP_COMMAND = "upCommand";
     private static final String ARG_VOLUME_DOWN_COMMAND = "downCommand";
+    private static final String KEY_RECREATION_KEY = "recreationKey";
+    private static final String KEY_ARGUMENTS = "arguments";
     private static final String LOG_TAG = PageContainerFragment.class.getSimpleName();
 
     private ModeSettings actionBarModeSettings;
@@ -84,12 +88,10 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         fragments = new ArrayList<>();
     }
 
-    public static PageContainerFragment newInstance(String name,ModeSettings actionBarModeSettings,
-                                                    boolean useHardwareButtons, String ip,
-                                                    TcpConnectionManager.ReceiverType type,
-                                                    String volumeUpCommand,
-                                                    String volumeDownCommand) {
-        PageContainerFragment fragment = new PageContainerFragment();
+    private static Bundle buildArguments(String name, ModeSettings actionBarModeSettings,
+                                         boolean useHardwareButtons, String ip,
+                                         TcpConnectionManager.ReceiverType type,
+                                         String volumeUpCommand, String volumeDownCommand) {
         Bundle args = new Bundle();
         args.putString(ARG_NAME, name);
         args.putString(ARG_ACTION_BAR_MODE_SETTINGS, actionBarModeSettings.getRecreationKey());
@@ -100,6 +102,16 @@ public class PageContainerFragment extends ModuleFragment implements Container,
             args.putString(ARG_VOLUME_UP_COMMAND, volumeUpCommand);
             args.putString(ARG_VOLUME_DOWN_COMMAND, volumeDownCommand);
         }
+        return args;
+    }
+    public static PageContainerFragment newInstance(String name,ModeSettings actionBarModeSettings,
+                                                    boolean useHardwareButtons, String ip,
+                                                    TcpConnectionManager.ReceiverType type,
+                                                    String volumeUpCommand,
+                                                    String volumeDownCommand) {
+        PageContainerFragment fragment = new PageContainerFragment();
+        Bundle args = buildArguments(name, actionBarModeSettings, useHardwareButtons, ip,
+                type, volumeUpCommand, volumeDownCommand);
         fragment.setArguments(args);
         return fragment;
     }
@@ -107,6 +119,9 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     public void edit(String name, ModeSettings actionBarModeSettings,
                      boolean useHardwareButtons, String ip, TcpConnectionManager.ReceiverType type,
                      String volumeUpCommand, String volumeDownCommand) {
+        if (BuildConfig.DEBUG) {
+            Log.v(LOG_TAG, "edit frag " + System.identityHashCode(this) + " activity " + getActivity() + " context " + getContext() + " SP " + sharedPreferences);
+        }
         if (this.actionBarModeSettings instanceof ClockSettings) {
             TimeSingleton.getInstance().unregisterListener(this);
         } else if (this.actionBarModeSettings instanceof TcpDisplaySettings) {
@@ -141,17 +156,17 @@ public class PageContainerFragment extends ModuleFragment implements Container,
                 actionBarConnection =
                         TcpConnectionManager.getInstance(getActivity().getApplicationContext())
                                 .requireConnection(actionBarUpdateListener);
-            }
-            if (((TcpDisplaySettings) actionBarModeSettings).informationType.equals(
-                    TcpInformation.InformationType.CONNECTIVITY_CHANGE.toString())) {
-                // Show the connectivity
-                if (actionBarConnection != null) {
+                if (((TcpDisplaySettings) actionBarModeSettings).informationType.equals(
+                        TcpInformation.InformationType.CONNECTIVITY_CHANGE.toString())) {
+                    // Show the connectivity
                     setActionBarTitle(Util.getACString(actionBarConnection.isConnected() ?
                             R.string.response_connected : R.string.response_not_connected));
+                } else {
+                    actionBarUpdateListener.update(actionBarConnection.getBufferedInformation(
+                            ((TcpDisplaySettings) actionBarModeSettings).informationType));
                 }
             } else {
-                actionBarUpdateListener.update(actionBarConnection.getBufferedInformation(
-                        ((TcpDisplaySettings) actionBarModeSettings).informationType));
+                Log.w(LOG_TAG, "Cannot set action bar title: no activity");
             }
         } else if (actionBarModeSettings instanceof StaticTextSettings) {
             setActionBarTitle(((StaticTextSettings) actionBarModeSettings).text);
@@ -160,6 +175,8 @@ public class PageContainerFragment extends ModuleFragment implements Container,
                 TimeSingleton.getInstance(Util.getPreferenceInt(sharedPreferences,
                         Preferences.TIME_UPDATE_INTERVAL, 500)).registerListener(this);
             }
+        } else {
+            Log.w(LOG_TAG, "Cannot set action bar title: no SP");
         }
 
         updateActivity();
@@ -179,7 +196,13 @@ public class PageContainerFragment extends ModuleFragment implements Container,
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        if (getArguments() != null) {
+        Bundle args = getArguments();
+        if (recreationKey == null && savedInstanceState != null) {
+            recreationKey = savedInstanceState.getString(KEY_RECREATION_KEY);
+            args = savedInstanceState.getBundle(KEY_ARGUMENTS);
+            Log.i(LOG_TAG, "Restored recreationKey: " + (recreationKey != null) + ", restored args: " + (args != null));
+        }
+        if (args != null) {
             name = getArguments().getString(ARG_NAME);
             String actionBarModeSettingsKey =
                     getArguments().getString(ARG_ACTION_BAR_MODE_SETTINGS);
@@ -205,6 +228,7 @@ public class PageContainerFragment extends ModuleFragment implements Container,
             name = "";
         }
 
+        Log.v(LOG_TAG, "onCreate edit");
         edit(name, actionBarModeSettings, useHardwareButtons, ip, type, volumeUpCommand,
                 volumeDownCommand);
     }
@@ -220,6 +244,10 @@ public class PageContainerFragment extends ModuleFragment implements Container,
         baseViewGroup.setId(Util.generateViewId());
 
         fragments.clear();
+        if (built) {
+            Log.i(LOG_TAG, "Rebuild page " + name);
+            built = false;
+        }
         restoreContentFromRecreationKey();
         built = true;
 
@@ -236,7 +264,20 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        recreationKey = getRecreationKey();
+        try {
+            recreationKey = getRecreationKey();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Failed to save recreation key: " + e);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Bundle args = buildArguments(name, actionBarModeSettings, useHardwareButtons, ip,
+                type, volumeUpCommand, volumeDownCommand);
+        outState.putBundle(KEY_ARGUMENTS, args);
+        outState.putString(KEY_RECREATION_KEY, getRecreationKey());
     }
 
     @Override
@@ -392,6 +433,7 @@ public class PageContainerFragment extends ModuleFragment implements Container,
                     useHardwareButtons, ip, type, volumeUpCommand, volumeDownCommand);
             // Workaround to get page names directly after loading content of activity
             // (getName would return null);
+            Log.v(LOG_TAG, "recoverFromRecreationKey edit");
             fragment.edit(name, actionBarModeSettings, useHardwareButtons, ip, type,
                     volumeUpCommand, volumeDownCommand);
             fragment.setRecreationKey(key);
@@ -418,6 +460,8 @@ public class PageContainerFragment extends ModuleFragment implements Container,
     private void restoreContentFromRecreationKey() {
         if (recreationKey != null) {
             Util.restoreContentFromRecreationKey(this, recreationKey, menuEnabled);
+        } else {
+            Log.i(LOG_TAG, "Starting empty page for empty recreation key: " + getName());
         }
     }
     @Override

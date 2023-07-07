@@ -70,7 +70,7 @@ import de.spiritcroc.modular_remote.modules.WidgetContainerFragment;
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = BuildConfig.DEBUG;
 
     // For launcher shortcut intents
     public static final String EXTRA_SELECT_PAGE_ID =
@@ -473,9 +473,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (discardSavedInstance) {
+        // Most our fragments can't handle saved instances right now...
+        //if (discardSavedInstance) {
             outState.clear();
-        }
+        //}
     }
 
     @Override
