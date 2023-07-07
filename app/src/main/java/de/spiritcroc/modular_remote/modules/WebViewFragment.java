@@ -51,6 +51,7 @@ public class WebViewFragment extends ModuleFragment {
     private MenuItem menuReloadItem;
     private boolean menuEnabled = false;
     private boolean created = false;
+    private boolean needsReload = false;
 
     public static WebViewFragment newInstance(String address, boolean javaScriptEnabled,
                                               boolean allowExternalLinks) {
@@ -127,6 +128,14 @@ public class WebViewFragment extends ModuleFragment {
     public void onPause() {
         super.onPause();
         webView.clearCache(true);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (needsReload) {
+            webView.reload();
+            needsReload = false;
+        }
     }
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -221,6 +230,7 @@ public class WebViewFragment extends ModuleFragment {
             Log.i(LOG_TAG, address + " received Error " + errorCode + ": " + description +
                     "; failingUrl: " + failingUrl);
             connected = false;
+            needsReload = true;
         }
         @Override
         public boolean onRenderProcessGone(WebView webView, RenderProcessGoneDetail detail) {
