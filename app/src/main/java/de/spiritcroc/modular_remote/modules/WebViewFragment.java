@@ -21,6 +21,7 @@ package de.spiritcroc.modular_remote.modules;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +29,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import de.spiritcroc.modular_remote.R;
 import de.spiritcroc.modular_remote.Util;
@@ -43,6 +46,7 @@ public class WebViewFragment extends ModuleFragment {
 
     private String address;
     private boolean javaScriptEnabled, allowExternalLinks, connected = true;
+    private LinearLayout baseLayout;
     private WebView webView;
     private MenuItem menuReloadItem;
     private boolean menuEnabled = false;
@@ -89,18 +93,35 @@ public class WebViewFragment extends ModuleFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_web_view, container, false);
 
-        webView = (WebView) view.findViewById(R.id.web_view);
-        setDragView(webView);
+        baseLayout = view.findViewById(R.id.base_layout);
+        recreateWebView();
 
-        // Set to our own WebViewClient so we can open links within the WebView
-        webView.setWebViewClient(new CustomWebViewClient());
-        setValues(address, javaScriptEnabled, allowExternalLinks);
+        // Testing onRenderProcessGone(): https://developer.android.com/reference/android/webkit/WebViewClient#onRenderProcessGone(android.webkit.WebView,%20android.webkit.RenderProcessGoneDetail)
+        //webView.loadUrl("chrome://crash");
+
         updatePosition(view);
         resize(view);
 
         maybeStartDrag(view);
 
         return view;
+    }
+
+    private void recreateWebView() {
+        // Clean up old webView
+        baseLayout.removeAllViews();
+        // Create new webView
+        webView = new WebView(baseLayout.getContext());
+        baseLayout.addView(webView, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
+
+        // Initialize webView
+        setDragView(webView);
+        // Set to our own WebViewClient so we can open links within the WebView
+        webView.setWebViewClient(new CustomWebViewClient());
+        setValues(address, javaScriptEnabled, allowExternalLinks);
     }
     @Override
     public void onPause() {
@@ -200,6 +221,17 @@ public class WebViewFragment extends ModuleFragment {
             Log.i(LOG_TAG, address + " received Error " + errorCode + ": " + description +
                     "; failingUrl: " + failingUrl);
             connected = false;
+        }
+        @Override
+        public boolean onRenderProcessGone(WebView webView, RenderProcessGoneDetail detail) {
+            // https://stackoverflow.com/a/56373996
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.i(LOG_TAG, "Render process gone " + " " + System.identityHashCode(this) + " " + detail.didCrash());
+            } else {
+                Log.i(LOG_TAG, "Render process gone " + " " + System.identityHashCode(this));
+            }
+            recreateWebView();
+            return true;
         }
     }
 
