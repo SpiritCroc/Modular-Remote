@@ -748,14 +748,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_PICK_APPWIDGET) {
                 configureWidget(data);
             } else if (requestCode == REQUEST_CREATE_APPWIDGET) {
                 createWidgetContainerFragment(data);
             }
-        }
-        else if (resultCode == RESULT_CANCELED && data != null) {
+        } else if (resultCode == RESULT_CANCELED && data != null) {
             int appWidgetId = data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
             if (appWidgetId != -1) {
                 appWidgetHost.deleteAppWidgetId(appWidgetId);
