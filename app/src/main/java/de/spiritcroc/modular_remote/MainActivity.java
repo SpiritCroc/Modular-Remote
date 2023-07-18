@@ -354,7 +354,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         viewPager.removeOnPageChangeListener(this);
 
         saveConnections();
-        appWidgetHost.stopListening();
+        try {
+            appWidgetHost.stopListening();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Failed to unlisten to app widget host", e);
+        }
 
         if (changedRingerMode) {
             changedRingerMode = false;
