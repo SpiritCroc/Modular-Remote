@@ -21,8 +21,8 @@ android {
         applicationId 'de.spiritcroc.modular_remote'
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 8
-        versionName '0.6'
+        versionCode 9
+        versionName '0.7'
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
         buildConfigField "String", "GIT_DESCRIBE", "\"" + getGitDescription() + "\""
     }
